@@ -2427,20 +2427,19 @@ aiclaude@agr24.ru</div>
       </div>
 
       <!-- Separator -->
-      <div style="width:1px;height:44px;background:#E2E8F0;margin:0 6px;align-self:flex-end;"></div>
+      <div style="width:1px;height:32px;background:#E2E8F0;margin:0 6px;align-self:flex-end;margin-bottom:0;"></div>
 
-      <!-- ВЕСТ ПЛАНОВЫЙ / ФАКТИЧЕСКИЙ -->
-      <div>
+      <!-- ВЕСТ ПЛАНОВЫЙ / ФАКТИЧЕСКИЙ — одинаковая высота -->
+      <div style="display:flex;flex-direction:column;justify-content:flex-end;">
         <label style="display:block;font-size:10px;font-weight:700;color:#64748B;text-transform:uppercase;letter-spacing:0.4px;margin-bottom:4px;">Плановый вес (кг)</label>
-        <div class="mono" style="height:32px;padding:0 10px;display:flex;align-items:center;background:#F8FAFC;border:1px solid #E2E8F0;border-radius:7px;font-size:13px;font-weight:600;color:#0F172A;min-width:90px;" id="cl-plan-weight">1 330,6</div>
+        <div class="mono" style="height:32px;padding:0 10px;display:flex;align-items:center;background:#F8FAFC;border:1px solid #E2E8F0;border-radius:7px;font-size:13px;font-weight:600;color:#0F172A;min-width:100px;" id="cl-plan-weight">1 330,6</div>
       </div>
-      <div>
+      <div style="display:flex;flex-direction:column;justify-content:flex-end;">
         <label style="display:block;font-size:10px;font-weight:700;color:#0369A1;text-transform:uppercase;letter-spacing:0.4px;margin-bottom:4px;">Фактический вес (кг)</label>
         <div style="display:flex;gap:0;">
           <input type="number" id="cl-inp-weight" placeholder="напр. 1249" step="0.1" class="input" style="width:120px;height:32px;border-radius:7px 0 0 7px;border-right:none;">
           <button onclick="clApply()" style="height:32px;padding:0 12px;background:#0369A1;color:#fff;border:none;border-radius:0 7px 7px 0;font-size:11px;font-weight:600;cursor:pointer;font-family:'Fira Sans',sans-serif;">OK</button>
         </div>
-        <div style="font-size:10px;color:#94A3B8;margin-top:3px;">пусто = распределение по стоимости</div>
       </div>
 
       <!-- Summary -->
@@ -2473,25 +2472,36 @@ aiclaude@agr24.ru</div>
 
   <!-- Positions table -->
   <div class="card" style="overflow:hidden;">
-    <div class="section-header">
-      <div class="section-title">
-        <div class="section-accent" style="background:#2563EB;"></div>
-        Позиции контрольного листа
-        <span class="badge badge-blue" id="cl-visible-count">575</span>
+    <div class="section-header" style="display:block;padding:12px 14px 10px;">
+      <!-- Title row: заголовок + табы -->
+      <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+        <div class="section-title" style="margin:0;">
+          <div class="section-accent" style="background:#2563EB;"></div>
+          Позиции контрольного листа
+          <span class="badge badge-blue" id="cl-visible-count">575</span>
+        </div>
+        <div class="tab-bar" id="tabs-cl" style="margin:0;">
+          <button class="tab-btn active" onclick="clSetFilter('all',this)">Все <span id="cl-tab-all">575</span></button>
+          <button class="tab-btn" onclick="clSetFilter('arrived',this)">Прибыло <span id="cl-tab-arrived">492</span></button>
+          <button class="tab-btn" onclick="clSetFilter('backorder',this)">Backorder <span id="cl-tab-backorder">83</span></button>
+          <button class="tab-btn" onclick="clSetFilter('cancel',this)">Cancel <span id="cl-tab-cancel">2</span></button>
+        </div>
       </div>
-      <div style="display:flex;align-items:center;gap:8px;">
-        <!-- Search by article -->
+      <!-- Search + Save row -->
+      <div style="display:flex;align-items:center;gap:8px;margin-top:8px;">
         <div style="position:relative;">
           <svg style="position:absolute;left:8px;top:50%;transform:translateY(-50%);pointer-events:none;" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#94A3B8" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
           <input id="cl-search" type="text" placeholder="Поиск по артикулу…" oninput="clSearch(this.value)"
-            style="height:30px;padding:0 28px 0 26px;font-size:11px;border:1px solid #E2E8F0;border-radius:7px;font-family:'Fira Sans',sans-serif;color:#0F172A;outline:none;width:180px;background:#F8FAFC;">
+            style="height:30px;padding:0 28px 0 26px;font-size:11px;border:1px solid #E2E8F0;border-radius:7px;font-family:'Fira Sans',sans-serif;color:#0F172A;outline:none;width:200px;background:#F8FAFC;">
           <button id="cl-search-clear" onclick="clSearchClear()" style="display:none;position:absolute;right:6px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;padding:0;color:#94A3B8;font-size:13px;line-height:1;">&#x2715;</button>
         </div>
-        <div class="tab-bar" id="tabs-cl">
-          <button class="tab-btn active" onclick="switchTab('tabs-cl',this)">Все (575)</button>
-          <button class="tab-btn" onclick="switchTab('tabs-cl',this)">Прибыло (492)</button>
-          <button class="tab-btn" onclick="switchTab('tabs-cl',this)">Backorder (83)</button>
-          <button class="tab-btn" onclick="switchTab('tabs-cl',this)">Cancel (2)</button>
+        <button onclick="clSaveSnapshot()" style="height:30px;padding:0 14px;background:#16A34A;color:#fff;border:none;border-radius:7px;font-size:11px;font-weight:600;cursor:pointer;font-family:'Fira Sans',sans-serif;white-space:nowrap;">Сохранить</button>
+        <div style="position:relative;">
+          <button onclick="clToggleHistory()" id="cl-hist-btn" style="height:30px;padding:0 12px;background:#F1F5F9;color:#475569;border:1px solid #E2E8F0;border-radius:7px;font-size:11px;font-weight:600;cursor:pointer;font-family:'Fira Sans',sans-serif;white-space:nowrap;">История &#9660;</button>
+          <div id="cl-hist-menu" style="display:none;position:absolute;right:0;top:34px;background:#fff;border:1px solid #E2E8F0;border-radius:8px;box-shadow:0 4px 16px rgba(0,0,0,0.10);z-index:50;min-width:220px;padding:6px 0;">
+            <div id="cl-hist-items" style="padding:4px 0;max-height:180px;overflow-y:auto;"></div>
+            <div style="padding:6px 12px;border-top:1px solid #F1F5F9;font-size:10px;color:#94A3B8;">Хранится до 5 версий</div>
+          </div>
         </div>
       </div>
     </div>
@@ -3443,26 +3453,28 @@ var CL_PLAN_WEIGHT = (function() {
 })();
 
 var CL_WPC_OVERRIDES = {};   /* rowId -> user-entered wpc */
+var CL_RU_OVERRIDES  = {};   /* rowId -> user-edited RU name */
+var CL_EN_OVERRIDES  = {};   /* rowId -> user-edited EN name */
+var CL_FILTER = 'all';       /* 'all' | 'arrived' | 'backorder' | 'cancel' */
 
-/* demo rows with no weight to show editable cells */
+/* demo extra rows — negative IDs, no weight data */
 var CL_EXTRA_ROWS = [
-  [9901, 0, 0, 'RE501234',  'Hydraulic Pump Assy',        'НАСОС ГИДРАВЛИЧЕСКИЙ В СБОРЕ',         1, 1, 1234.50, 1234.50],
-  [9902, 0, 0, 'AH215678',  'Bearing Housing',             'КОРПУС ПОДШИПНИКА',                    2, 2,   89.40,  178.80],
-  [9903, 0, 0, 'R512099',   'Seal Kit Hydrostatic',        'КОМПЛЕКТ УПЛОТНЕНИЙ ГИДРОСТАТИКА',     3, 3,  245.00,  735.00],
+  [-1, 0, 0, 'RE501234', 'Hydraulic Pump Assy',        'НАСОС ГИДРАВЛИЧЕСКИЙ В СБОРЕ',         1, 1, 1234.50, 1234.50],
+  [-2, 0, 0, 'AH215678', 'Bearing Housing',             'КОРПУС ПОДШИПНИКА',                    2, 2,   89.40,  178.80],
+  [-3, 0, 0, 'R512099',  'Seal Kit Hydrostatic',        'КОМПЛЕКТ УПЛОТНЕНИЙ ГИДРОСТАТИКА',     3, 3,  245.00,  735.00],
 ];
 
 function clRowHtml(r, imtekPct, transpRate, wRatio, isBo) {
-  var n=r[0], wpcOrig=r[1], wtotOrig=r[2], art=r[3], ru=r[4], en=r[5], ord=r[6], arrv=r[7], price=r[8], netto=r[9];
+  var n=r[0], wpcOrig=r[1], wtotOrig=r[2], art=r[3];
+  var ru = (CL_RU_OVERRIDES[n] !== undefined) ? CL_RU_OVERRIDES[n] : r[4];
+  var en = (CL_EN_OVERRIDES[n] !== undefined) ? CL_EN_OVERRIDES[n] : r[5];
+  var ord=r[6], arrv=r[7], price=r[8], netto=r[9];
 
-  /* effective wpc: use override if user edited it */
   var effectiveWpc  = (CL_WPC_OVERRIDES[n] !== undefined) ? CL_WPC_OVERRIDES[n] : wpcOrig;
   var effectiveWtot = effectiveWpc * arrv;
-
-  /* apply weight ratio for display (documentation only, no cost impact) */
   var wpc_d  = effectiveWpc  * wRatio;
   var wtot_d = effectiveWtot * wRatio;
 
-  /* cost calculations — transport always by Netto, never by weight */
   var imtek  = netto * (imtekPct / 100);
   var transp = netto * transpRate;
   var rowTot = netto + imtek + transp;
@@ -3471,9 +3483,9 @@ function clRowHtml(r, imtekPct, transpRate, wRatio, isBo) {
   var artCol  = isBo ? 'font-weight:600;color:#B45309;' : 'font-weight:600;';
   var arrvCol = isBo ? 'color:#B45309;font-weight:700;' : 'color:#16A34A;font-weight:600;';
   var dash = '&mdash;';
-  var noWt = !effectiveWpc;   /* true when no weight data */
+  var noWt = !effectiveWpc;
+  var numDisp = n < 0 ? '&mdash;' : n;
 
-  /* wpc cell — editable if no weight */
   var wpcCell, wtotCell;
   if (noWt) {
     wpcCell  = '<td class="mono" onclick="clEditWpc(this,' + n + ')" title="Нажмите чтобы ввести вес" '
@@ -3485,13 +3497,14 @@ function clRowHtml(r, imtekPct, transpRate, wRatio, isBo) {
     wtotCell = '<td class="mono" style="text-align:right;color:#64748B;">' + wtot_d.toFixed(3) + '</td>';
   }
 
+  var editHint = 'title="Нажмите чтобы редактировать" style="cursor:pointer;" onclick=';
   return '<tr data-netto="' + netto + '">'
-    + '<td class="mono" style="text-align:center;color:#94A3B8;">' + n + '</td>'
+    + '<td class="mono" style="text-align:center;color:#94A3B8;">' + numDisp + '</td>'
     + wpcCell
     + wtotCell
     + '<td class="mono" style="' + artCol + '">' + art + '</td>'
-    + '<td style="font-size:11px;color:#475569;">' + (en||'') + '</td>'
-    + '<td style="font-size:11px;">' + ru + '</td>'
+    + '<td ' + editHint + '"clEditName(this,' + n + ',\'en\')" style="font-size:11px;color:#475569;cursor:pointer;" title="Нажмите чтобы редактировать">' + (en||'&mdash;') + '</td>'
+    + '<td ' + editHint + '"clEditName(this,' + n + ',\'ru\')" style="font-size:11px;cursor:pointer;" title="Нажмите чтобы редактировать">' + ru + '</td>'
     + '<td class="mono" style="text-align:center;color:#64748B;">' + (ord!==null?ord:'') + '</td>'
     + '<td class="mono" style="text-align:center;' + arrvCol + '">' + arrv + '</td>'
     + '<td class="mono" style="text-align:right;">' + fmt(price) + '</td>'
@@ -3520,6 +3533,36 @@ function clSaveWpc(input, rowId) {
   clRenderRows();
 }
 
+function clEditName(td, rowId, lang) {
+  var store = lang === 'ru' ? CL_RU_OVERRIDES : CL_EN_OVERRIDES;
+  var cur = store[rowId] !== undefined ? store[rowId] : td.textContent.trim();
+  td.innerHTML = '<input type="text" value="' + cur.replace(/"/g,'&quot;') + '" '
+    + 'style="width:100%;min-width:120px;font-family:\'Fira Sans\',sans-serif;font-size:11px;border:1px solid #2563EB;border-radius:4px;padding:2px 6px;" '
+    + 'onblur="clSaveName(this,' + rowId + ',\'' + lang + '\')" '
+    + 'onkeydown="if(event.key===\'Enter\'){this.blur();} if(event.key===\'Escape\'){clRenderRows();}" '
+    + 'onclick="event.stopPropagation();" />';
+  td.querySelector('input').focus();
+  td.querySelector('input').select();
+}
+
+function clSaveName(input, rowId, lang) {
+  var val = input.value.trim();
+  if (val) {
+    if (lang === 'ru') CL_RU_OVERRIDES[rowId] = val;
+    else               CL_EN_OVERRIDES[rowId] = val;
+  }
+  clRenderRows();
+}
+
+function clSetFilter(mode, btn) {
+  CL_FILTER = mode;
+  /* update active tab */
+  var bar = document.getElementById('tabs-cl');
+  if (bar) bar.querySelectorAll('.tab-btn').forEach(function(b){ b.classList.remove('active'); });
+  if (btn) btn.classList.add('active');
+  clRenderRows();
+}
+
 function clRenderRows() {
   var tbody = document.getElementById('cl-tbody');
   if (!tbody) return;
@@ -3528,22 +3571,32 @@ function clRenderRows() {
   var imtekPct   = parseFloat(document.getElementById('cl-inp-imtek').value)     || 3.50;
   var factWeight = parseFloat(document.getElementById('cl-inp-weight').value)    || 0;
 
-  /* update plan weight display */
   var pw = document.getElementById('cl-plan-weight');
   if (pw) pw.textContent = CL_PLAN_WEIGHT.toLocaleString('de-DE',{minimumFractionDigits:1}) + ' кг';
 
-  /* weight ratio for display only — does NOT affect costs */
-  var wRatio = (factWeight > 0 && CL_PLAN_WEIGHT > 0) ? factWeight / CL_PLAN_WEIGHT : 1;
-
-  /* transport distribution: always by Netto value */
+  var wRatio     = (factWeight > 0 && CL_PLAN_WEIGHT > 0) ? factWeight / CL_PLAN_WEIGHT : 1;
   var transpRate = CL_TOTAL_NETTO > 0 ? transport / CL_TOTAL_NETTO : 0;
 
-  var arrived  = CL_EXTRA_ROWS.concat(CL_ROWS.filter(function(r){ return r[9] > 0; }));
-  var backorder = CL_ROWS.filter(function(r){ return !r[9] || r[9] === 0; });
+  var allArrived  = CL_EXTRA_ROWS.concat(CL_ROWS.filter(function(r){ return r[9] > 0; }));
+  var allBackorder = CL_ROWS.filter(function(r){ return !r[9] || r[9] === 0; });
+
+  /* update tab counts */
+  function setTabCount(id, v) { var e=document.getElementById(id); if(e) e.textContent=v; }
+  setTabCount('cl-tab-all',      allArrived.length + allBackorder.length);
+  setTabCount('cl-tab-arrived',  allArrived.length);
+  setTabCount('cl-tab-backorder',allBackorder.length);
+  setTabCount('cl-tab-cancel',   0);
+
+  /* apply filter */
+  var showArrived  = (CL_FILTER === 'all' || CL_FILTER === 'arrived');
+  var showBackorder = (CL_FILTER === 'all' || CL_FILTER === 'backorder');
+
+  var arrived  = showArrived  ? allArrived  : [];
+  var backorder = showBackorder ? allBackorder : [];
 
   /* arrived subtotals */
   var arrNetto = 0, arrWt = 0;
-  arrived.forEach(function(r){
+  allArrived.forEach(function(r){
     arrNetto += r[9];
     var eff = (CL_WPC_OVERRIDES[r[0]] !== undefined) ? CL_WPC_OVERRIDES[r[0]] : r[1];
     arrWt += eff * r[7] * wRatio;
@@ -3552,55 +3605,63 @@ function clRenderRows() {
   var arrTotal = arrNetto + arrImtek + transport;
 
   var boOrdVal = 0;
-  backorder.forEach(function(r){ boOrdVal += (r[6]||0) * r[8]; });
+  allBackorder.forEach(function(r){ boOrdVal += (r[6]||0) * r[8]; });
+
+  /* badge */
+  var badge = document.getElementById('cl-visible-count');
+  if (badge) badge.textContent = arrived.length + backorder.length;
 
   var COLS = 14;
   var html = '';
 
-  /* section 1 header */
-  var weightInfo = factWeight > 0
-    ? ' \xb7 <span style="color:#059669;">Факт: ' + factWeight.toLocaleString('de-DE',{minimumFractionDigits:1}) + ' кг</span>'
-      + ' <span style="color:#94A3B8;font-weight:400;">(план ' + CL_PLAN_WEIGHT.toLocaleString('de-DE',{minimumFractionDigits:1}) + ' кг, коэф. ' + (wRatio*100).toFixed(1) + '%)</span>'
-    : ' \xb7 ' + arrWt.toFixed(1) + ' кг';
+  if (showArrived) {
+    var weightInfo = factWeight > 0
+      ? ' \xb7 <span style="color:#059669;">Факт: ' + factWeight.toLocaleString('de-DE',{minimumFractionDigits:1}) + ' кг</span>'
+        + ' <span style="color:#94A3B8;font-weight:400;">(план ' + CL_PLAN_WEIGHT.toLocaleString('de-DE',{minimumFractionDigits:1}) + ' кг, коэф. ' + (wRatio*100).toFixed(1) + '%)</span>'
+      : ' \xb7 ' + arrWt.toFixed(1) + ' кг';
 
-  html += '<tr style="background:#EFF6FF;">'
-    + '<td colspan="' + COLS + '" style="padding:7px 12px;font-size:11px;font-weight:700;color:#1D4ED8;letter-spacing:0.4px;">'
-    + '<svg style="vertical-align:-2px;margin-right:6px;" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#1D4ED8" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>'
-    + 'ПРИБЫЛО \xb7 ' + arrived.length + ' позиций' + weightInfo + '</td></tr>';
+    html += '<tr style="background:#EFF6FF;">'
+      + '<td colspan="' + COLS + '" style="padding:7px 12px;font-size:11px;font-weight:700;color:#1D4ED8;letter-spacing:0.4px;">'
+      + '<svg style="vertical-align:-2px;margin-right:6px;" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#1D4ED8" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>'
+      + 'ПРИБЫЛО \xb7 ' + allArrived.length + ' позиций' + weightInfo + '</td></tr>';
 
-  arrived.forEach(function(r){ html += clRowHtml(r, imtekPct, transpRate, wRatio, false); });
+    arrived.forEach(function(r){ html += clRowHtml(r, imtekPct, transpRate, wRatio, false); });
 
-  /* arrived subtotal */
-  html += '<tr style="background:#DBEAFE;font-size:11px;border-top:2px solid #93C5FD;">'
-    + '<td colspan="9" style="padding:7px 10px;font-weight:700;color:#1E40AF;">Итого прибыло (' + arrived.length + ' поз.)</td>'
-    + '<td class="mono" style="text-align:right;font-weight:700;color:#1E40AF;">' + fmt(arrNetto) + '</td>'
-    + '<td class="mono" style="text-align:right;font-weight:700;color:#7C3AED;">'  + fmt(arrImtek) + '</td>'
-    + '<td class="mono" style="text-align:right;font-weight:700;color:#0F766E;">'  + fmt(transport) + '</td>'
-    + '<td></td>'
-    + '<td class="mono" style="text-align:right;font-weight:700;color:#0F172A;">'  + fmt(arrTotal) + '</td>'
-    + '</tr>';
+    html += '<tr style="background:#DBEAFE;font-size:11px;border-top:2px solid #93C5FD;">'
+      + '<td colspan="9" style="padding:7px 10px;font-weight:700;color:#1E40AF;">Итого прибыло (' + allArrived.length + ' поз.)</td>'
+      + '<td class="mono" style="text-align:right;font-weight:700;color:#1E40AF;">' + fmt(arrNetto) + '</td>'
+      + '<td class="mono" style="text-align:right;font-weight:700;color:#7C3AED;">'  + fmt(arrImtek) + '</td>'
+      + '<td class="mono" style="text-align:right;font-weight:700;color:#0F766E;">'  + fmt(transport) + '</td>'
+      + '<td></td>'
+      + '<td class="mono" style="text-align:right;font-weight:700;color:#0F172A;">'  + fmt(arrTotal) + '</td>'
+      + '</tr>';
+  }
 
-  /* separator */
-  html += '<tr><td colspan="' + COLS + '" style="padding:0;height:6px;background:#F8FAFC;border:none;"></td></tr>';
-  html += '<tr style="background:#FEF3C7;border-top:2px dashed #F59E0B;">'
-    + '<td colspan="' + COLS + '" style="padding:10px 14px;">'
-    + '<div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;">'
-    + '<div style="display:flex;align-items:center;gap:8px;">'
-    + '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#D97706" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>'
-    + '<span style="font-size:12px;font-weight:700;color:#92400E;">BACKORDER — перенесено в следующую поставку</span>'
-    + '<span style="font-size:11px;color:#B45309;background:#FDE68A;padding:2px 8px;border-radius:10px;">' + backorder.length + ' позиций</span>'
-    + '</div>'
-    + '<span style="font-size:11px;color:#92400E;">Стоимость по заказу: <strong>' + fmt(boOrdVal) + ' €</strong></span>'
-    + '</div></td></tr>';
-  html += '<tr><td colspan="' + COLS + '" style="padding:0;height:2px;background:#FCD34D;border:none;"></td></tr>';
+  if (showArrived && showBackorder) {
+    html += '<tr><td colspan="' + COLS + '" style="padding:0;height:6px;background:#F8FAFC;border:none;"></td></tr>';
+  }
 
-  backorder.forEach(function(r){ html += clRowHtml(r, imtekPct, 0, 1, true); });
+  if (showBackorder) {
+    html += '<tr style="background:#FEF3C7;border-top:2px dashed #F59E0B;">'
+      + '<td colspan="' + COLS + '" style="padding:10px 14px;">'
+      + '<div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;">'
+      + '<div style="display:flex;align-items:center;gap:8px;">'
+      + '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#D97706" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>'
+      + '<span style="font-size:12px;font-weight:700;color:#92400E;">BACKORDER — перенесено в следующую поставку</span>'
+      + '<span style="font-size:11px;color:#B45309;background:#FDE68A;padding:2px 8px;border-radius:10px;">' + allBackorder.length + ' позиций</span>'
+      + '</div>'
+      + '<span style="font-size:11px;color:#92400E;">Стоимость по заказу: <strong>' + fmt(boOrdVal) + ' €</strong></span>'
+      + '</div></td></tr>';
+    html += '<tr><td colspan="' + COLS + '" style="padding:0;height:2px;background:#FCD34D;border:none;"></td></tr>';
 
-  html += '<tr style="background:#FEF9C3;font-size:11px;border-top:2px solid #FCD34D;">'
-    + '<td colspan="6" style="padding:7px 10px;font-weight:700;color:#92400E;">Backorder \xb7 ' + backorder.length + ' позиций</td>'
-    + '<td colspan="3"></td>'
-    + '<td colspan="5" style="text-align:right;padding-right:10px;font-weight:600;color:#B45309;">Стоим. по заказу: ' + fmt(boOrdVal) + ' €</td>'
-    + '</tr>';
+    backorder.forEach(function(r){ html += clRowHtml(r, imtekPct, 0, 1, true); });
+
+    html += '<tr style="background:#FEF9C3;font-size:11px;border-top:2px solid #FCD34D;">'
+      + '<td colspan="6" style="padding:7px 10px;font-weight:700;color:#92400E;">Backorder \xb7 ' + allBackorder.length + ' позиций</td>'
+      + '<td colspan="3"></td>'
+      + '<td colspan="5" style="text-align:right;padding-right:10px;font-weight:600;color:#B45309;">Стоим. по заказу: ' + fmt(boOrdVal) + ' €</td>'
+      + '</tr>';
+  }
 
   tbody.innerHTML = html;
 }
@@ -3628,22 +3689,93 @@ function clSearch(q) {
   var rows = document.querySelectorAll('#cl-tbody tr[data-netto]');
   var visible = 0;
   rows.forEach(function(tr) {
-    /* article is the 4th td (index 3) */
     var artCell = tr.querySelectorAll('td')[3];
     var art = artCell ? artCell.textContent.toLowerCase() : '';
     var show = !term || art.indexOf(term) !== -1;
     tr.style.display = show ? '' : 'none';
     if (show) visible++;
   });
-
-  /* update badge */
   var badge = document.getElementById('cl-visible-count');
-  if (badge) badge.textContent = term ? visible : '575';
+  if (badge) badge.textContent = visible;
 }
 
 function clSearchClear() {
   var inp = document.getElementById('cl-search');
   if (inp) { inp.value = ''; clSearch(''); inp.focus(); }
+}
+
+/* ---- snapshot / history ---- */
+var CL_HIST_KEY = 'cl_snapshots_v1';
+
+function clSnapshotData() {
+  return {
+    wpc: JSON.parse(JSON.stringify(CL_WPC_OVERRIDES)),
+    ru:  JSON.parse(JSON.stringify(CL_RU_OVERRIDES)),
+    en:  JSON.parse(JSON.stringify(CL_EN_OVERRIDES)),
+    ts:  Date.now()
+  };
+}
+
+function clSaveSnapshot() {
+  var snaps = JSON.parse(localStorage.getItem(CL_HIST_KEY) || '[]');
+  snaps.unshift(clSnapshotData());
+  if (snaps.length > 5) snaps = snaps.slice(0, 5);
+  localStorage.setItem(CL_HIST_KEY, JSON.stringify(snaps));
+  /* brief visual feedback */
+  var btn = document.querySelector('[onclick="clSaveSnapshot()"]');
+  if (btn) { var orig = btn.textContent; btn.textContent = 'Сохранено!'; btn.style.background='#15803D'; setTimeout(function(){btn.textContent=orig;btn.style.background='#16A34A';},1200); }
+}
+
+function clToggleHistory() {
+  var menu = document.getElementById('cl-hist-menu');
+  if (!menu) return;
+  var open = menu.style.display !== 'none';
+  if (open) { menu.style.display = 'none'; return; }
+
+  var snaps = JSON.parse(localStorage.getItem(CL_HIST_KEY) || '[]');
+  var items = document.getElementById('cl-hist-items');
+  if (!items) return;
+
+  if (!snaps.length) {
+    items.innerHTML = '<div style="padding:8px 14px;font-size:11px;color:#94A3B8;">Нет сохранённых версий</div>';
+  } else {
+    items.innerHTML = snaps.map(function(s, i) {
+      var dt = new Date(s.ts);
+      var label = dt.toLocaleString('ru-RU',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'});
+      var wpcN = Object.keys(s.wpc).length;
+      var ruN  = Object.keys(s.ru).length;
+      var enN  = Object.keys(s.en).length;
+      var hint = [wpcN && (wpcN + ' вес'), ruN && (ruN + ' RU'), enN && (enN + ' EN')].filter(Boolean).join(', ') || 'без правок';
+      return '<div onclick="clRestoreSnapshot(' + i + ')" style="padding:7px 14px;cursor:pointer;font-size:11px;border-bottom:1px solid #F1F5F9;" '
+        + 'onmouseover="this.style.background=\'#F8FAFC\'" onmouseout="this.style.background=\'\'">'
+        + '<div style="font-weight:600;color:#0F172A;">' + label + '</div>'
+        + '<div style="color:#94A3B8;margin-top:1px;">' + hint + '</div></div>';
+    }).join('');
+  }
+  menu.style.display = 'block';
+
+  /* close on outside click */
+  setTimeout(function() {
+    document.addEventListener('click', function _close(e) {
+      var m = document.getElementById('cl-hist-menu');
+      if (m && !m.contains(e.target) && e.target.id !== 'cl-hist-btn') {
+        m.style.display = 'none';
+      }
+      document.removeEventListener('click', _close);
+    });
+  }, 10);
+}
+
+function clRestoreSnapshot(idx) {
+  var snaps = JSON.parse(localStorage.getItem(CL_HIST_KEY) || '[]');
+  var s = snaps[idx];
+  if (!s) return;
+  CL_WPC_OVERRIDES = s.wpc || {};
+  CL_RU_OVERRIDES  = s.ru  || {};
+  CL_EN_OVERRIDES  = s.en  || {};
+  var menu = document.getElementById('cl-hist-menu');
+  if (menu) menu.style.display = 'none';
+  clRenderRows();
 }
 
 function clHandleUpload(file) {
