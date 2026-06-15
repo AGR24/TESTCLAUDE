@@ -3427,6 +3427,33 @@ function fmtInt(n) {
   return n.toLocaleString('de-DE', {minimumFractionDigits:0, maximumFractionDigits:0});
 }
 
+function clRowHtml(r, imtekPct, transpRate, transitPct, isBo) {
+  var n=r[0], wpc=r[1], wtot=r[2], art=r[3], ru=r[4], en=r[5], ord=r[6], arrv=r[7], price=r[8], netto=r[9];
+  var imtek   = netto * (imtekPct / 100);
+  var transit = (netto + imtek) * (transitPct / 100);
+  var transp  = netto * transpRate;
+  var rowTot  = netto + imtek + transit;
+  var artCol  = isBo ? 'font-weight:600;color:#B45309;' : 'font-weight:600;';
+  var arrvCol = isBo ? 'color:#B45309;font-weight:700;' : 'color:#16A34A;font-weight:600;';
+  var dash    = '&mdash;';
+  return '<tr data-netto="' + netto + '">'
+    + '<td class="mono" style="text-align:center;color:#94A3B8;">' + n + '</td>'
+    + '<td class="mono" style="text-align:right;color:#64748B;">' + wpc.toFixed(3) + '</td>'
+    + '<td class="mono" style="text-align:right;color:#64748B;">' + wtot.toFixed(3) + '</td>'
+    + '<td class="mono" style="' + artCol + '">' + art + '</td>'
+    + '<td style="font-size:11px;color:#475569;">' + (en||'') + '</td>'
+    + '<td style="font-size:11px;">' + ru + '</td>'
+    + '<td class="mono" style="text-align:center;color:#64748B;">' + (ord!==null?ord:'') + '</td>'
+    + '<td class="mono" style="text-align:center;' + arrvCol + '">' + arrv + '</td>'
+    + '<td class="mono" style="text-align:right;">' + fmt(price) + '</td>'
+    + '<td class="mono" style="text-align:right;font-weight:600;">' + (isBo?dash:fmt(netto)) + '</td>'
+    + '<td class="mono cl-cell-imtek" style="text-align:right;color:#7C3AED;">' + (isBo?dash:fmt(imtek)) + '</td>'
+    + '<td class="mono cl-cell-transport" style="text-align:right;color:#0F766E;">' + (isBo?dash:fmt(transp)) + '</td>'
+    + '<td class="mono cl-cell-transit" style="text-align:right;color:#2563EB;">' + (isBo?dash:fmt(transit)) + '</td>'
+    + '<td class="mono cl-cell-rowtotal" style="text-align:right;font-weight:700;">' + (isBo?dash:fmt(rowTot)) + '</td>'
+    + '</tr>';
+}
+
 function clRenderRows() {
   var tbody = document.getElementById('cl-tbody');
   if (!tbody) return;
@@ -3434,34 +3461,66 @@ function clRenderRows() {
   var transitPct = parseFloat(document.getElementById('cl-inp-transit').value)   || 3.00;
   var imtekPct   = parseFloat(document.getElementById('cl-inp-imtek').value)     || 3.50;
   var transpRate = CL_TOTAL_NETTO > 0 ? transport / CL_TOTAL_NETTO : 0;
+
+  var arrived  = CL_ROWS.filter(function(r){ return r[9] > 0; });
+  var backorder = CL_ROWS.filter(function(r){ return !r[9] || r[9] === 0; });
+
+  /* ── subtotals for arrived section ── */
+  var arrNetto=0, arrWt=0;
+  arrived.forEach(function(r){ arrNetto += r[9]; arrWt += r[2]||0; });
+  var arrImtek   = arrNetto * (imtekPct / 100);
+  var arrTransit = (arrNetto + arrImtek) * (transitPct / 100);
+  var arrTransp  = transport;
+  var arrTotal   = arrNetto + arrImtek + arrTransit;
+
+  /* ── subtotals for backorder section ── */
+  var boOrdVal = 0;
+  backorder.forEach(function(r){ boOrdVal += (r[6]||0) * r[8]; });
+
   var html = '';
-  CL_ROWS.forEach(function(r) {
-    var n=r[0], wpc=r[1], wtot=r[2], art=r[3], ru=r[4], en=r[5], ord=r[6], arrv=r[7], price=r[8], netto=r[9];
-    var bo      = !netto || netto === 0;
-    var imtek   = netto * (imtekPct / 100);
-    var transit = (netto + imtek) * (transitPct / 100);
-    var transp  = netto * transpRate;
-    var rowTot  = netto + imtek + transit;
-    var rowBg   = bo ? 'background:#FFF5F5;' : '';
-    var artCol  = bo ? 'color:#DC2626;font-weight:600;' : 'font-weight:600;';
-    var arrvCol = bo ? 'color:#DC2626;font-weight:700;' : 'color:#16A34A;font-weight:600;';
-    html += '<tr style="' + rowBg + '" data-netto="' + netto + '">'
-      + '<td class="mono" style="text-align:center;color:#94A3B8;">' + n + '</td>'
-      + '<td class="mono" style="text-align:right;color:#64748B;">' + wpc.toFixed(3) + '</td>'
-      + '<td class="mono" style="text-align:right;color:#64748B;">' + wtot.toFixed(3) + '</td>'
-      + '<td class="mono" style="' + artCol + (bo?'color:#DC2626;':'') + '">' + art + '</td>'
-      + '<td style="font-size:11px;color:#475569;">' + (en||'') + '</td>'
-      + '<td style="font-size:11px;">' + ru + '</td>'
-      + '<td class="mono" style="text-align:center;color:#64748B;">' + (ord!==null?ord:'') + '</td>'
-      + '<td class="mono" style="text-align:center;' + arrvCol + '">' + arrv + '</td>'
-      + '<td class="mono" style="text-align:right;">' + fmt(price) + '</td>'
-      + '<td class="mono" style="text-align:right;font-weight:600;">' + (bo?'&mdash;':fmt(netto)) + '</td>'
-      + '<td class="mono cl-cell-imtek" style="text-align:right;color:#7C3AED;">' + (bo?'&mdash;':fmt(imtek)) + '</td>'
-      + '<td class="mono cl-cell-transport" style="text-align:right;color:#0F766E;">' + (bo?'&mdash;':fmt(transp)) + '</td>'
-      + '<td class="mono cl-cell-transit" style="text-align:right;color:#2563EB;">' + (bo?'&mdash;':fmt(transit)) + '</td>'
-      + '<td class="mono cl-cell-rowtotal" style="text-align:right;font-weight:700;">' + (bo?'&mdash;':fmt(rowTot)) + '</td>'
-      + '</tr>';
-  });
+
+  /* ══ SECTION 1: ARRIVED ══ */
+  html += '<tr style="background:#EFF6FF;">'
+    + '<td colspan="14" style="padding:7px 12px;font-size:11px;font-weight:700;color:#1D4ED8;letter-spacing:0.4px;">'
+    + '<svg style="vertical-align:-2px;margin-right:6px;" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#1D4ED8" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>'
+    + 'ПРИБЫЛО · ' + arrived.length + ' позиций · ' + arrWt.toFixed(1) + ' кг</td></tr>';
+
+  arrived.forEach(function(r){ html += clRowHtml(r, imtekPct, transpRate, transitPct, false); });
+
+  /* arrived subtotal */
+  html += '<tr style="background:#DBEAFE;font-size:11px;border-top:2px solid #93C5FD;">'
+    + '<td colspan="9" style="padding:7px 10px;font-weight:700;color:#1E40AF;">Итого прибыло (' + arrived.length + ' поз.)</td>'
+    + '<td class="mono" style="text-align:right;font-weight:700;color:#1E40AF;">' + fmt(arrNetto) + '</td>'
+    + '<td class="mono" style="text-align:right;font-weight:700;color:#7C3AED;">' + fmt(arrImtek) + '</td>'
+    + '<td class="mono" style="text-align:right;font-weight:700;color:#0F766E;">' + fmt(arrTransp) + '</td>'
+    + '<td class="mono" style="text-align:right;font-weight:700;color:#2563EB;">' + fmt(arrTransit) + '</td>'
+    + '<td class="mono" style="text-align:right;font-weight:700;color:#0F172A;">' + fmt(arrTotal) + '</td>'
+    + '</tr>';
+
+  /* ══ SEPARATOR ══ */
+  html += '<tr><td colspan="14" style="padding:0;height:6px;background:#F8FAFC;border:none;"></td></tr>';
+  html += '<tr style="background:#FEF3C7;border-top:2px dashed #F59E0B;">'
+    + '<td colspan="14" style="padding:10px 14px;">'
+    + '<div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;">'
+    + '<div style="display:flex;align-items:center;gap:8px;">'
+    + '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#D97706" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>'
+    + '<span style="font-size:12px;font-weight:700;color:#92400E;letter-spacing:0.3px;">BACKORDER — перенесено в следующую поставку</span>'
+    + '<span style="font-size:11px;color:#B45309;background:#FDE68A;padding:2px 8px;border-radius:10px;">' + backorder.length + ' позиций</span>'
+    + '</div>'
+    + '<span style="font-size:11px;color:#92400E;">Стоимость по заказу: <strong>' + fmt(boOrdVal) + ' €</strong></span>'
+    + '</div></td></tr>';
+  html += '<tr><td colspan="14" style="padding:0;height:2px;background:#FCD34D;border:none;"></td></tr>';
+
+  /* ══ SECTION 2: BACKORDER ══ */
+  backorder.forEach(function(r){ html += clRowHtml(r, imtekPct, transpRate, transitPct, true); });
+
+  /* backorder footer */
+  html += '<tr style="background:#FEF9C3;font-size:11px;border-top:2px solid #FCD34D;">'
+    + '<td colspan="6" style="padding:7px 10px;font-weight:700;color:#92400E;">Всего в backorder · ' + backorder.length + ' позиций</td>'
+    + '<td colspan="2"></td>'
+    + '<td colspan="6" style="text-align:right;padding-right:10px;font-weight:600;color:#B45309;">Стоим. по заказу: ' + fmt(boOrdVal) + ' €</td>'
+    + '</tr>';
+
   tbody.innerHTML = html;
 }
 
@@ -3469,23 +3528,9 @@ function clApply() {
   var transport  = parseFloat(document.getElementById('cl-inp-transport').value) || 0;
   var transitPct = parseFloat(document.getElementById('cl-inp-transit').value)   || 3.00;
   var imtekPct   = parseFloat(document.getElementById('cl-inp-imtek').value)     || 3.50;
-  var transpRate = CL_TOTAL_NETTO > 0 ? transport / CL_TOTAL_NETTO : 0;
-  document.querySelectorAll('#cl-tbody tr[data-netto]').forEach(function(tr) {
-    var netto = parseFloat(tr.getAttribute('data-netto'));
-    if (!netto) return;
-    var imtek   = netto * (imtekPct / 100);
-    var transit = (netto + imtek) * (transitPct / 100);
-    var transp  = netto * transpRate;
-    var rowTot  = netto + imtek + transit;
-    var ci  = tr.querySelector('.cl-cell-imtek');
-    var ct  = tr.querySelector('.cl-cell-transport');
-    var ctr = tr.querySelector('.cl-cell-transit');
-    var crt = tr.querySelector('.cl-cell-rowtotal');
-    if (ci)  ci.textContent  = fmt(imtek);
-    if (ct)  ct.textContent  = fmt(transp);
-    if (ctr) ctr.textContent = fmt(transit);
-    if (crt) crt.textContent = fmt(rowTot);
-  });
+  /* re-render table rows + subtotals */
+  clRenderRows();
+
   var totalImtek   = CL_TOTAL_NETTO * (imtekPct / 100);
   var totalTransit = (CL_TOTAL_NETTO + totalImtek) * (transitPct / 100);
   var noTransport  = CL_TOTAL_NETTO + totalImtek + totalTransit;
