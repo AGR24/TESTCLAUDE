@@ -205,7 +205,8 @@ tbody td { padding: 7px 10px; vertical-align: middle; }
       <a class="nav-link" style="color:#64748B;">Поставки</a>
       <a class="nav-link active" onclick="nav('supplier')" id="nav-supplier">Поставщик</a>
     </div>
-    <div style="margin-left:auto;display:flex;align-items:center;gap:10px;">
+    <div style="margin-left:auto;display:flex;align-items:center;gap:12px;">
+      <span id="autosave-indicator" style="font-size:10px;color:#94A3B8;display:none;"></span>
       <span style="font-size:11px;color:#64748B;">Антон Климов</span>
       <div style="width:28px;height:28px;background:#E2E8F0;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#475569;">АК</div>
     </div>
@@ -3780,8 +3781,124 @@ function clHandleUpload(file) {
 }
 
 /* init rows on first page visit */
+/* ── AUTOSAVE ─────────────────────────────────────────────────────── */
+var _autosaveTimer  = null;
+var _autosaveDirty  = false;
+var AS_KEY = 'erp_autosave_v1';
+
+function asCollect() {
+  return {
+    cl: {
+      wpc: CL_WPC_OVERRIDES,
+      ru:  CL_RU_OVERRIDES,
+      en:  CL_EN_OVERRIDES,
+      transport: (document.getElementById('cl-inp-transport')||{}).value,
+      imtek:     (document.getElementById('cl-inp-imtek')||{}).value,
+      weight:    (document.getElementById('cl-inp-weight')||{}).value
+    },
+    ts: Date.now()
+  };
+}
+
+function asRestore(data) {
+  if (!data || !data.cl) return;
+  var cl = data.cl;
+  CL_WPC_OVERRIDES = cl.wpc || {};
+  CL_RU_OVERRIDES  = cl.ru  || {};
+  CL_EN_OVERRIDES  = cl.en  || {};
+  if (cl.transport) { var t = document.getElementById('cl-inp-transport'); if(t) t.value = cl.transport; }
+  if (cl.imtek)     { var i = document.getElementById('cl-inp-imtek');     if(i) i.value = cl.imtek; }
+  if (cl.weight)    { var w = document.getElementById('cl-inp-weight');    if(w) w.value = cl.weight; }
+}
+
+function asShowIndicator(state) {
+  var el = document.getElementById('autosave-indicator');
+  if (!el) return;
+  if (state === 'saving') {
+    el.style.display = '';
+    el.style.color = '#94A3B8';
+    el.textContent = 'Сохранение...';
+  } else if (state === 'saved') {
+    el.style.display = '';
+    el.style.color = '#16A34A';
+    var d = new Date();
+    var hh = String(d.getHours()).padStart(2,'0');
+    var mm = String(d.getMinutes()).padStart(2,'0');
+    el.textContent = 'Сохранено ' + hh + ':' + mm;
+  } else if (state === 'unsaved') {
+    el.style.display = '';
+    el.style.color = '#F59E0B';
+    el.textContent = 'Не сохранено';
+  }
+}
+
+function asMarkDirty() {
+  _autosaveDirty = true;
+  asShowIndicator('unsaved');
+  clearTimeout(_autosaveTimer);
+  _autosaveTimer = setTimeout(function() {
+    asShowIndicator('saving');
+    setTimeout(function() {
+      localStorage.setItem(AS_KEY, JSON.stringify(asCollect()));
+      _autosaveDirty = false;
+      asShowIndicator('saved');
+    }, 300);
+  }, 1500);
+}
+
+/* patch clRenderRows to mark dirty on every user-triggered re-render */
+var _origClSaveWpc  = clSaveWpc;
+var _origClSaveName = clSaveName;
+var _origClApply    = clApply;
+
+clSaveWpc = function(input, rowId) {
+  _origClSaveWpc(input, rowId);
+  asMarkDirty();
+};
+clSaveName = function(input, rowId, lang) {
+  _origClSaveName(input, rowId, lang);
+  asMarkDirty();
+};
+clApply = function() {
+  _origClApply();
+  asMarkDirty();
+};
+
+/* warn on tab/window close if unsaved */
+window.addEventListener('beforeunload', function(e) {
+  if (_autosaveDirty) {
+    e.preventDefault();
+    e.returnValue = '';
+  }
+});
+
 document.addEventListener('DOMContentLoaded', function() {
+  /* restore last autosave */
+  var saved = localStorage.getItem(AS_KEY);
+  if (saved) {
+    try { asRestore(JSON.parse(saved)); } catch(e) {}
+  }
   clRenderRows();
+  /* show last save time if exists */
+  if (saved) {
+    try {
+      var ts = JSON.parse(saved).ts;
+      if (ts) {
+        var d = new Date(ts);
+        var hh = String(d.getHours()).padStart(2,'0');
+        var mm = String(d.getMinutes()).padStart(2,'0');
+        var el = document.getElementById('autosave-indicator');
+        if (el) { el.style.display=''; el.style.color='#16A34A'; el.textContent='Сохранено ' + hh + ':' + mm; }
+      }
+    } catch(e) {}
+  }
+  /* mark dirty on any input change inside the checklist params */
+  document.addEventListener('input', function(e) {
+    var id = e.target && e.target.id;
+    if (id === 'cl-inp-transport' || id === 'cl-inp-imtek' || id === 'cl-inp-weight') {
+      asMarkDirty();
+    }
+  });
 });
 
 window.addEventListener('popstate', function() {
