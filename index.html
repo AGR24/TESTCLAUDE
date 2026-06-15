@@ -2109,12 +2109,81 @@ AGR PARTS Procurement</textarea>
 <div id="modal-reconcile" class="modal-overlay">
   <div class="modal-box" style="width:580px;">
     <div class="modal-header">
-      <div class="modal-title">Сверка заказа — PRF-2026-089</div>
-      <button onclick="closeModal('reconcile')" style="background:none;border:none;cursor:pointer;color:#94A3B8;padding:4px;" onmouseover="this.style.color='#0F172A'" onmouseout="this.style.color='#94A3B8'">
+      <div class="modal-title" id="reconcile-title">Сверка заказа — PRF-2026-089</div>
+      <button onclick="closeModal('reconcile');reconcileReset()" style="background:none;border:none;cursor:pointer;color:#94A3B8;padding:4px;" onmouseover="this.style.color='#0F172A'" onmouseout="this.style.color='#94A3B8'">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
       </button>
     </div>
-    <div style="padding:16px;">
+
+    <!-- STATE 1: UPLOAD -->
+    <div id="reconcile-upload" style="padding:24px;">
+      <p style="font-size:12px;color:#64748B;margin-bottom:18px;line-height:1.6;">
+        Загрузите подтверждение заказа от поставщика — скриншот, PDF или Excel.<br>
+        ИИ сам распознает документ и проведёт сверку автоматически.
+      </p>
+
+      <!-- Drop zone -->
+      <div id="reconcile-dropzone"
+           onclick="document.getElementById('reconcile-file-input').click()"
+           ondragover="event.preventDefault();this.style.borderColor='#2563EB';this.style.background='#EFF6FF'"
+           ondragleave="this.style.borderColor='#CBD5E1';this.style.background='#F8FAFC'"
+           ondrop="event.preventDefault();this.style.borderColor='#CBD5E1';this.style.background='#F8FAFC';reconcileHandleFile(event.dataTransfer.files[0])"
+           style="border:2px dashed #CBD5E1;border-radius:12px;background:#F8FAFC;padding:36px 24px;text-align:center;cursor:pointer;transition:all 180ms;margin-bottom:16px;">
+        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#94A3B8" stroke-width="1.5" style="margin:0 auto 12px;display:block;"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+        <div style="font-size:13px;font-weight:600;color:#334155;margin-bottom:6px;">Перетащите файл сюда или нажмите для выбора</div>
+        <div style="font-size:11px;color:#94A3B8;">Принимаются: PNG, JPG, PDF, XLS, XLSX</div>
+      </div>
+      <input type="file" id="reconcile-file-input" accept=".png,.jpg,.jpeg,.pdf,.xls,.xlsx" style="display:none" onchange="reconcileHandleFile(this.files[0])">
+
+      <!-- Format chips -->
+      <div style="display:flex;gap:6px;justify-content:center;flex-wrap:wrap;">
+        <span style="display:inline-flex;align-items:center;gap:4px;padding:4px 10px;border-radius:20px;font-size:10px;font-weight:600;background:#EFF6FF;color:#2563EB;border:1px solid #BFDBFE;">
+          <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+          Скриншот
+        </span>
+        <span style="display:inline-flex;align-items:center;gap:4px;padding:4px 10px;border-radius:20px;font-size:10px;font-weight:600;background:#FEE2E2;color:#DC2626;border:1px solid #FECACA;">
+          <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          PDF
+        </span>
+        <span style="display:inline-flex;align-items:center;gap:4px;padding:4px 10px;border-radius:20px;font-size:10px;font-weight:600;background:#DCFCE7;color:#16A34A;border:1px solid #BBF7D0;">
+          <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          Excel
+        </span>
+      </div>
+    </div>
+
+    <!-- STATE 2: PROCESSING -->
+    <div id="reconcile-processing" style="display:none;padding:48px 24px;text-align:center;">
+      <div id="reconcile-file-preview" style="display:inline-flex;align-items:center;gap:8px;padding:8px 14px;background:#F8FAFC;border:1px solid #E2E8F0;border-radius:8px;margin-bottom:28px;font-size:12px;color:#475569;"></div>
+      <!-- Animated steps -->
+      <div style="display:flex;flex-direction:column;gap:10px;max-width:320px;margin:0 auto 28px;text-align:left;" id="reconcile-steps">
+        <div class="rstep" id="rstep-1" style="display:flex;align-items:center;gap:10px;opacity:0.3;">
+          <div class="rstep-dot" style="width:20px;height:20px;border-radius:50%;background:#E2E8F0;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:10px;"></div>
+          <span style="font-size:12px;color:#475569;">Распознавание документа</span>
+        </div>
+        <div class="rstep" id="rstep-2" style="display:flex;align-items:center;gap:10px;opacity:0.3;">
+          <div class="rstep-dot" style="width:20px;height:20px;border-radius:50%;background:#E2E8F0;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:10px;"></div>
+          <span style="font-size:12px;color:#475569;">Извлечение позиций и цен</span>
+        </div>
+        <div class="rstep" id="rstep-3" style="display:flex;align-items:center;gap:10px;opacity:0.3;">
+          <div class="rstep-dot" style="width:20px;height:20px;border-radius:50%;background:#E2E8F0;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:10px;"></div>
+          <span style="font-size:12px;color:#475569;">Сверка с заказом PRF-2026-089</span>
+        </div>
+        <div class="rstep" id="rstep-4" style="display:flex;align-items:center;gap:10px;opacity:0.3;">
+          <div class="rstep-dot" style="width:20px;height:20px;border-radius:50%;background:#E2E8F0;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:10px;"></div>
+          <span style="font-size:12px;color:#475569;">Расчёт расхождений</span>
+        </div>
+      </div>
+      <div style="font-size:11px;color:#94A3B8;" id="reconcile-status-text">Анализирую документ…</div>
+    </div>
+
+    <!-- STATE 3: RESULTS -->
+    <div id="reconcile-results" style="display:none;padding:16px;">
+      <!-- Source badge -->
+      <div id="reconcile-source-badge" style="display:inline-flex;align-items:center;gap:6px;padding:5px 10px;background:#DCFCE7;border:1px solid #BBF7D0;border-radius:7px;margin-bottom:16px;font-size:11px;color:#15803D;font-weight:500;">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#16A34A" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+        ИИ распознал документ · Сверка выполнена автоматически
+      </div>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px;">
         <div style="padding:12px;background:#F8FAFC;border-radius:8px;border:1px solid #E2E8F0;">
           <div class="info-label" style="margin-bottom:4px;">Заказано позиций</div>
@@ -2140,11 +2209,15 @@ AGR PARTS Procurement</textarea>
       <div style="font-size:11px;color:#94A3B8;margin-bottom:16px;">
         Сумма подтверждена: <strong style="color:#0F172A;">68 396.20 €</strong> из заказных <strong style="color:#0F172A;">68 400.00 €</strong>
       </div>
-      <div style="display:flex;justify-content:flex-end;gap:8px;">
-        <button class="btn btn-ghost" onclick="closeModal('reconcile')">Закрыть</button>
-        <button class="btn btn-primary">Подтвердить сверку</button>
+      <div style="display:flex;justify-content:space-between;align-items:center;">
+        <button class="btn btn-ghost" style="font-size:11px;color:#94A3B8;" onclick="reconcileReset()">← Загрузить другой файл</button>
+        <div style="display:flex;gap:8px;">
+          <button class="btn btn-ghost" onclick="closeModal('reconcile');reconcileReset()">Закрыть</button>
+          <button class="btn btn-primary">Подтвердить сверку</button>
+        </div>
       </div>
     </div>
+
   </div>
 </div>
 
@@ -2169,6 +2242,60 @@ function openModal(id) {
 function closeModal(id) {
   document.getElementById('modal-' + id).classList.remove('active');
   document.body.style.overflow = '';
+}
+
+/* ── Reconcile: 3-state flow ── */
+function reconcileReset() {
+  document.getElementById('reconcile-upload').style.display = '';
+  document.getElementById('reconcile-processing').style.display = 'none';
+  document.getElementById('reconcile-results').style.display = 'none';
+  document.getElementById('reconcile-title').textContent = 'Сверка заказа — PRF-2026-089';
+  document.getElementById('reconcile-file-input').value = '';
+  [1,2,3,4].forEach(function(i) {
+    var dot = document.querySelector('#rstep-' + i + ' .rstep-dot');
+    dot.style.background = '#E2E8F0';
+    dot.textContent = '';
+    document.getElementById('rstep-' + i).style.opacity = '0.3';
+  });
+}
+
+function reconcileHandleFile(file) {
+  if (!file) return;
+  document.getElementById('reconcile-upload').style.display = 'none';
+  document.getElementById('reconcile-processing').style.display = '';
+  document.getElementById('reconcile-title').textContent = 'Анализирую документ…';
+
+  var ext = file.name.split('.').pop().toLowerCase();
+  var iconSvg = (ext === 'pdf')
+    ? '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#DC2626" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>'
+    : (ext === 'xls' || ext === 'xlsx')
+    ? '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#16A34A" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>'
+    : '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#2563EB" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>';
+  document.getElementById('reconcile-file-preview').innerHTML = iconSvg + file.name;
+
+  var steps = [
+    { id: 1, text: 'Распознавание документа',      delay: 600  },
+    { id: 2, text: 'Извлечение позиций и цен',      delay: 1400 },
+    { id: 3, text: 'Сверка с заказом PRF-2026-089', delay: 2200 },
+    { id: 4, text: 'Расчёт расхождений',            delay: 3000 }
+  ];
+
+  steps.forEach(function(s) {
+    setTimeout(function() {
+      var row = document.getElementById('rstep-' + s.id);
+      var dot = row.querySelector('.rstep-dot');
+      row.style.opacity = '1';
+      dot.style.background = '#2563EB';
+      dot.innerHTML = '<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>';
+      document.getElementById('reconcile-status-text').textContent = s.text + '…';
+    }, s.delay);
+  });
+
+  setTimeout(function() {
+    document.getElementById('reconcile-processing').style.display = 'none';
+    document.getElementById('reconcile-results').style.display = '';
+    document.getElementById('reconcile-title').textContent = 'Сверка заказа — PRF-2026-089';
+  }, 3600);
 }
 
 function toggleReason(prefix, rowId, checkbox) {
