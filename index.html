@@ -1527,6 +1527,11 @@ aiclaude@agr24.ru</div>
         <div><div class="info-label">Поставка</div><div class="info-value" style="color:#475569;">Поставка 45</div></div>
       </div>
       <div style="display:flex;gap:8px;align-items:center;">
+        <!-- Объединить -->
+        <button onclick="openModal('merge-orders')" class="btn btn-ghost" style="height:34px;padding:0 16px;font-size:12px;font-weight:600;">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:-2px;margin-right:5px;"><path d="M8 6H5a2 2 0 00-2 2v10a2 2 0 002 2h14a2 2 0 002-2V8a2 2 0 00-2-2h-3"/><polyline points="15 3 12 6 9 3"/><line x1="12" y1="6" x2="12" y2="14"/></svg>
+          Объединить
+        </button>
         <!-- Статус размещения: кнопка или бейдж -->
         <div id="od-place-status">
           <button id="od-place-btn" onclick="openModal('place-order')"
@@ -2742,6 +2747,101 @@ AGR PARTS Procurement</textarea>
 </div>
 
 
+<!-- ══ MODAL: ОБЪЕДИНИТЬ ЗАКАЗЫ ══════════════════════════════════════ -->
+<div id="modal-merge-orders" class="modal-overlay">
+  <div class="modal" style="max-width:580px;">
+    <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:18px;">
+      <div>
+        <div style="font-size:16px;font-weight:700;color:#0F172A;">Объединить заказы к размещению</div>
+        <div style="font-size:11px;color:#94A3B8;margin-top:3px;">Выберите заказы для консолидации в единый файл поставщику</div>
+      </div>
+      <button onclick="closeModal('merge-orders')" style="background:none;border:none;cursor:pointer;color:#94A3B8;padding:4px;flex-shrink:0;" onmouseover="this.style.color='#0F172A'" onmouseout="this.style.color='#94A3B8'">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+
+    <!-- Заказы к объединению -->
+    <div style="border:1px solid #E2E8F0;border-radius:8px;overflow:hidden;margin-bottom:16px;">
+      <div style="padding:8px 12px;background:#F8FAFC;border-bottom:1px solid #E2E8F0;font-size:10px;font-weight:700;color:#64748B;text-transform:uppercase;letter-spacing:0.5px;">Заказы к размещению</div>
+
+      <!-- Строка заказа -->
+      <label style="display:flex;align-items:center;gap:12px;padding:11px 14px;cursor:pointer;border-bottom:1px solid #F1F5F9;" onmouseover="this.style.background='#F8FAFC'" onmouseout="this.style.background=''">
+        <input type="checkbox" checked data-autosave="mg-412" onchange="mergeValidate()" style="flex-shrink:0;width:15px;height:15px;accent-color:#2563EB;">
+        <div style="flex:1;min-width:0;">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:2px;">
+            <span class="mono" style="font-size:12px;font-weight:700;color:#0F172A;">№000412</span>
+            <span style="font-size:11px;color:#64748B;">АФ АНА-ЮГ</span>
+            <span style="font-size:10px;padding:1px 6px;background:#EFF6FF;color:#2563EB;border-radius:4px;font-weight:600;">John Deere</span>
+            <span style="font-size:10px;color:#94A3B8;">Midwest Parts GmbH</span>
+          </div>
+          <div style="font-size:11px;color:#64748B;">41 позиция &nbsp;·&nbsp; <span class="mono" style="font-weight:600;">12 450 €</span> &nbsp;·&nbsp; Поставка 45</div>
+        </div>
+        <span class="badge badge-blue" style="font-size:9px;flex-shrink:0;">Текущий</span>
+      </label>
+
+      <label style="display:flex;align-items:center;gap:12px;padding:11px 14px;cursor:pointer;border-bottom:1px solid #F1F5F9;" onmouseover="this.style.background='#F8FAFC'" onmouseout="this.style.background=''">
+        <input type="checkbox" onchange="mergeValidate()" style="flex-shrink:0;width:15px;height:15px;accent-color:#2563EB;">
+        <div style="flex:1;min-width:0;">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:2px;">
+            <span class="mono" style="font-size:12px;font-weight:700;color:#0F172A;">№000410</span>
+            <span style="font-size:11px;color:#64748B;">ЧЕРКИЗОВО</span>
+            <span style="font-size:10px;padding:1px 6px;background:#EFF6FF;color:#2563EB;border-radius:4px;font-weight:600;">John Deere</span>
+            <span style="font-size:10px;color:#94A3B8;">Midwest Parts GmbH</span>
+          </div>
+          <div style="font-size:11px;color:#64748B;">28 позиций &nbsp;·&nbsp; <span class="mono" style="font-weight:600;">8 320 €</span> &nbsp;·&nbsp; Поставка 44</div>
+        </div>
+      </label>
+
+      <label style="display:flex;align-items:center;gap:12px;padding:11px 14px;cursor:pointer;border-bottom:1px solid #F1F5F9;" onmouseover="this.style.background='#F8FAFC'" onmouseout="this.style.background=''">
+        <input type="checkbox" onchange="mergeValidate()" style="flex-shrink:0;width:15px;height:15px;accent-color:#2563EB;">
+        <div style="flex:1;min-width:0;">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:2px;">
+            <span class="mono" style="font-size:12px;font-weight:700;color:#0F172A;">№000350</span>
+            <span style="font-size:11px;color:#64748B;">МИРАТОРГ</span>
+            <span style="font-size:10px;padding:1px 6px;background:#FEF3C7;color:#B45309;border-radius:4px;font-weight:600;">Claas</span>
+            <span style="font-size:10px;color:#94A3B8;">AgriTech Europa BV</span>
+          </div>
+          <div style="font-size:11px;color:#64748B;">77 позиций &nbsp;·&nbsp; <span class="mono" style="font-weight:600;">17 580 €</span> &nbsp;·&nbsp; Поставка 44</div>
+        </div>
+        <span style="font-size:9px;color:#F59E0B;background:#FEF3C7;padding:2px 6px;border-radius:4px;font-weight:600;flex-shrink:0;">Другой поставщик</span>
+      </label>
+
+      <label style="display:flex;align-items:center;gap:12px;padding:11px 14px;cursor:pointer;" onmouseover="this.style.background='#F8FAFC'" onmouseout="this.style.background=''">
+        <input type="checkbox" onchange="mergeValidate()" style="flex-shrink:0;width:15px;height:15px;accent-color:#2563EB;">
+        <div style="flex:1;min-width:0;">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:2px;">
+            <span class="mono" style="font-size:12px;font-weight:700;color:#0F172A;">№000405</span>
+            <span style="font-size:11px;color:#64748B;">ПРОСТОРЫ</span>
+            <span style="font-size:10px;padding:1px 6px;background:#EFF6FF;color:#2563EB;border-radius:4px;font-weight:600;">John Deere</span>
+            <span style="font-size:10px;color:#94A3B8;">Midwest Parts GmbH</span>
+          </div>
+          <div style="font-size:11px;color:#64748B;">12 позиций &nbsp;·&nbsp; <span class="mono" style="font-weight:600;">4 870 €</span> &nbsp;·&nbsp; Поставка 45</div>
+        </div>
+      </label>
+    </div>
+
+    <!-- Итого -->
+    <div id="merge-summary" style="display:flex;align-items:center;gap:16px;padding:10px 14px;background:#EFF6FF;border-radius:8px;margin-bottom:16px;">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#2563EB" stroke-width="2"><path d="M8 6H5a2 2 0 00-2 2v10a2 2 0 002 2h14a2 2 0 002-2V8a2 2 0 00-2-2h-3"/><polyline points="15 3 12 6 9 3"/><line x1="12" y1="6" x2="12" y2="14"/></svg>
+      <span style="font-size:11px;color:#1D4ED8;">Итого: <strong id="mg-count">1 заказ</strong> &nbsp;·&nbsp; <strong id="mg-pos">41 позиция</strong> &nbsp;·&nbsp; <strong id="mg-sum">12 450 €</strong></span>
+    </div>
+
+    <!-- Название объединённого запроса -->
+    <div style="margin-bottom:16px;">
+      <label style="display:block;font-size:11px;font-weight:600;color:#475569;margin-bottom:6px;">Название сводного запроса поставщику</label>
+      <input id="mg-ref" type="text" value="REQUEST AGR-CO-CONS-001" class="input" style="font-family:'Fira Code',monospace;font-size:12px;">
+    </div>
+
+    <div style="display:flex;justify-content:flex-end;gap:8px;padding-top:14px;border-top:1px solid #F1F5F9;">
+      <button class="btn btn-ghost" onclick="closeModal('merge-orders')">Отмена</button>
+      <button id="mg-confirm-btn" onclick="mergeConfirm()"
+        style="height:34px;padding:0 20px;background:#2563EB;color:#fff;border:none;border-radius:7px;font-size:12px;font-weight:700;cursor:pointer;font-family:'Fira Sans',sans-serif;">
+        Объединить и перейти к письму
+      </button>
+    </div>
+  </div>
+</div>
+
 <!-- ══ MODAL: РАЗМЕСТИТЬ ЗАКАЗ ══════════════════════════════════════ -->
 <div id="modal-place-order" class="modal-overlay">
   <div class="modal" style="max-width:440px;">
@@ -2814,6 +2914,64 @@ function openModal(id) {
 function closeModal(id) {
   document.getElementById('modal-' + id).classList.remove('active');
   document.body.style.overflow = '';
+}
+
+/* ── Merge Orders flow ── */
+var MG_ORDERS = [
+  {n:'000412', client:'АФ АНА-ЮГ',  pos:41, sum:12450, idx:0},
+  {n:'000410', client:'ЧЕРКИЗОВО',   pos:28, sum:8320,  idx:1},
+  {n:'000350', client:'МИРАТОРГ',    pos:77, sum:17580, idx:2},
+  {n:'000405', client:'ПРОСТОРЫ',    pos:12, sum:4870,  idx:3},
+];
+
+function mergeValidate() {
+  var cbs = document.querySelectorAll('#modal-merge-orders input[type=checkbox]');
+  var count=0, pos=0, sum=0;
+  cbs.forEach(function(cb, i) {
+    if (cb.checked) { count++; pos += MG_ORDERS[i].pos; sum += MG_ORDERS[i].sum; }
+  });
+  var cEl=document.getElementById('mg-count'), pEl=document.getElementById('mg-pos'), sEl=document.getElementById('mg-sum');
+  if (cEl) cEl.textContent = count + (count===1?' заказ':count<5?' заказа':' заказов');
+  if (pEl) pEl.textContent = pos + ' позиций';
+  if (sEl) sEl.textContent = sum.toLocaleString('ru-RU') + ' €';
+}
+
+function mergeConfirm() {
+  var cbs = document.querySelectorAll('#modal-merge-orders input[type=checkbox]');
+  var selected = [];
+  cbs.forEach(function(cb, i){ if(cb.checked) selected.push(MG_ORDERS[i]); });
+  var ref = (document.getElementById('mg-ref').value || '').trim() || 'REQUEST AGR-CO-CONS-001';
+
+  closeModal('merge-orders');
+
+  /* show success banner above positions table */
+  var banner = document.getElementById('merge-success-banner');
+  if (!banner) {
+    banner = document.createElement('div');
+    banner.id = 'merge-success-banner';
+    var posCard = document.querySelector('#page-order-detail .card');
+    if (posCard && posCard.parentNode) {
+      posCard.parentNode.insertBefore(banner, posCard);
+    }
+  }
+  var nums = selected.map(function(o){ return '№' + o.n; }).join(', ');
+  var totalPos = selected.reduce(function(a,o){ return a+o.pos; }, 0);
+  var totalSum = selected.reduce(function(a,o){ return a+o.sum; }, 0);
+  banner.innerHTML =
+    '<div style="background:#EFF6FF;border:1px solid #BFDBFE;border-radius:8px;padding:12px 16px;margin-bottom:12px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;">'
+    + '<div style="display:flex;align-items:center;gap:10px;">'
+    + '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2563EB" stroke-width="2"><path d="M8 6H5a2 2 0 00-2 2v10a2 2 0 002 2h14a2 2 0 002-2V8a2 2 0 00-2-2h-3"/><polyline points="15 3 12 6 9 3"/><line x1="12" y1="6" x2="12" y2="14"/></svg>'
+    + '<div>'
+    + '<div style="font-size:12px;font-weight:700;color:#1D4ED8;">Объединённый запрос: <span style="font-family:\'Fira Code\',monospace;">' + ref + '</span></div>'
+    + '<div style="font-size:11px;color:#3B82F6;margin-top:2px;">' + nums + ' &nbsp;·&nbsp; ' + totalPos + ' позиций &nbsp;·&nbsp; ' + totalSum.toLocaleString('ru-RU') + ' €</div>'
+    + '</div>'
+    + '</div>'
+    + '<button onclick="openModal(\'email\')" class="btn btn-primary" style="font-size:11px;height:30px;padding:0 14px;">'
+    + '<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right:5px;vertical-align:-1px;"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>'
+    + 'Написать поставщику'
+    + '</button>'
+    + '</div>';
+  asMarkDirty();
 }
 
 /* ── Place Order flow ── */
