@@ -88,6 +88,17 @@ tbody td { padding: 7px 10px; vertical-align: middle; }
 .accent-orange { color:#D97706; font-weight:600; }
 .accent-green  { color:#16A34A; font-weight:600; }
 
+/* Dimension dot tooltip */
+.dim-wrap { position:relative; display:inline-flex; align-items:center; justify-content:center; }
+.dim-dot { width:8px; height:8px; border-radius:50%; display:inline-block; cursor:pointer; flex-shrink:0; }
+.dim-tip { display:none; position:absolute; bottom:calc(100% + 7px); left:50%; transform:translateX(-50%);
+  background:#1E293B; color:#fff; font-size:10px; white-space:nowrap; padding:5px 9px;
+  border-radius:6px; z-index:300; pointer-events:none; font-family:'Fira Code',monospace; line-height:1.6; }
+.dim-tip::after { content:''; position:absolute; top:100%; left:50%; transform:translateX(-50%);
+  border:4px solid transparent; border-top-color:#1E293B; }
+.dim-wrap:hover .dim-tip,
+.dim-wrap.open .dim-tip { display:block; }
+
 /* Modal */
 .modal-overlay { display:none; position:fixed; inset:0; z-index:100; background:rgba(15,23,42,0.5); align-items:flex-start; justify-content:center; padding-top:60px; }
 .modal-overlay.active { display:flex; }
@@ -1590,7 +1601,7 @@ aiclaude@agr24.ru</div>
           <th style="width:28px;">#</th><th>Артикул</th><th>Наименование</th>
           <th style="text-align:center;">Кол-во</th><th style="text-align:right;">Цена EUR</th>
           <th style="text-align:center;">Наличие</th><th style="text-align:center;">Нал. С</th>
-          <th style="text-align:center;">Тип</th><th style="text-align:center;">В Excel</th>
+          <th style="text-align:center;">Тип</th><th style="text-align:center;color:#94A3B8;font-size:10px;letter-spacing:.3px;">Габ.</th><th style="text-align:center;">В Excel</th>
         </tr></thead>
         <tbody>
           <tr>
@@ -1601,6 +1612,7 @@ aiclaude@agr24.ru</div>
             <td style="text-align:center;"><span class="badge badge-green">10</span></td>
             <td style="text-align:center;" class="mono" style="color:#64748B;">10</td>
             <td style="text-align:center;"><span class="type-so">SO</span></td>
+            <td style="text-align:center;"></td>
             <td style="text-align:center;"><input type="checkbox" checked data-autosave="od-cb-1"></td>
           </tr>
           <tr>
@@ -1611,6 +1623,7 @@ aiclaude@agr24.ru</div>
             <td style="text-align:center;"><span class="badge badge-green">24</span></td>
             <td style="text-align:center;" class="mono" style="color:#64748B;">24</td>
             <td style="text-align:center;"><span class="type-so">SO</span></td>
+            <td style="text-align:center;"></td>
             <td style="text-align:center;"><input type="checkbox" checked data-autosave="od-cb-2"></td>
           </tr>
           <tr>
@@ -1621,6 +1634,12 @@ aiclaude@agr24.ru</div>
             <td style="text-align:center;"><span class="badge badge-green">3</span></td>
             <td style="text-align:center;" class="mono" style="color:#64748B;">3</td>
             <td style="text-align:center;"><span class="type-so">SO</span></td>
+            <td style="text-align:center;">
+              <span class="dim-wrap" onclick="this.classList.toggle('open')">
+                <span class="dim-dot" style="background:#EF4444;box-shadow:0 0 0 2px #FEE2E2;"></span>
+                <span class="dim-tip">3.09 × 1.25 × 0.9 м<br>365 кг</span>
+              </span>
+            </td>
             <td style="text-align:center;"><input type="checkbox" checked data-autosave="od-cb-3"></td>
           </tr>
           <tr>
@@ -1631,6 +1650,7 @@ aiclaude@agr24.ru</div>
             <td style="text-align:center;"><span class="badge badge-green">8</span></td>
             <td style="text-align:center;" class="mono" style="color:#64748B;">8</td>
             <td style="text-align:center;"><span class="type-so">SO</span></td>
+            <td style="text-align:center;"></td>
             <td style="text-align:center;"><input type="checkbox" checked data-autosave="od-cb-4"></td>
           </tr>
           <tr>
@@ -1641,6 +1661,12 @@ aiclaude@agr24.ru</div>
             <td style="text-align:center;"><span class="badge badge-red">0</span></td>
             <td style="text-align:center;" class="mono" style="color:#D97706;font-weight:600;">3 С</td>
             <td style="text-align:center;"><span class="type-an">AN</span></td>
+            <td style="text-align:center;">
+              <span class="dim-wrap" onclick="this.classList.toggle('open')">
+                <span class="dim-dot" style="background:#F97316;box-shadow:0 0 0 2px #FFEDD5;"></span>
+                <span class="dim-tip">0.85 × 0.42 × 0.38 м<br>28 кг</span>
+              </span>
+            </td>
             <td style="text-align:center;"><input type="checkbox" checked data-autosave="od-cb-5"></td>
           </tr>
           <tr>
@@ -1651,6 +1677,7 @@ aiclaude@agr24.ru</div>
             <td style="text-align:center;"><span class="badge badge-green">1</span></td>
             <td style="text-align:center;" class="mono" style="color:#64748B;">1</td>
             <td style="text-align:center;"><span class="type-so">SO</span></td>
+            <td style="text-align:center;"></td>
             <td style="text-align:center;"><input type="checkbox" checked data-autosave="od-cb-6"></td>
           </tr>
           <tr>
@@ -1661,6 +1688,12 @@ aiclaude@agr24.ru</div>
             <td style="text-align:center;"><span class="badge badge-green">12</span></td>
             <td style="text-align:center;" class="mono" style="color:#64748B;">12</td>
             <td style="text-align:center;"><span class="type-so">SO</span></td>
+            <td style="text-align:center;">
+              <span class="dim-wrap" onclick="this.classList.toggle('open')">
+                <span class="dim-dot" style="background:#F97316;box-shadow:0 0 0 2px #FFEDD5;"></span>
+                <span class="dim-tip">1.85 × 0.12 × 0.12 м<br>4.3 кг</span>
+              </span>
+            </td>
             <td style="text-align:center;"><input type="checkbox" checked data-autosave="od-cb-7"></td>
           </tr>
           <tr>
@@ -1672,6 +1705,7 @@ aiclaude@agr24.ru</div>
             <td style="text-align:center;opacity:0.4;"><span class="badge badge-slate">0</span></td>
             <td style="text-align:center;" class="mono" style="color:#CBD5E1;">0</td>
             <td style="text-align:center;"><span class="type-so" style="opacity:0.4;">SO</span></td>
+            <td style="text-align:center;"></td>
             <td style="text-align:center;"><input type="checkbox" data-autosave="od-cb-8"></td>
           </tr>
         </tbody>
