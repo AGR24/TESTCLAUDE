@@ -2057,7 +2057,7 @@ aiclaude@agr24.ru</div>
     <div style="display:flex;align-items:center;gap:8px;">
       <div style="position:relative;">
         <svg style="position:absolute;left:9px;top:50%;transform:translateY(-50%);color:#94A3B8;" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
-        <input class="search-input" type="text" placeholder="Поиск по номеру, поставке, поставщику…">
+        <input class="search-input" type="text" placeholder="Артикул, заказ, проформа…">
       </div>
       <button class="filter-btn">Поставщик <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></button>
       <button class="filter-btn">Статус <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></button>
@@ -2477,13 +2477,22 @@ aiclaude@agr24.ru</div>
       <div class="section-title">
         <div class="section-accent" style="background:#2563EB;"></div>
         Позиции контрольного листа
-        <span class="badge badge-blue">575</span>
+        <span class="badge badge-blue" id="cl-visible-count">575</span>
       </div>
-      <div class="tab-bar" id="tabs-cl">
-        <button class="tab-btn active" onclick="switchTab('tabs-cl',this)">Все (575)</button>
-        <button class="tab-btn" onclick="switchTab('tabs-cl',this)">Прибыло (492)</button>
-        <button class="tab-btn" onclick="switchTab('tabs-cl',this)">Backorder (83)</button>
-        <button class="tab-btn" onclick="switchTab('tabs-cl',this)">Cancel (2)</button>
+      <div style="display:flex;align-items:center;gap:8px;">
+        <!-- Search by article -->
+        <div style="position:relative;">
+          <svg style="position:absolute;left:8px;top:50%;transform:translateY(-50%);pointer-events:none;" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#94A3B8" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+          <input id="cl-search" type="text" placeholder="Поиск по артикулу…" oninput="clSearch(this.value)"
+            style="height:30px;padding:0 28px 0 26px;font-size:11px;border:1px solid #E2E8F0;border-radius:7px;font-family:'Fira Sans',sans-serif;color:#0F172A;outline:none;width:180px;background:#F8FAFC;">
+          <button id="cl-search-clear" onclick="clSearchClear()" style="display:none;position:absolute;right:6px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;padding:0;color:#94A3B8;font-size:13px;line-height:1;">&#x2715;</button>
+        </div>
+        <div class="tab-bar" id="tabs-cl">
+          <button class="tab-btn active" onclick="switchTab('tabs-cl',this)">Все (575)</button>
+          <button class="tab-btn" onclick="switchTab('tabs-cl',this)">Прибыло (492)</button>
+          <button class="tab-btn" onclick="switchTab('tabs-cl',this)">Backorder (83)</button>
+          <button class="tab-btn" onclick="switchTab('tabs-cl',this)">Cancel (2)</button>
+        </div>
       </div>
     </div>
 
@@ -3559,6 +3568,32 @@ function clApply() {
   setEl('cl-foot-imtek',    fmtInt(totalImtek) + ' €');
   setEl('cl-foot-transport',fmtInt(transport)  + ' €');
   setEl('cl-foot-grand',    fmtInt(grand)       + ' €');
+}
+
+function clSearch(q) {
+  var term = (q || '').trim().toLowerCase();
+  var clearBtn = document.getElementById('cl-search-clear');
+  if (clearBtn) clearBtn.style.display = term ? 'block' : 'none';
+
+  var rows = document.querySelectorAll('#cl-tbody tr[data-netto]');
+  var visible = 0;
+  rows.forEach(function(tr) {
+    /* article is the 4th td (index 3) */
+    var artCell = tr.querySelectorAll('td')[3];
+    var art = artCell ? artCell.textContent.toLowerCase() : '';
+    var show = !term || art.indexOf(term) !== -1;
+    tr.style.display = show ? '' : 'none';
+    if (show) visible++;
+  });
+
+  /* update badge */
+  var badge = document.getElementById('cl-visible-count');
+  if (badge) badge.textContent = term ? visible : '575';
+}
+
+function clSearchClear() {
+  var inp = document.getElementById('cl-search');
+  if (inp) { inp.value = ''; clSearch(''); inp.focus(); }
 }
 
 function clHandleUpload(file) {
