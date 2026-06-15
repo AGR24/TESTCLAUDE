@@ -1461,54 +1461,54 @@ aiclaude@agr24.ru</div>
   <div style="display:flex;align-items:center;gap:5px;font-size:11px;color:#94A3B8;margin-bottom:14px;">
     <a onclick="nav('supplier')" style="color:#94A3B8;cursor:pointer;">Поставщик</a>
     <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
-    <a onclick="nav('orders')" style="color:#94A3B8;cursor:pointer;">Заказы</a>
+    <a onclick="nav('orders')" style="color:#94A3B8;cursor:pointer;">Заказы к размещению</a>
     <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
     <span style="color:#0F172A;font-weight:600;">№000412</span>
   </div>
 
-  <!-- Order chips -->
+  <!-- Order chips: только К размещению -->
   <div style="display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap;">
-    <div class="order-chip" onclick="nav('placed-order')">
-      <div style="display:flex;align-items:center;gap:6px;margin-bottom:4px;">
-        <span style="color:#94A3B8;font-size:10px;">●</span>
-        <span class="mono" style="font-size:12px;font-weight:700;color:#0F172A;">№000368</span>
-        <span style="color:#64748B;font-size:11px;">АФ АНА-ЮГ</span>
-      </div>
-      <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;">
-        <span style="color:#64748B;font-size:11px;">120 поз. &nbsp;·&nbsp; <span class="mono" style="font-weight:600;">28 140 €</span></span>
-        <span class="badge badge-green" style="font-size:9px;">Размещённые</span>
-      </div>
-    </div>
-    <div class="order-chip" onclick="nav('placed-order')">
-      <div style="display:flex;align-items:center;gap:6px;margin-bottom:4px;">
-        <span style="color:#94A3B8;font-size:10px;">●</span>
-        <span class="mono" style="font-size:12px;font-weight:700;color:#0F172A;">№000361</span>
-        <span style="color:#64748B;font-size:11px;">ЧЕРКИЗОВО</span>
-      </div>
-      <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;">
-        <span style="color:#64748B;font-size:11px;">98 поз. &nbsp;·&nbsp; <span class="mono" style="font-weight:600;">22 680 €</span></span>
-        <span class="badge badge-green" style="font-size:9px;">Размещённые</span>
-      </div>
-    </div>
     <div class="order-chip current">
       <div style="display:flex;align-items:center;gap:6px;margin-bottom:4px;">
-        <span style="color:#2563EB;font-size:10px;">●</span>
+        <span style="color:#D97706;font-size:10px;">●</span>
         <span class="mono" style="font-size:12px;font-weight:700;color:#0F172A;">№000412</span>
         <span style="color:#64748B;font-size:11px;">АФ АНА-ЮГ</span>
       </div>
       <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;">
         <span style="color:#64748B;font-size:11px;">41 поз. &nbsp;·&nbsp; <span class="mono" style="font-weight:600;">12 450 €</span></span>
-        <span class="badge badge-orange" style="font-size:9px;">К размещению</span>
+        <span class="badge badge-orange" style="font-size:9px;" id="chip-412-badge">К размещению</span>
       </div>
     </div>
     <div class="order-chip" onclick="nav('order-detail')">
       <div style="display:flex;align-items:center;gap:6px;margin-bottom:4px;">
-        <span style="color:#94A3B8;font-size:10px;">●</span>
+        <span style="color:#D97706;font-size:10px;">●</span>
         <span class="mono" style="font-size:12px;font-weight:700;color:#0F172A;">№000350</span>
         <span style="color:#64748B;font-size:11px;">МИРАТОРГ</span>
       </div>
       <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;">
         <span style="color:#64748B;font-size:11px;">77 поз. &nbsp;·&nbsp; <span class="mono" style="font-weight:600;">17 580 €</span></span>
+        <span class="badge badge-orange" style="font-size:9px;">К размещению</span>
+      </div>
+    </div>
+    <div class="order-chip" onclick="nav('order-detail')">
+      <div style="display:flex;align-items:center;gap:6px;margin-bottom:4px;">
+        <span style="color:#D97706;font-size:10px;">●</span>
+        <span class="mono" style="font-size:12px;font-weight:700;color:#0F172A;">№000410</span>
+        <span style="color:#64748B;font-size:11px;">ЧЕРКИЗОВО</span>
+      </div>
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;">
+        <span style="color:#64748B;font-size:11px;">28 поз. &nbsp;·&nbsp; <span class="mono" style="font-weight:600;">8 320 €</span></span>
+        <span class="badge badge-orange" style="font-size:9px;">К размещению</span>
+      </div>
+    </div>
+    <div class="order-chip" onclick="nav('order-detail')">
+      <div style="display:flex;align-items:center;gap:6px;margin-bottom:4px;">
+        <span style="color:#D97706;font-size:10px;">●</span>
+        <span class="mono" style="font-size:12px;font-weight:700;color:#0F172A;">№000405</span>
+        <span style="color:#64748B;font-size:11px;">ПРОСТОРЫ</span>
+      </div>
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;">
+        <span style="color:#64748B;font-size:11px;">12 поз. &nbsp;·&nbsp; <span class="mono" style="font-weight:600;">4 870 €</span></span>
         <span class="badge badge-orange" style="font-size:9px;">К размещению</span>
       </div>
     </div>
@@ -2839,15 +2839,12 @@ function poConfirm() {
 
   closeModal('place-order');
 
-  /* update current chip: orange → green, "К размещению" → "Размещён" */
-  var chip = document.querySelector('.order-chip.current');
-  if (chip) {
-    var badge = chip.querySelector('.badge-orange');
-    if (badge) {
-      badge.classList.remove('badge-orange');
-      badge.classList.add('badge-green');
-      badge.textContent = 'Размещён';
-    }
+  /* update current chip badge: orange → green */
+  var badge = document.getElementById('chip-412-badge');
+  if (badge) {
+    badge.classList.remove('badge-orange');
+    badge.classList.add('badge-green');
+    badge.textContent = 'Размещён';
   }
 
   /* replace РАЗМЕСТИТЬ button with placed indicator */
