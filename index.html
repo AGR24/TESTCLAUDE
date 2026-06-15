@@ -2392,7 +2392,16 @@ aiclaude@agr24.ru</div>
         <div><div class="info-label">Итого вес</div><div class="info-value mono" style="font-weight:700;">552 кг</div></div>
         <div><div class="info-label">Мест</div><div class="info-value mono" style="font-weight:700;">8</div></div>
       </div>
-      <div style="display:flex;gap:8px;">
+      <div style="display:flex;gap:8px;align-items:center;">
+        <button onclick="clSaveSnapshot()" id="cl-save-btn" style="height:32px;padding:0 14px;background:#16A34A;color:#fff;border:none;border-radius:7px;font-size:11px;font-weight:600;cursor:pointer;font-family:'Fira Sans',sans-serif;white-space:nowrap;">Сохранить</button>
+        <div style="position:relative;">
+          <button onclick="clToggleHistory()" id="cl-hist-btn" style="height:32px;padding:0 12px;background:#F1F5F9;color:#475569;border:1px solid #E2E8F0;border-radius:7px;font-size:11px;font-weight:600;cursor:pointer;font-family:'Fira Sans',sans-serif;white-space:nowrap;">История &#9660;</button>
+          <div id="cl-hist-menu" style="display:none;position:absolute;right:0;top:36px;background:#fff;border:1px solid #E2E8F0;border-radius:8px;box-shadow:0 4px 16px rgba(0,0,0,0.10);z-index:50;min-width:220px;padding:6px 0;">
+            <div id="cl-hist-items" style="padding:4px 0;max-height:180px;overflow-y:auto;"></div>
+            <div style="padding:6px 12px;border-top:1px solid #F1F5F9;font-size:10px;color:#94A3B8;">Хранится до 5 версий</div>
+          </div>
+        </div>
+        <div style="width:1px;height:22px;background:#E2E8F0;margin:0 2px;"></div>
         <button class="btn btn-ghost" style="border-color:#16A34A;color:#16A34A;" onclick="document.getElementById('cl-upload-input').click()">
           <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
           Загрузить Excel
@@ -2487,21 +2496,13 @@ aiclaude@agr24.ru</div>
           <button class="tab-btn" onclick="clSetFilter('cancel',this)">Cancel <span id="cl-tab-cancel">2</span></button>
         </div>
       </div>
-      <!-- Search + Save row -->
+      <!-- Search row -->
       <div style="display:flex;align-items:center;gap:8px;margin-top:8px;">
         <div style="position:relative;">
           <svg style="position:absolute;left:8px;top:50%;transform:translateY(-50%);pointer-events:none;" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#94A3B8" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
           <input id="cl-search" type="text" placeholder="Поиск по артикулу…" oninput="clSearch(this.value)"
             style="height:30px;padding:0 28px 0 26px;font-size:11px;border:1px solid #E2E8F0;border-radius:7px;font-family:'Fira Sans',sans-serif;color:#0F172A;outline:none;width:200px;background:#F8FAFC;">
           <button id="cl-search-clear" onclick="clSearchClear()" style="display:none;position:absolute;right:6px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;padding:0;color:#94A3B8;font-size:13px;line-height:1;">&#x2715;</button>
-        </div>
-        <button onclick="clSaveSnapshot()" style="height:30px;padding:0 14px;background:#16A34A;color:#fff;border:none;border-radius:7px;font-size:11px;font-weight:600;cursor:pointer;font-family:'Fira Sans',sans-serif;white-space:nowrap;">Сохранить</button>
-        <div style="position:relative;">
-          <button onclick="clToggleHistory()" id="cl-hist-btn" style="height:30px;padding:0 12px;background:#F1F5F9;color:#475569;border:1px solid #E2E8F0;border-radius:7px;font-size:11px;font-weight:600;cursor:pointer;font-family:'Fira Sans',sans-serif;white-space:nowrap;">История &#9660;</button>
-          <div id="cl-hist-menu" style="display:none;position:absolute;right:0;top:34px;background:#fff;border:1px solid #E2E8F0;border-radius:8px;box-shadow:0 4px 16px rgba(0,0,0,0.10);z-index:50;min-width:220px;padding:6px 0;">
-            <div id="cl-hist-items" style="padding:4px 0;max-height:180px;overflow-y:auto;"></div>
-            <div style="padding:6px 12px;border-top:1px solid #F1F5F9;font-size:10px;color:#94A3B8;">Хранится до 5 версий</div>
-          </div>
         </div>
       </div>
     </div>
@@ -3615,16 +3616,6 @@ function clRenderRows() {
   var html = '';
 
   if (showArrived) {
-    var weightInfo = factWeight > 0
-      ? ' \xb7 <span style="color:#059669;">Факт: ' + factWeight.toLocaleString('de-DE',{minimumFractionDigits:1}) + ' кг</span>'
-        + ' <span style="color:#94A3B8;font-weight:400;">(план ' + CL_PLAN_WEIGHT.toLocaleString('de-DE',{minimumFractionDigits:1}) + ' кг, коэф. ' + (wRatio*100).toFixed(1) + '%)</span>'
-      : ' \xb7 ' + arrWt.toFixed(1) + ' кг';
-
-    html += '<tr style="background:#EFF6FF;">'
-      + '<td colspan="' + COLS + '" style="padding:7px 12px;font-size:11px;font-weight:700;color:#1D4ED8;letter-spacing:0.4px;">'
-      + '<svg style="vertical-align:-2px;margin-right:6px;" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#1D4ED8" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>'
-      + 'ПРИБЫЛО \xb7 ' + allArrived.length + ' позиций' + weightInfo + '</td></tr>';
-
     arrived.forEach(function(r){ html += clRowHtml(r, imtekPct, transpRate, wRatio, false); });
 
     html += '<tr style="background:#DBEAFE;font-size:11px;border-top:2px solid #93C5FD;">'
@@ -3722,7 +3713,7 @@ function clSaveSnapshot() {
   if (snaps.length > 5) snaps = snaps.slice(0, 5);
   localStorage.setItem(CL_HIST_KEY, JSON.stringify(snaps));
   /* brief visual feedback */
-  var btn = document.querySelector('[onclick="clSaveSnapshot()"]');
+  var btn = document.getElementById('cl-save-btn');
   if (btn) { var orig = btn.textContent; btn.textContent = 'Сохранено!'; btn.style.background='#15803D'; setTimeout(function(){btn.textContent=orig;btn.style.background='#16A34A';},1200); }
 }
 
