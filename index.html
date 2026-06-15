@@ -2405,24 +2405,15 @@ aiclaude@agr24.ru</div>
       </div>
     </div>
 
-    <!-- Row 2: three param inputs -->
+    <!-- Row 2: param inputs -->
     <div style="display:flex;align-items:flex-end;gap:10px;padding-top:12px;border-top:1px solid #F1F5F9;flex-wrap:wrap;">
 
       <!-- TRANSPORT € -->
       <div>
-        <label style="display:block;font-size:10px;font-weight:700;color:#0F766E;text-transform:uppercase;letter-spacing:0.4px;margin-bottom:4px;">Transport (€ сумма)</label>
+        <label style="display:block;font-size:10px;font-weight:700;color:#0F766E;text-transform:uppercase;letter-spacing:0.4px;margin-bottom:4px;">Transport (€)</label>
         <div style="display:flex;gap:0;">
           <input type="number" id="cl-inp-transport" value="3150" class="input" style="width:120px;height:32px;border-radius:7px 0 0 7px;border-right:none;">
           <button onclick="clApply()" style="height:32px;padding:0 12px;background:#0F766E;color:#fff;border:none;border-radius:0 7px 7px 0;font-size:11px;font-weight:600;cursor:pointer;font-family:'Fira Sans',sans-serif;">OK</button>
-        </div>
-      </div>
-
-      <!-- TRANSIT % -->
-      <div>
-        <label style="display:block;font-size:10px;font-weight:700;color:#2563EB;text-transform:uppercase;letter-spacing:0.4px;margin-bottom:4px;">Transit (%)</label>
-        <div style="display:flex;gap:0;">
-          <input type="number" id="cl-inp-transit" value="3.00" step="0.01" class="input" style="width:100px;height:32px;border-radius:7px 0 0 7px;border-right:none;">
-          <button onclick="clApply()" style="height:32px;padding:0 12px;background:#2563EB;color:#fff;border:none;border-radius:0 7px 7px 0;font-size:11px;font-weight:600;cursor:pointer;font-family:'Fira Sans',sans-serif;">OK</button>
         </div>
       </div>
 
@@ -2435,8 +2426,25 @@ aiclaude@agr24.ru</div>
         </div>
       </div>
 
-      <!-- Summary computed -->
-      <div style="margin-left:12px;display:flex;gap:20px;align-items:flex-end;padding-bottom:2px;">
+      <!-- Separator -->
+      <div style="width:1px;height:44px;background:#E2E8F0;margin:0 6px;align-self:flex-end;"></div>
+
+      <!-- ВЕСТ ПЛАНОВЫЙ / ФАКТИЧЕСКИЙ -->
+      <div>
+        <label style="display:block;font-size:10px;font-weight:700;color:#64748B;text-transform:uppercase;letter-spacing:0.4px;margin-bottom:4px;">Плановый вес (кг)</label>
+        <div class="mono" style="height:32px;padding:0 10px;display:flex;align-items:center;background:#F8FAFC;border:1px solid #E2E8F0;border-radius:7px;font-size:13px;font-weight:600;color:#0F172A;min-width:90px;" id="cl-plan-weight">1 330,6</div>
+      </div>
+      <div>
+        <label style="display:block;font-size:10px;font-weight:700;color:#0369A1;text-transform:uppercase;letter-spacing:0.4px;margin-bottom:4px;">Фактический вес (кг)</label>
+        <div style="display:flex;gap:0;">
+          <input type="number" id="cl-inp-weight" placeholder="напр. 1249" step="0.1" class="input" style="width:120px;height:32px;border-radius:7px 0 0 7px;border-right:none;">
+          <button onclick="clApply()" style="height:32px;padding:0 12px;background:#0369A1;color:#fff;border:none;border-radius:0 7px 7px 0;font-size:11px;font-weight:600;cursor:pointer;font-family:'Fira Sans',sans-serif;">OK</button>
+        </div>
+        <div style="font-size:10px;color:#94A3B8;margin-top:3px;">пусто = распределение по стоимости</div>
+      </div>
+
+      <!-- Summary -->
+      <div style="margin-left:12px;display:flex;gap:18px;align-items:flex-end;padding-bottom:2px;">
         <div>
           <div style="font-size:10px;font-weight:600;color:#94A3B8;text-transform:uppercase;letter-spacing:0.4px;margin-bottom:3px;">Netto Total</div>
           <div class="mono" style="font-size:14px;font-weight:700;color:#0F172A;">72 462 €</div>
@@ -2446,20 +2454,12 @@ aiclaude@agr24.ru</div>
           <div class="mono" style="font-size:14px;font-weight:700;color:#7C3AED;" id="cl-sum-imtek">2 536 €</div>
         </div>
         <div>
-          <div style="font-size:10px;font-weight:600;color:#2563EB;text-transform:uppercase;letter-spacing:0.4px;margin-bottom:3px;">Transit</div>
-          <div class="mono" style="font-size:14px;font-weight:700;color:#2563EB;" id="cl-sum-transit">2 246 €</div>
-        </div>
-        <div>
           <div style="font-size:10px;font-weight:600;color:#0F766E;text-transform:uppercase;letter-spacing:0.4px;margin-bottom:3px;">Transport</div>
           <div class="mono" style="font-size:14px;font-weight:700;color:#0F766E;" id="cl-sum-transport">3 150 €</div>
         </div>
-        <div style="padding-left:12px;border-left:2px solid #E2E8F0;">
-          <div style="font-size:10px;font-weight:600;color:#94A3B8;text-transform:uppercase;letter-spacing:0.4px;margin-bottom:3px;">Итого без транспорта</div>
-          <div class="mono" style="font-size:14px;font-weight:700;color:#0F172A;" id="cl-sum-notransport">77 244 €</div>
-        </div>
-        <div>
+        <div style="padding-left:14px;border-left:2px solid #E2E8F0;">
           <div style="font-size:10px;font-weight:600;color:#94A3B8;text-transform:uppercase;letter-spacing:0.4px;margin-bottom:3px;">Grand Total</div>
-          <div class="mono" style="font-size:16px;font-weight:700;color:#0F172A;" id="cl-sum-grand">80 394 €</div>
+          <div class="mono" style="font-size:16px;font-weight:700;color:#0F172A;" id="cl-sum-grand">78 148 €</div>
         </div>
       </div>
     </div>
@@ -2502,8 +2502,8 @@ aiclaude@agr24.ru</div>
           <th style="text-align:right;">Netto</th>
           <th style="text-align:right;color:#7C3AED;">IMTEK</th>
           <th style="text-align:right;color:#0F766E;">Transport</th>
-          <th style="text-align:right;color:#2563EB;">Transit</th>
-          <th style="text-align:right;font-weight:700;">Итого*</th>
+          <th style="text-align:right;font-weight:700;">Итого</th>
+          <th style="text-align:right;color:#0369A1;white-space:nowrap;">Цена ед.</th>
         </tr></thead>
         <tbody id="cl-tbody">
           <!-- rows rendered by clRenderRows() on load -->
@@ -2516,14 +2516,13 @@ aiclaude@agr24.ru</div>
         <span class="footer-stat">Показано 575 из 575</span>
         <span class="footer-stat"><span class="accent-red">Backorder: 83 поз.</span></span>
         <span class="footer-stat"><span class="accent-red">Cancel: 2 поз.</span></span>
-        <span style="font-size:10px;color:#94A3B8;">* Итого = Netto + IMTEK + Transit (без Transport)</span>
+        <span style="font-size:10px;color:#94A3B8;">Итого = Netto + IMTEK + Transport</span>
       </div>
       <div style="display:flex;gap:16px;align-items:center;">
         <span class="footer-stat">Netto: <span class="mono" style="font-weight:700;color:#0F172A;">72 462 €</span></span>
         <span class="footer-stat" style="color:#7C3AED;">IMTEK: <span class="mono" style="font-weight:700;" id="cl-foot-imtek">2 536 €</span></span>
-        <span class="footer-stat" style="color:#2563EB;">Transit: <span class="mono" style="font-weight:700;" id="cl-foot-transit">2 246 €</span></span>
         <span class="footer-stat" style="color:#0F766E;">Transport: <span class="mono" style="font-weight:700;" id="cl-foot-transport">3 150 €</span></span>
-        <span class="footer-stat"><strong>Grand: <span class="mono" style="font-size:13px;color:#0F172A;" id="cl-foot-grand">80 394 €</span></strong></span>
+        <span class="footer-stat"><strong>Grand: <span class="mono" style="font-size:13px;color:#0F172A;" id="cl-foot-grand">78 148 €</span></strong></span>
       </div>
     </div>
   </div>
@@ -3427,16 +3426,24 @@ function fmtInt(n) {
   return n.toLocaleString('de-DE', {minimumFractionDigits:0, maximumFractionDigits:0});
 }
 
-function clRowHtml(r, imtekPct, transpRate, transitPct, isBo) {
+/* CL_PLAN_WEIGHT = sum of wtot for arrived rows, computed once */
+var CL_PLAN_WEIGHT = (function() {
+  var w = 0;
+  CL_ROWS.forEach(function(r){ if (r[9] > 0) w += (r[2] || 0); });
+  return Math.round(w * 10) / 10;
+})();
+
+function clRowHtml(r, imtekPct, transpPerKg, transpRate, isBo) {
   var n=r[0], wpc=r[1], wtot=r[2], art=r[3], ru=r[4], en=r[5], ord=r[6], arrv=r[7], price=r[8], netto=r[9];
-  var imtek   = netto * (imtekPct / 100);
-  var transit = (netto + imtek) * (transitPct / 100);
-  var transp  = netto * transpRate;
-  var rowTot  = netto + imtek + transit;
+  var imtek  = netto * (imtekPct / 100);
+  /* transport: weight-based if transpPerKg set, else value-based */
+  var transp = transpPerKg > 0 ? wtot * transpPerKg : netto * transpRate;
+  var rowTot = netto + imtek + transp;
+  var unitPr = arrv > 0 ? rowTot / arrv : 0;
   var artCol  = isBo ? 'font-weight:600;color:#B45309;' : 'font-weight:600;';
   var arrvCol = isBo ? 'color:#B45309;font-weight:700;' : 'color:#16A34A;font-weight:600;';
-  var dash    = '&mdash;';
-  return '<tr data-netto="' + netto + '">'
+  var dash = '&mdash;';
+  return '<tr data-netto="' + netto + '" data-wtot="' + wtot + '">'
     + '<td class="mono" style="text-align:center;color:#94A3B8;">' + n + '</td>'
     + '<td class="mono" style="text-align:right;color:#64748B;">' + wpc.toFixed(3) + '</td>'
     + '<td class="mono" style="text-align:right;color:#64748B;">' + wtot.toFixed(3) + '</td>'
@@ -3447,60 +3454,73 @@ function clRowHtml(r, imtekPct, transpRate, transitPct, isBo) {
     + '<td class="mono" style="text-align:center;' + arrvCol + '">' + arrv + '</td>'
     + '<td class="mono" style="text-align:right;">' + fmt(price) + '</td>'
     + '<td class="mono" style="text-align:right;font-weight:600;">' + (isBo?dash:fmt(netto)) + '</td>'
-    + '<td class="mono cl-cell-imtek" style="text-align:right;color:#7C3AED;">' + (isBo?dash:fmt(imtek)) + '</td>'
-    + '<td class="mono cl-cell-transport" style="text-align:right;color:#0F766E;">' + (isBo?dash:fmt(transp)) + '</td>'
-    + '<td class="mono cl-cell-transit" style="text-align:right;color:#2563EB;">' + (isBo?dash:fmt(transit)) + '</td>'
-    + '<td class="mono cl-cell-rowtotal" style="text-align:right;font-weight:700;">' + (isBo?dash:fmt(rowTot)) + '</td>'
+    + '<td class="mono" style="text-align:right;color:#7C3AED;">'  + (isBo?dash:fmt(imtek)) + '</td>'
+    + '<td class="mono" style="text-align:right;color:#0F766E;">'  + (isBo?dash:fmt(transp)) + '</td>'
+    + '<td class="mono" style="text-align:right;font-weight:700;">'+ (isBo?dash:fmt(rowTot)) + '</td>'
+    + '<td class="mono" style="text-align:right;color:#0369A1;font-weight:600;">' + (isBo?dash:fmt(unitPr)) + '</td>'
     + '</tr>';
 }
 
 function clRenderRows() {
   var tbody = document.getElementById('cl-tbody');
   if (!tbody) return;
-  var transport  = parseFloat(document.getElementById('cl-inp-transport').value) || 3150;
-  var transitPct = parseFloat(document.getElementById('cl-inp-transit').value)   || 3.00;
-  var imtekPct   = parseFloat(document.getElementById('cl-inp-imtek').value)     || 3.50;
-  var transpRate = CL_TOTAL_NETTO > 0 ? transport / CL_TOTAL_NETTO : 0;
+
+  var transport   = parseFloat(document.getElementById('cl-inp-transport').value) || 3150;
+  var imtekPct    = parseFloat(document.getElementById('cl-inp-imtek').value)     || 3.50;
+  var factWeight  = parseFloat(document.getElementById('cl-inp-weight').value)    || 0;
+
+  /* show plan weight */
+  var pw = document.getElementById('cl-plan-weight');
+  if (pw) pw.textContent = CL_PLAN_WEIGHT.toLocaleString('de-DE', {minimumFractionDigits:1, maximumFractionDigits:1}) + ' кг';
+
+  /* transport distribution mode */
+  var transpPerKg = factWeight > 0 ? transport / factWeight : 0;  /* €/кг */
+  var transpRate  = factWeight > 0 ? 0 : (CL_TOTAL_NETTO > 0 ? transport / CL_TOTAL_NETTO : 0);
 
   var arrived  = CL_ROWS.filter(function(r){ return r[9] > 0; });
   var backorder = CL_ROWS.filter(function(r){ return !r[9] || r[9] === 0; });
 
-  /* ── subtotals for arrived section ── */
+  /* arrived subtotals */
   var arrNetto=0, arrWt=0;
-  arrived.forEach(function(r){ arrNetto += r[9]; arrWt += r[2]||0; });
-  var arrImtek   = arrNetto * (imtekPct / 100);
-  var arrTransit = (arrNetto + arrImtek) * (transitPct / 100);
-  var arrTransp  = transport;
-  var arrTotal   = arrNetto + arrImtek + arrTransit;
+  arrived.forEach(function(r){ arrNetto += r[9]; arrWt += (r[2]||0); });
+  var arrImtek  = arrNetto * (imtekPct / 100);
+  var arrTransp = transport;  /* full transport goes to arrived goods */
+  var arrTotal  = arrNetto + arrImtek + arrTransp;
 
-  /* ── subtotals for backorder section ── */
+  /* backorder ordered value */
   var boOrdVal = 0;
   backorder.forEach(function(r){ boOrdVal += (r[6]||0) * r[8]; });
 
+  var COLS = 14;
   var html = '';
+
+  /* weight mode notice */
+  var weightNote = factWeight > 0
+    ? ' · Распр. транспорта: по весу (' + factWeight.toLocaleString('de-DE',{minimumFractionDigits:1}) + ' кг факт)'
+    : ' · Распр. транспорта: пропорционально стоимости';
 
   /* ══ SECTION 1: ARRIVED ══ */
   html += '<tr style="background:#EFF6FF;">'
-    + '<td colspan="14" style="padding:7px 12px;font-size:11px;font-weight:700;color:#1D4ED8;letter-spacing:0.4px;">'
+    + '<td colspan="' + COLS + '" style="padding:7px 12px;font-size:11px;font-weight:700;color:#1D4ED8;letter-spacing:0.4px;">'
     + '<svg style="vertical-align:-2px;margin-right:6px;" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#1D4ED8" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>'
-    + 'ПРИБЫЛО · ' + arrived.length + ' позиций · ' + arrWt.toFixed(1) + ' кг</td></tr>';
+    + 'ПРИБЫЛО \xb7 ' + arrived.length + ' позиций \xb7 ' + arrWt.toFixed(1) + ' кг' + weightNote + '</td></tr>';
 
-  arrived.forEach(function(r){ html += clRowHtml(r, imtekPct, transpRate, transitPct, false); });
+  arrived.forEach(function(r){ html += clRowHtml(r, imtekPct, transpPerKg, transpRate, false); });
 
-  /* arrived subtotal */
+  /* arrived subtotal row */
   html += '<tr style="background:#DBEAFE;font-size:11px;border-top:2px solid #93C5FD;">'
     + '<td colspan="9" style="padding:7px 10px;font-weight:700;color:#1E40AF;">Итого прибыло (' + arrived.length + ' поз.)</td>'
     + '<td class="mono" style="text-align:right;font-weight:700;color:#1E40AF;">' + fmt(arrNetto) + '</td>'
     + '<td class="mono" style="text-align:right;font-weight:700;color:#7C3AED;">' + fmt(arrImtek) + '</td>'
     + '<td class="mono" style="text-align:right;font-weight:700;color:#0F766E;">' + fmt(arrTransp) + '</td>'
-    + '<td class="mono" style="text-align:right;font-weight:700;color:#2563EB;">' + fmt(arrTransit) + '</td>'
     + '<td class="mono" style="text-align:right;font-weight:700;color:#0F172A;">' + fmt(arrTotal) + '</td>'
+    + '<td></td>'
     + '</tr>';
 
   /* ══ SEPARATOR ══ */
-  html += '<tr><td colspan="14" style="padding:0;height:6px;background:#F8FAFC;border:none;"></td></tr>';
+  html += '<tr><td colspan="' + COLS + '" style="padding:0;height:6px;background:#F8FAFC;border:none;"></td></tr>';
   html += '<tr style="background:#FEF3C7;border-top:2px dashed #F59E0B;">'
-    + '<td colspan="14" style="padding:10px 14px;">'
+    + '<td colspan="' + COLS + '" style="padding:10px 14px;">'
     + '<div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;">'
     + '<div style="display:flex;align-items:center;gap:8px;">'
     + '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#D97706" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>'
@@ -3509,42 +3529,36 @@ function clRenderRows() {
     + '</div>'
     + '<span style="font-size:11px;color:#92400E;">Стоимость по заказу: <strong>' + fmt(boOrdVal) + ' €</strong></span>'
     + '</div></td></tr>';
-  html += '<tr><td colspan="14" style="padding:0;height:2px;background:#FCD34D;border:none;"></td></tr>';
+  html += '<tr><td colspan="' + COLS + '" style="padding:0;height:2px;background:#FCD34D;border:none;"></td></tr>';
 
   /* ══ SECTION 2: BACKORDER ══ */
-  backorder.forEach(function(r){ html += clRowHtml(r, imtekPct, transpRate, transitPct, true); });
+  backorder.forEach(function(r){ html += clRowHtml(r, imtekPct, 0, 0, true); });
 
-  /* backorder footer */
   html += '<tr style="background:#FEF9C3;font-size:11px;border-top:2px solid #FCD34D;">'
-    + '<td colspan="6" style="padding:7px 10px;font-weight:700;color:#92400E;">Всего в backorder · ' + backorder.length + ' позиций</td>'
-    + '<td colspan="2"></td>'
-    + '<td colspan="6" style="text-align:right;padding-right:10px;font-weight:600;color:#B45309;">Стоим. по заказу: ' + fmt(boOrdVal) + ' €</td>'
+    + '<td colspan="6" style="padding:7px 10px;font-weight:700;color:#92400E;">Backorder \xb7 ' + backorder.length + ' позиций</td>'
+    + '<td colspan="3"></td>'
+    + '<td colspan="5" style="text-align:right;padding-right:10px;font-weight:600;color:#B45309;">Стоим. по заказу: ' + fmt(boOrdVal) + ' €</td>'
     + '</tr>';
 
   tbody.innerHTML = html;
 }
 
 function clApply() {
-  var transport  = parseFloat(document.getElementById('cl-inp-transport').value) || 0;
-  var transitPct = parseFloat(document.getElementById('cl-inp-transit').value)   || 3.00;
-  var imtekPct   = parseFloat(document.getElementById('cl-inp-imtek').value)     || 3.50;
-  /* re-render table rows + subtotals */
+  var transport = parseFloat(document.getElementById('cl-inp-transport').value) || 0;
+  var imtekPct  = parseFloat(document.getElementById('cl-inp-imtek').value)     || 3.50;
+
   clRenderRows();
 
-  var totalImtek   = CL_TOTAL_NETTO * (imtekPct / 100);
-  var totalTransit = (CL_TOTAL_NETTO + totalImtek) * (transitPct / 100);
-  var noTransport  = CL_TOTAL_NETTO + totalImtek + totalTransit;
-  var grand        = noTransport + transport;
+  var totalImtek = CL_TOTAL_NETTO * (imtekPct / 100);
+  var grand      = CL_TOTAL_NETTO + totalImtek + transport;
+
   function setEl(id, val) { var e = document.getElementById(id); if (e) e.textContent = val; }
-  setEl('cl-sum-imtek',       fmtInt(totalImtek)   + ' €');
-  setEl('cl-sum-transit',     fmtInt(totalTransit) + ' €');
-  setEl('cl-sum-transport',   fmtInt(transport)    + ' €');
-  setEl('cl-sum-notransport', fmtInt(noTransport)  + ' €');
-  setEl('cl-sum-grand',       fmtInt(grand)        + ' €');
-  setEl('cl-foot-imtek',      fmtInt(totalImtek)   + ' €');
-  setEl('cl-foot-transit',    fmtInt(totalTransit) + ' €');
-  setEl('cl-foot-transport',  fmtInt(transport)    + ' €');
-  setEl('cl-foot-grand',      fmtInt(grand)        + ' €');
+  setEl('cl-sum-imtek',     fmtInt(totalImtek) + ' €');
+  setEl('cl-sum-transport', fmtInt(transport)  + ' €');
+  setEl('cl-sum-grand',     fmtInt(grand)       + ' €');
+  setEl('cl-foot-imtek',    fmtInt(totalImtek) + ' €');
+  setEl('cl-foot-transport',fmtInt(transport)  + ' €');
+  setEl('cl-foot-grand',    fmtInt(grand)       + ' €');
 }
 
 function clHandleUpload(file) {
