@@ -1526,7 +1526,15 @@ aiclaude@agr24.ru</div>
         <div><div class="info-label">Сумма</div><div class="info-value mono" style="font-weight:700;">12 450 €</div></div>
         <div><div class="info-label">Поставка</div><div class="info-value" style="color:#475569;">Поставка 45</div></div>
       </div>
-      <div style="display:flex;gap:8px;">
+      <div style="display:flex;gap:8px;align-items:center;">
+        <!-- Статус размещения: кнопка или бейдж -->
+        <div id="od-place-status">
+          <button id="od-place-btn" onclick="openModal('place-order')"
+            style="height:34px;padding:0 20px;background:#16A34A;color:#fff;border:none;border-radius:8px;font-size:12px;font-weight:700;cursor:pointer;font-family:'Fira Sans',sans-serif;letter-spacing:0.3px;">
+            РАЗМЕСТИТЬ
+          </button>
+        </div>
+        <div style="width:1px;height:22px;background:#E2E8F0;"></div>
         <button class="btn btn-ghost" onclick="nav('actualization')">
           <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
           Актуализация
@@ -2734,6 +2742,57 @@ AGR PARTS Procurement</textarea>
 </div>
 
 
+<!-- ══ MODAL: РАЗМЕСТИТЬ ЗАКАЗ ══════════════════════════════════════ -->
+<div id="modal-place-order" class="modal-overlay">
+  <div class="modal" style="max-width:440px;">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;">
+      <div>
+        <div style="font-size:16px;font-weight:700;color:#0F172A;">Разместить заказ</div>
+        <div style="font-size:11px;color:#94A3B8;margin-top:2px;">№000412 &nbsp;·&nbsp; АФ АНА-ЮГ &nbsp;·&nbsp; 41 позиция &nbsp;·&nbsp; 12 450 €</div>
+      </div>
+      <button onclick="closeModal('place-order')" style="background:none;border:none;cursor:pointer;color:#94A3B8;padding:4px;" onmouseover="this.style.color='#0F172A'" onmouseout="this.style.color='#94A3B8'">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+
+    <!-- Проформа -->
+    <div style="margin-bottom:14px;">
+      <label style="display:block;font-size:11px;font-weight:600;color:#475569;margin-bottom:6px;">Номер проформы <span style="color:#DC2626;">*</span></label>
+      <input id="po-proforma" type="text" placeholder="PRF-2026-090" class="input"
+        style="font-family:'Fira Code',monospace;font-size:13px;letter-spacing:0.5px;"
+        oninput="poValidate()">
+      <div id="po-proforma-hint" style="font-size:10px;color:#94A3B8;margin-top:4px;">Введите номер проформы, полученной от поставщика</div>
+    </div>
+
+    <!-- Ответственный -->
+    <div style="margin-bottom:20px;">
+      <label style="display:block;font-size:11px;font-weight:600;color:#475569;margin-bottom:6px;">Ответственный за размещение <span style="color:#DC2626;">*</span></label>
+      <select id="po-person" class="input" style="height:36px;padding:0 10px;" onchange="poValidate()">
+        <option value="">— выберите —</option>
+        <option value="klimov">Антон Климов</option>
+        <option value="petrov">Иван Петров</option>
+        <option value="sidorova">Ольга Сидорова</option>
+        <option value="mironov">Дмитрий Миронов</option>
+      </select>
+    </div>
+
+    <!-- Дата размещения -->
+    <div style="margin-bottom:20px;">
+      <label style="display:block;font-size:11px;font-weight:600;color:#475569;margin-bottom:6px;">Дата размещения</label>
+      <input id="po-date" type="date" class="input" style="height:36px;padding:0 10px;" value="2026-06-15">
+    </div>
+
+    <div style="display:flex;justify-content:flex-end;gap:8px;padding-top:14px;border-top:1px solid #F1F5F9;">
+      <button class="btn btn-ghost" onclick="closeModal('place-order')">Отмена</button>
+      <button id="po-confirm-btn" onclick="poConfirm()"
+        disabled
+        style="height:34px;padding:0 20px;background:#16A34A;color:#fff;border:none;border-radius:7px;font-size:12px;font-weight:700;cursor:pointer;font-family:'Fira Sans',sans-serif;opacity:0.4;transition:opacity .15s;">
+        Разместить
+      </button>
+    </div>
+  </div>
+</div>
+
 <!-- ─── JavaScript ──────────────────────────────────────────────────── -->
 <script>
 function nav(id) {
@@ -2755,6 +2814,56 @@ function openModal(id) {
 function closeModal(id) {
   document.getElementById('modal-' + id).classList.remove('active');
   document.body.style.overflow = '';
+}
+
+/* ── Place Order flow ── */
+function poValidate() {
+  var proforma = (document.getElementById('po-proforma').value || '').trim();
+  var person   = document.getElementById('po-person').value;
+  var btn      = document.getElementById('po-confirm-btn');
+  var ok = proforma.length >= 3 && person;
+  btn.disabled = !ok;
+  btn.style.opacity = ok ? '1' : '0.4';
+  btn.style.cursor  = ok ? 'pointer' : 'default';
+}
+
+function poConfirm() {
+  var proforma = (document.getElementById('po-proforma').value || '').trim();
+  var personEl = document.getElementById('po-person');
+  var personName = personEl.options[personEl.selectedIndex].text;
+  var date = document.getElementById('po-date').value || '2026-06-15';
+
+  /* format date */
+  var d = new Date(date);
+  var dateStr = d.toLocaleDateString('ru-RU', {day:'2-digit',month:'2-digit',year:'numeric'});
+
+  closeModal('place-order');
+
+  /* update current chip: orange → green, "К размещению" → "Размещён" */
+  var chip = document.querySelector('.order-chip.current');
+  if (chip) {
+    var badge = chip.querySelector('.badge-orange');
+    if (badge) {
+      badge.classList.remove('badge-orange');
+      badge.classList.add('badge-green');
+      badge.textContent = 'Размещён';
+    }
+  }
+
+  /* replace РАЗМЕСТИТЬ button with placed indicator */
+  var statusDiv = document.getElementById('od-place-status');
+  if (statusDiv) {
+    statusDiv.innerHTML =
+      '<div style="display:flex;flex-direction:column;align-items:flex-end;gap:2px;">'
+      + '<div style="display:flex;align-items:center;gap:6px;">'
+      + '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#16A34A" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>'
+      + '<span style="font-size:12px;font-weight:700;color:#16A34A;">Размещён</span>'
+      + '</div>'
+      + '<div style="font-size:10px;color:#94A3B8;">' + proforma + ' &nbsp;·&nbsp; ' + personName + ' &nbsp;·&nbsp; ' + dateStr + '</div>'
+      + '</div>';
+  }
+
+  asMarkDirty();
 }
 
 /* ── Reconcile: 3-state flow ── */
