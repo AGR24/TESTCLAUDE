@@ -694,114 +694,49 @@ tbody td { padding: 7px 10px; vertical-align: middle; }
 
   <!-- Header card -->
   <div class="card" style="padding:14px 16px;margin-bottom:12px;">
-    <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;">
-      <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap;">
-        <div>
-          <div class="info-label">Запрос</div>
-          <div style="font-size:15px;font-weight:700;color:#0F172A;" class="mono">№12346</div>
-        </div>
-        <div>
-          <div class="info-label">Поставщик</div>
-          <div class="info-value">Hans Mueller &amp; Co.</div>
-        </div>
-        <div>
-          <div class="info-label">Контакт</div>
-          <div class="info-value">Hans Mueller</div>
-        </div>
-        <div>
-          <div class="info-label">Позиций</div>
-          <div class="info-value mono" style="font-weight:700;">28</div>
-        </div>
-        <div>
-          <div class="info-label">Сумма EUR</div>
-          <div class="info-value mono" style="font-weight:700;">8 320 €</div>
-        </div>
-        <div>
-          <div class="info-label">Ожидаю</div>
-          <div class="info-value mono" style="color:#D97706;">3ч 20мин</div>
-        </div>
-        <span class="badge badge-orange" style="font-size:11px;">Ожидаю ответа</span>
+    <div style="display:flex;align-items:center;flex-wrap:wrap;gap:20px;margin-bottom:10px;">
+      <div>
+        <div class="info-label">Запрос</div>
+        <div style="font-size:15px;font-weight:700;color:#0F172A;" class="mono">№12346</div>
       </div>
-      <button class="btn btn-success" onclick="nav('actualization')">Актуализировать позиции</button>
+      <div>
+        <div class="info-label">Поставщик</div>
+        <div class="info-value">Hans Mueller &amp; Co.</div>
+      </div>
+      <div>
+        <div class="info-label">Контакт</div>
+        <div class="info-value">Hans Mueller</div>
+      </div>
+      <div>
+        <div class="info-label">Позиций</div>
+        <div class="info-value mono" style="font-weight:700;">28</div>
+      </div>
+      <div>
+        <div class="info-label">Сумма EUR</div>
+        <div class="info-value mono" style="font-weight:700;">8 320 €</div>
+      </div>
+      <div>
+        <div class="info-label">Ожидаю</div>
+        <div class="info-value mono" style="color:#D97706;">3ч 20мин</div>
+      </div>
+      <span class="badge badge-orange" style="font-size:11px;">Ожидаю ответа</span>
+    </div>
+    <div style="display:flex;align-items:center;gap:20px;padding-top:10px;border-top:1px solid #F1F5F9;">
+      <div style="display:flex;align-items:center;gap:6px;">
+        <span style="font-size:10px;font-weight:600;color:#94A3B8;text-transform:uppercase;letter-spacing:.4px;">Инициатор</span>
+        <span style="font-size:12px;font-weight:600;color:#0F172A;">Петров И.М.</span>
+      </div>
+      <div style="width:1px;height:14px;background:#E2E8F0;"></div>
+      <div style="display:flex;align-items:center;gap:6px;">
+        <span style="font-size:10px;font-weight:600;color:#94A3B8;text-transform:uppercase;letter-spacing:.4px;">Тип заказа</span>
+        <span class="type-so">SO</span>
+      </div>
+      <div style="width:1px;height:14px;background:#E2E8F0;"></div>
+      <span style="display:inline-flex;align-items:center;gap:5px;background:#FEE2E2;color:#DC2626;border:1px solid #FECACA;border-radius:6px;padding:3px 10px;font-size:11px;font-weight:700;"><span style="font-size:8px;">●</span> СРОЧНО</span>
     </div>
   </div>
 
-  <!-- 3-column layout -->
-  <div style="display:flex;gap:12px;align-items:flex-start;">
-
-    <!-- LEFT: ЗПО list + files (260px) -->
-    <div style="width:260px;flex-shrink:0;display:flex;flex-direction:column;gap:10px;">
-
-      <!-- ЗПО list -->
-      <div class="card" style="overflow:hidden;">
-        <div style="padding:10px 12px;border-bottom:1px solid #F1F5F9;">
-          <span style="font-size:11px;font-weight:700;color:#0F172A;">Входящие ЗПО</span>
-        </div>
-        <div style="padding:6px 0;">
-          <div onclick="nav('order-detail')" style="padding:8px 12px;cursor:pointer;transition:background 120ms;border-radius:6px;" onmouseover="this.style.background='#F8FAFC'" onmouseout="this.style.background=''">
-            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:2px;">
-              <span class="mono" style="font-size:12px;font-weight:700;color:#2563EB;">ЗПО-030</span>
-              <span class="badge badge-blue" style="font-size:9px;">8 поз.</span>
-            </div>
-            <div style="font-size:11px;color:#64748B;">3 240 €</div>
-          </div>
-          <div onclick="nav('order-detail')" style="padding:8px 12px;cursor:pointer;transition:background 120ms;border-radius:6px;" onmouseover="this.style.background='#F8FAFC'" onmouseout="this.style.background=''">
-            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:2px;">
-              <span class="mono" style="font-size:12px;font-weight:700;color:#2563EB;">ЗПО-031</span>
-              <span class="badge badge-blue" style="font-size:9px;">12 поз.</span>
-            </div>
-            <div style="font-size:11px;color:#64748B;">2 870 €</div>
-          </div>
-          <div onclick="nav('order-detail')" style="padding:8px 12px;cursor:pointer;transition:background 120ms;border-radius:6px;" onmouseover="this.style.background='#F8FAFC'" onmouseout="this.style.background=''">
-            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:2px;">
-              <span class="mono" style="font-size:12px;font-weight:700;color:#2563EB;">ЗПО-025</span>
-              <span class="badge badge-blue" style="font-size:9px;">5 поз.</span>
-            </div>
-            <div style="font-size:11px;color:#64748B;">1 450 €</div>
-          </div>
-          <div onclick="nav('order-detail')" style="padding:8px 12px;cursor:pointer;transition:background 120ms;border-radius:6px;" onmouseover="this.style.background='#F8FAFC'" onmouseout="this.style.background=''">
-            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:2px;">
-              <span class="mono" style="font-size:12px;font-weight:700;color:#2563EB;">ЗПО-022</span>
-              <span class="badge badge-blue" style="font-size:9px;">3 поз.</span>
-            </div>
-            <div style="font-size:11px;color:#64748B;">760 €</div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Files -->
-      <div class="card" style="overflow:hidden;">
-        <div style="padding:10px 12px;border-bottom:1px solid #F1F5F9;">
-          <span style="font-size:11px;font-weight:700;color:#0F172A;">Файлы</span>
-        </div>
-        <div style="padding:6px 8px;display:flex;flex-direction:column;gap:4px;">
-          <div style="display:flex;align-items:center;gap:7px;padding:6px;border-radius:6px;cursor:pointer;" onmouseover="this.style.background='#F8FAFC'" onmouseout="this.style.background=''">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#2563EB" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
-            <div>
-              <div style="font-size:11px;color:#2563EB;font-weight:500;">Request_12346.xlsx</div>
-              <div style="font-size:9px;color:#94A3B8;">28 позиций · 22 KB</div>
-            </div>
-          </div>
-          <div style="display:flex;align-items:center;gap:7px;padding:6px;border-radius:6px;cursor:pointer;" onmouseover="this.style.background='#F8FAFC'" onmouseout="this.style.background=''">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#2563EB" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
-            <div>
-              <div style="font-size:11px;color:#2563EB;font-weight:500;">Quote_AGCO_0609.pdf</div>
-              <div style="font-size:9px;color:#94A3B8;">Ответ поставщика · 184 KB</div>
-            </div>
-          </div>
-          <div style="display:flex;align-items:center;gap:7px;padding:6px;border-radius:6px;cursor:pointer;" onmouseover="this.style.background='#F8FAFC'" onmouseout="this.style.background=''">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#475569" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
-            <div>
-              <div style="font-size:11px;color:#475569;font-weight:500;">Email_12346.eml</div>
-              <div style="font-size:9px;color:#94A3B8;">Переписка · 8 KB</div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- CENTER: positions table -->
-    <div style="flex:1;min-width:0;">
+  <!-- Positions table - full width -->
       <div class="card" style="overflow:hidden;">
         <div class="section-header">
           <div class="section-title">
@@ -922,40 +857,6 @@ tbody td { padding: 7px 10px; vertical-align: middle; }
         </div>
       </div>
     </div>
-
-    <!-- RIGHT: chat (280px) -->
-    <div style="width:280px;flex-shrink:0;" id="chat-panel">
-      <div class="card" style="overflow:hidden;display:flex;flex-direction:column;height:480px;">
-        <div style="padding:10px 12px;border-bottom:1px solid #F1F5F9;display:flex;align-items:center;justify-content:space-between;">
-          <span style="font-size:11px;font-weight:700;color:#0F172A;">Чат с Hans M.</span>
-          <button onclick="document.getElementById('chat-panel').style.display='none'" style="background:none;border:none;cursor:pointer;font-size:11px;color:#94A3B8;padding:2px 5px;">Скрыть ▶</button>
-        </div>
-        <div class="chat-wrap">
-          <div class="chat-msg out">
-            <div class="chat-bubble out">Dear Hans, please find the availability request for 28 positions attached. Kindly confirm and advise lead times.</div>
-            <div class="chat-time out">09:15 · AI Claude</div>
-          </div>
-          <div class="chat-msg in">
-            <div class="chat-bubble in">Hello, I'm checking our stock for all positions. Will reply shortly with prices and availability.</div>
-            <div class="chat-time">09:28 · Hans M.</div>
-          </div>
-          <div class="chat-msg in">
-            <div class="chat-bubble in">Positions 1-6 confirmed. Position 5 (4283835M1) — backorder, ETA unknown. Position 7 is new price, see updated quote.</div>
-            <div class="chat-time">10:40 · Hans M.</div>
-          </div>
-        </div>
-        <div style="padding:8px;border-top:1px solid #F1F5F9;">
-          <div style="display:flex;gap:6px;">
-            <input type="text" placeholder="Ответить…" class="input" style="font-size:11px;height:30px;">
-            <button class="btn btn-primary" style="padding:5px 10px;">
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-
-  </div>
 </div>
 </div><!-- /page-quotation-detail -->
 
