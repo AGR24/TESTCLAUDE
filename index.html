@@ -2367,8 +2367,9 @@ aiclaude@agr24.ru</div>
 <!-- PAGE: CHECKLIST-DETAIL                                             -->
 <!-- ══════════════════════════════════════════════════════════════════ -->
 <div id="page-checklist-detail" class="page">
-<div style="max-width:1440px;margin:0 auto;padding:16px 20px 28px;">
+<div style="max-width:1600px;margin:0 auto;padding:16px 20px 28px;">
 
+  <!-- Breadcrumb -->
   <div style="display:flex;align-items:center;gap:5px;font-size:11px;color:#94A3B8;margin-bottom:14px;">
     <a onclick="nav('supplier')" style="color:#94A3B8;cursor:pointer;">Поставщик</a>
     <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
@@ -2377,23 +2378,21 @@ aiclaude@agr24.ru</div>
     <span style="color:#0F172A;font-weight:600;">КЛ-2026-012 · Поставка 44</span>
   </div>
 
-  <!-- Header: info + transport inputs + export -->
-  <div class="card" style="padding:14px 16px;margin-bottom:12px;">
-    <div style="display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:16px;">
+  <!-- Header card -->
+  <div class="card" style="padding:14px 16px;margin-bottom:10px;">
 
-      <!-- Метрики -->
-      <div style="display:flex;gap:24px;flex-wrap:wrap;">
-        <div><div class="info-label">Контрольный лист</div><div class="info-value mono" style="font-weight:700;">КЛ-2026-012</div></div>
+    <!-- Row 1: info + export buttons -->
+    <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:14px;">
+      <div style="display:flex;gap:22px;flex-wrap:wrap;">
+        <div><div class="info-label">КЛ</div><div class="info-value mono" style="font-weight:700;">КЛ-2026-012</div></div>
         <div><div class="info-label">Поставка</div><div class="info-value">Поставка 44</div></div>
         <div><div class="info-label">Дата</div><div class="info-value mono">15.06.2026</div></div>
         <div><div class="info-label">Заказов</div><div class="info-value mono" style="font-weight:700;">6</div></div>
         <div><div class="info-label">Позиций</div><div class="info-value mono" style="font-weight:700;">786</div></div>
-        <div><div class="info-label">Netto Total</div><div class="info-value mono" style="font-weight:700;color:#0F172A;">72 462 €</div></div>
-        <div><div class="info-label">IMTEK 3.5%</div><div class="info-value mono" style="font-weight:700;color:#7C3AED;">2 536 €</div></div>
+        <div><div class="info-label">Итого вес</div><div class="info-value mono" style="font-weight:700;">552 кг</div></div>
+        <div><div class="info-label">Мест</div><div class="info-value mono" style="font-weight:700;">8</div></div>
       </div>
-
-      <!-- Кнопки экспорт / импорт -->
-      <div style="display:flex;gap:8px;align-items:center;">
+      <div style="display:flex;gap:8px;">
         <button class="btn btn-ghost" style="border-color:#16A34A;color:#16A34A;" onclick="document.getElementById('cl-upload-input').click()">
           <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
           Загрузить Excel
@@ -2406,35 +2405,68 @@ aiclaude@agr24.ru</div>
       </div>
     </div>
 
-    <!-- Transport inputs -->
-    <div style="margin-top:14px;padding-top:14px;border-top:1px solid #F1F5F9;">
-      <div style="display:flex;align-items:flex-end;gap:16px;flex-wrap:wrap;">
+    <!-- Row 2: three param inputs -->
+    <div style="display:flex;align-items:flex-end;gap:10px;padding-top:12px;border-top:1px solid #F1F5F9;flex-wrap:wrap;">
+
+      <!-- TRANSPORT € -->
+      <div>
+        <label style="display:block;font-size:10px;font-weight:700;color:#0F766E;text-transform:uppercase;letter-spacing:0.4px;margin-bottom:4px;">Transport (€ сумма)</label>
+        <div style="display:flex;gap:0;">
+          <input type="number" id="cl-inp-transport" value="3150" class="input" style="width:120px;height:32px;border-radius:7px 0 0 7px;border-right:none;">
+          <button onclick="clApply()" style="height:32px;padding:0 12px;background:#0F766E;color:#fff;border:none;border-radius:0 7px 7px 0;font-size:11px;font-weight:600;cursor:pointer;font-family:'Fira Sans',sans-serif;">OK</button>
+        </div>
+      </div>
+
+      <!-- TRANSIT % -->
+      <div>
+        <label style="display:block;font-size:10px;font-weight:700;color:#2563EB;text-transform:uppercase;letter-spacing:0.4px;margin-bottom:4px;">Transit (%)</label>
+        <div style="display:flex;gap:0;">
+          <input type="number" id="cl-inp-transit" value="3.10" step="0.01" class="input" style="width:100px;height:32px;border-radius:7px 0 0 7px;border-right:none;">
+          <button onclick="clApply()" style="height:32px;padding:0 12px;background:#2563EB;color:#fff;border:none;border-radius:0 7px 7px 0;font-size:11px;font-weight:600;cursor:pointer;font-family:'Fira Sans',sans-serif;">OK</button>
+        </div>
+      </div>
+
+      <!-- IMTEK % -->
+      <div>
+        <label style="display:block;font-size:10px;font-weight:700;color:#7C3AED;text-transform:uppercase;letter-spacing:0.4px;margin-bottom:4px;">IMTEK (%)</label>
+        <div style="display:flex;gap:0;">
+          <input type="number" id="cl-inp-imtek" value="3.50" step="0.01" class="input" style="width:100px;height:32px;border-radius:7px 0 0 7px;border-right:none;">
+          <button onclick="clApply()" style="height:32px;padding:0 12px;background:#7C3AED;color:#fff;border:none;border-radius:0 7px 7px 0;font-size:11px;font-weight:600;cursor:pointer;font-family:'Fira Sans',sans-serif;">OK</button>
+        </div>
+      </div>
+
+      <!-- Summary computed -->
+      <div style="margin-left:12px;display:flex;gap:20px;align-items:flex-end;padding-bottom:2px;">
         <div>
-          <label style="display:block;font-size:10px;font-weight:600;color:#94A3B8;text-transform:uppercase;letter-spacing:0.4px;margin-bottom:4px;">EU Transport (€)</label>
-          <input type="number" id="cl-transport-eu" value="3150" class="input" style="width:140px;height:32px;" oninput="clRecalc()">
+          <div style="font-size:10px;font-weight:600;color:#94A3B8;text-transform:uppercase;letter-spacing:0.4px;margin-bottom:3px;">Netto Total</div>
+          <div class="mono" style="font-size:14px;font-weight:700;color:#0F172A;">72 462 €</div>
         </div>
         <div>
-          <label style="display:block;font-size:10px;font-weight:600;color:#94A3B8;text-transform:uppercase;letter-spacing:0.4px;margin-bottom:4px;">Transit / доставка (€)</label>
-          <input type="number" id="cl-transport-transit" value="2250" class="input" style="width:140px;height:32px;" oninput="clRecalc()">
+          <div style="font-size:10px;font-weight:600;color:#7C3AED;text-transform:uppercase;letter-spacing:0.4px;margin-bottom:3px;">IMTEK</div>
+          <div class="mono" style="font-size:14px;font-weight:700;color:#7C3AED;" id="cl-sum-imtek">2 536 €</div>
         </div>
-        <div style="padding-bottom:2px;">
-          <div style="font-size:10px;font-weight:600;color:#94A3B8;text-transform:uppercase;letter-spacing:0.4px;margin-bottom:4px;">Итого транспорт</div>
-          <div class="mono" style="font-size:15px;font-weight:700;color:#0F766E;" id="cl-transport-total">5 400 €</div>
+        <div>
+          <div style="font-size:10px;font-weight:600;color:#2563EB;text-transform:uppercase;letter-spacing:0.4px;margin-bottom:3px;">Transit</div>
+          <div class="mono" style="font-size:14px;font-weight:700;color:#2563EB;" id="cl-sum-transit">2 246 €</div>
         </div>
-        <div style="padding-bottom:2px;">
-          <div style="font-size:10px;font-weight:600;color:#94A3B8;text-transform:uppercase;letter-spacing:0.4px;margin-bottom:4px;">% от Netto</div>
-          <div class="mono" style="font-size:15px;font-weight:700;color:#64748B;" id="cl-transport-pct">7.46%</div>
+        <div>
+          <div style="font-size:10px;font-weight:600;color:#0F766E;text-transform:uppercase;letter-spacing:0.4px;margin-bottom:3px;">Transport</div>
+          <div class="mono" style="font-size:14px;font-weight:700;color:#0F766E;" id="cl-sum-transport">3 150 €</div>
         </div>
-        <div style="padding-bottom:2px;">
-          <div style="font-size:10px;font-weight:600;color:#94A3B8;text-transform:uppercase;letter-spacing:0.4px;margin-bottom:4px;">ИТОГО к инвойсу</div>
-          <div class="mono" style="font-size:15px;font-weight:700;color:#0F172A;" id="cl-grand-total">80 398 €</div>
+        <div style="padding-left:12px;border-left:2px solid #E2E8F0;">
+          <div style="font-size:10px;font-weight:600;color:#94A3B8;text-transform:uppercase;letter-spacing:0.4px;margin-bottom:3px;">Итого без транспорта</div>
+          <div class="mono" style="font-size:14px;font-weight:700;color:#0F172A;" id="cl-sum-notransport">77 244 €</div>
+        </div>
+        <div>
+          <div style="font-size:10px;font-weight:600;color:#94A3B8;text-transform:uppercase;letter-spacing:0.4px;margin-bottom:3px;">Grand Total</div>
+          <div class="mono" style="font-size:16px;font-weight:700;color:#0F172A;" id="cl-sum-grand">80 394 €</div>
         </div>
       </div>
     </div>
 
-    <!-- Upload success notification -->
-    <div id="cl-upload-notice" style="display:none;margin-top:12px;padding:8px 12px;background:#DCFCE7;border:1px solid #BBF7D0;border-radius:7px;display:flex;align-items:center;gap:8px;">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#16A34A" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+    <!-- Upload notice -->
+    <div id="cl-upload-notice" style="display:none;margin-top:10px;padding:7px 12px;background:#DCFCE7;border:1px solid #BBF7D0;border-radius:7px;align-items:center;gap:8px;">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#16A34A" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
       <span style="font-size:12px;color:#15803D;font-weight:500;" id="cl-upload-notice-text">Файл загружен — контрольный лист обновлён</span>
     </div>
   </div>
@@ -2447,146 +2479,52 @@ aiclaude@agr24.ru</div>
         Позиции контрольного листа
         <span class="badge badge-blue">786</span>
       </div>
-      <div style="display:flex;gap:8px;align-items:center;">
-        <div class="tab-bar" id="tabs-cl">
-          <button class="tab-btn active" onclick="switchTab('tabs-cl',this)">Все (786)</button>
-          <button class="tab-btn" onclick="switchTab('tabs-cl',this)">Прибыло (772)</button>
-          <button class="tab-btn" onclick="switchTab('tabs-cl',this)">Backorder (8)</button>
-          <button class="tab-btn" onclick="switchTab('tabs-cl',this)">Cancel (6)</button>
-        </div>
+      <div class="tab-bar" id="tabs-cl">
+        <button class="tab-btn active" onclick="switchTab('tabs-cl',this)">Все (786)</button>
+        <button class="tab-btn" onclick="switchTab('tabs-cl',this)">Прибыло (772)</button>
+        <button class="tab-btn" onclick="switchTab('tabs-cl',this)">Backorder (8)</button>
+        <button class="tab-btn" onclick="switchTab('tabs-cl',this)">Cancel (6)</button>
       </div>
     </div>
+
     <div style="overflow-x:auto;">
-      <table>
+      <table style="font-size:11px;">
         <thead><tr>
+          <th style="white-space:nowrap;">Проформа</th>
+          <th style="text-align:center;width:30px;">#</th>
+          <th style="text-align:right;white-space:nowrap;">Вес 1шт</th>
+          <th style="text-align:right;white-space:nowrap;">Итого вес</th>
           <th>Артикул</th>
-          <th>Наименование</th>
-          <th style="text-align:center;">Order</th>
-          <th style="text-align:center;">Arrv</th>
-          <th style="text-align:right;">ex net</th>
-          <th style="text-align:right;">Netto Total</th>
+          <th>Name EN</th>
+          <th>Наименование RU</th>
+          <th style="text-align:center;">Заказ</th>
+          <th style="text-align:center;">Arrived</th>
+          <th style="text-align:right;">Цена €</th>
+          <th style="text-align:right;">Netto</th>
           <th style="text-align:right;color:#7C3AED;">IMTEK</th>
           <th style="text-align:right;color:#0F766E;">Transport</th>
-          <th style="text-align:right;color:#0F766E;">Transit</th>
-          <th style="text-align:right;">Итого</th>
-          <th>Проформа</th>
+          <th style="text-align:right;color:#2563EB;">Transit</th>
+          <th style="text-align:right;font-weight:700;">Итого*</th>
         </tr></thead>
-        <tbody>
-          <!-- Group header -->
-          <tr style="background:#F0F9FF;">
-            <td colspan="11" style="padding:5px 10px;font-size:10px;font-weight:700;color:#0369A1;letter-spacing:0.5px;">
-              PRF-2026-089 · Hans Mueller &amp; Co. · 68 400 €
-            </td>
-          </tr>
-          <tr>
-            <td><a class="mono" style="font-size:11px;font-weight:600;">RE522878</a></td>
-            <td style="font-size:11px;">Масляный фильтр</td>
-            <td style="text-align:center;" class="mono">10</td>
-            <td style="text-align:center;" class="mono" style="color:#16A34A;font-weight:600;">10</td>
-            <td style="text-align:right;" class="mono">45.00</td>
-            <td style="text-align:right;" class="mono" style="font-weight:600;">450.00</td>
-            <td style="text-align:right;" class="mono" style="color:#7C3AED;">15.75</td>
-            <td style="text-align:right;" class="mono" style="color:#0F766E;">19.56</td>
-            <td style="text-align:right;" class="mono" style="color:#0F766E;">13.99</td>
-            <td style="text-align:right;" class="mono" style="font-weight:700;">499.30</td>
-            <td class="mono" style="font-size:10px;color:#94A3B8;">PRF-089</td>
-          </tr>
-          <tr>
-            <td><a class="mono" style="font-size:11px;font-weight:600;">AXE21234</a></td>
-            <td style="font-size:11px;">Фильтр воздушный двигателя</td>
-            <td style="text-align:center;" class="mono">2</td>
-            <td style="text-align:center;" class="mono" style="color:#16A34A;font-weight:600;">2</td>
-            <td style="text-align:right;" class="mono">45.00</td>
-            <td style="text-align:right;" class="mono" style="font-weight:600;">90.00</td>
-            <td style="text-align:right;" class="mono" style="color:#7C3AED;">3.15</td>
-            <td style="text-align:right;" class="mono" style="color:#0F766E;">3.91</td>
-            <td style="text-align:right;" class="mono" style="color:#0F766E;">2.80</td>
-            <td style="text-align:right;" class="mono" style="font-weight:700;">99.86</td>
-            <td class="mono" style="font-size:10px;color:#94A3B8;">PRF-089</td>
-          </tr>
-          <tr>
-            <td><a class="mono" style="font-size:11px;font-weight:600;">AH212497</a></td>
-            <td style="font-size:11px;">Решётка сепаратора зернового</td>
-            <td style="text-align:center;" class="mono">3</td>
-            <td style="text-align:center;" class="mono" style="color:#16A34A;font-weight:600;">3</td>
-            <td style="text-align:right;" class="mono">320.00</td>
-            <td style="text-align:right;" class="mono" style="font-weight:600;">960.00</td>
-            <td style="text-align:right;" class="mono" style="color:#7C3AED;">33.60</td>
-            <td style="text-align:right;" class="mono" style="color:#0F766E;">41.71</td>
-            <td style="text-align:right;" class="mono" style="color:#0F766E;">29.84</td>
-            <td style="text-align:right;" class="mono" style="font-weight:700;">1 065.15</td>
-            <td class="mono" style="font-size:10px;color:#94A3B8;">PRF-089</td>
-          </tr>
-          <tr>
-            <td><a class="mono" style="font-size:11px;font-weight:600;">R130137</a></td>
-            <td style="font-size:11px;">Подшипник конусный</td>
-            <td style="text-align:center;" class="mono">8</td>
-            <td style="text-align:center;" class="mono" style="color:#16A34A;font-weight:600;">8</td>
-            <td style="text-align:right;" class="mono">22.80</td>
-            <td style="text-align:right;" class="mono" style="font-weight:600;">182.40</td>
-            <td style="text-align:right;" class="mono" style="color:#7C3AED;">6.38</td>
-            <td style="text-align:right;" class="mono" style="color:#0F766E;">7.92</td>
-            <td style="text-align:right;" class="mono" style="color:#0F766E;">5.67</td>
-            <td style="text-align:right;" class="mono" style="font-weight:700;">202.37</td>
-            <td class="mono" style="font-size:10px;color:#94A3B8;">PRF-089</td>
-          </tr>
-          <tr style="background:#FFF5F5;">
-            <td><a class="mono" style="font-size:11px;font-weight:600;color:#DC2626;">HXE32806</a></td>
-            <td style="font-size:11px;color:#DC2626;">Прокладка головки цил.</td>
-            <td style="text-align:center;" class="mono">2</td>
-            <td style="text-align:center;" class="mono" style="color:#DC2626;font-weight:600;">0</td>
-            <td style="text-align:right;" class="mono" style="color:#94A3B8;">48.50</td>
-            <td style="text-align:right;" class="mono" style="color:#94A3B8;">—</td>
-            <td style="text-align:right;" class="mono" style="color:#94A3B8;">—</td>
-            <td style="text-align:right;" class="mono" style="color:#94A3B8;">—</td>
-            <td style="text-align:right;" class="mono" style="color:#94A3B8;">—</td>
-            <td style="text-align:right;" class="mono" style="color:#94A3B8;">—</td>
-            <td class="mono" style="font-size:10px;color:#94A3B8;">PRF-089</td>
-          </tr>
-          <!-- Group header 2 -->
-          <tr style="background:#F0F9FF;">
-            <td colspan="11" style="padding:5px 10px;font-size:10px;font-weight:700;color:#0369A1;letter-spacing:0.5px;">
-              PRF-2026-088 · Midwest Parts GmbH · 42 100 €
-            </td>
-          </tr>
-          <tr>
-            <td><a class="mono" style="font-size:11px;font-weight:600;">518251</a></td>
-            <td style="font-size:11px;">Масляный фильтр</td>
-            <td style="text-align:center;" class="mono">1</td>
-            <td style="text-align:center;" class="mono" style="color:#16A34A;font-weight:600;">1</td>
-            <td style="text-align:right;" class="mono">34.47</td>
-            <td style="text-align:right;" class="mono" style="font-weight:600;">34.47</td>
-            <td style="text-align:right;" class="mono" style="color:#7C3AED;">1.21</td>
-            <td style="text-align:right;" class="mono" style="color:#0F766E;">1.50</td>
-            <td style="text-align:right;" class="mono" style="color:#0F766E;">1.07</td>
-            <td style="text-align:right;" class="mono" style="font-weight:700;">38.25</td>
-            <td class="mono" style="font-size:10px;color:#94A3B8;">PRF-088</td>
-          </tr>
-          <tr>
-            <td><a class="mono" style="font-size:11px;font-weight:600;">605013</a></td>
-            <td style="font-size:11px;">Топливный фильтр</td>
-            <td style="text-align:center;" class="mono">48</td>
-            <td style="text-align:center;" class="mono" style="color:#16A34A;font-weight:600;">48</td>
-            <td style="text-align:right;" class="mono">12.26</td>
-            <td style="text-align:right;" class="mono" style="font-weight:600;">588.48</td>
-            <td style="text-align:right;" class="mono" style="color:#7C3AED;">20.60</td>
-            <td style="text-align:right;" class="mono" style="color:#0F766E;">25.58</td>
-            <td style="text-align:right;" class="mono" style="color:#0F766E;">18.27</td>
-            <td style="text-align:right;" class="mono" style="font-weight:700;">652.93</td>
-            <td class="mono" style="font-size:10px;color:#94A3B8;">PRF-088</td>
-          </tr>
+        <tbody id="cl-tbody">
+          <!-- rows rendered by clRenderRows() on load -->
         </tbody>
       </table>
     </div>
 
-    <!-- Footer totals -->
-    <div style="padding:10px 14px;border-top:1px solid #F1F5F9;background:#FAFAFA;display:flex;justify-content:space-between;align-items:center;">
-      <span class="footer-stat">Показано 7 из 786 · <span class="accent-red">Backorder: 8 поз.</span> · <span class="accent-red">Cancel: 6 поз.</span></span>
-      <div style="display:flex;gap:20px;align-items:center;">
+    <div style="padding:9px 14px;border-top:1px solid #F1F5F9;background:#FAFAFA;display:flex;justify-content:space-between;align-items:center;">
+      <div style="display:flex;gap:14px;align-items:center;">
+        <span class="footer-stat">Показано 15 из 786</span>
+        <span class="footer-stat"><span class="accent-red">Backorder: 8 поз.</span></span>
+        <span class="footer-stat"><span class="accent-red">Cancel: 6 поз.</span></span>
+        <span style="font-size:10px;color:#94A3B8;">* Итого = Netto + IMTEK + Transit (без Transport)</span>
+      </div>
+      <div style="display:flex;gap:16px;align-items:center;">
         <span class="footer-stat">Netto: <span class="mono" style="font-weight:700;color:#0F172A;">72 462 €</span></span>
-        <span class="footer-stat" style="color:#7C3AED;">IMTEK: <span class="mono" style="font-weight:700;">2 536 €</span></span>
-        <span class="footer-stat" style="color:#0F766E;">Транспорт: <span class="mono" style="font-weight:700;" id="cl-footer-transport">5 400 €</span></span>
-        <span class="footer-stat"><strong>ИТОГО: <span class="mono" style="font-size:13px;color:#0F172A;" id="cl-footer-grand">80 398 €</span></strong></span>
+        <span class="footer-stat" style="color:#7C3AED;">IMTEK: <span class="mono" style="font-weight:700;" id="cl-foot-imtek">2 536 €</span></span>
+        <span class="footer-stat" style="color:#2563EB;">Transit: <span class="mono" style="font-weight:700;" id="cl-foot-transit">2 246 €</span></span>
+        <span class="footer-stat" style="color:#0F766E;">Transport: <span class="mono" style="font-weight:700;" id="cl-foot-transport">3 150 €</span></span>
+        <span class="footer-stat"><strong>Grand: <span class="mono" style="font-size:13px;color:#0F172A;" id="cl-foot-grand">80 394 €</span></strong></span>
       </div>
     </div>
   </div>
@@ -2786,6 +2724,7 @@ function nav(id) {
   document.getElementById('topnav').style.display = (id === 'dashboard') ? 'none' : '';
   history.pushState(null, '', '#' + id);
   window.scrollTo(0, 0);
+  if (id === 'checklist-detail') clRenderRows();
 }
 
 function openModal(id) {
@@ -2901,23 +2840,115 @@ window.addEventListener('DOMContentLoaded', function() {
   if (page) nav(id); else nav('dashboard');
 });
 
-/* ── Checklist: transport recalc ── */
-var CL_NETTO = 72462;
-var CL_IMTEK_PCT = 0.035;
+/* ── Checklist ── */
+var CL_TOTAL_NETTO = 72462;
 
-function clRecalc() {
-  var eu = parseFloat(document.getElementById('cl-transport-eu').value) || 0;
-  var tr = parseFloat(document.getElementById('cl-transport-transit').value) || 0;
-  var total = eu + tr;
-  var pct = CL_NETTO > 0 ? (total / CL_NETTO * 100) : 0;
-  var imtek = CL_NETTO * CL_IMTEK_PCT;
-  var grand = CL_NETTO + imtek + total;
+var CL_ROWS = [
+  {prf:'PRF-089', n:1,  wpc:0.18, art:'RE522878',    en:'Oil Filter',             ru:'Масляный фильтр',             ord:10,  arrv:10,  price:45.00},
+  {prf:'PRF-089', n:2,  wpc:0.36, art:'AXE21234',    en:'Air Filter Primary',     ru:'Фильтр воздушный первичный',  ord:2,   arrv:2,   price:45.00},
+  {prf:'PRF-089', n:3,  wpc:4.20, art:'AH212497',    en:'Concave Grate',          ru:'Решётка сепаратора',          ord:3,   arrv:3,   price:320.00},
+  {prf:'PRF-089', n:4,  wpc:0.15, art:'R130137',     en:'Tapered Bearing',        ru:'Подшипник конусный',          ord:8,   arrv:8,   price:22.80},
+  {prf:'PRF-089', n:5,  wpc:0.55, art:'HXE32806',    en:'Cylinder Head Gasket',   ru:'Прокладка головки цил.',      ord:2,   arrv:0,   price:48.50, bo:true},
+  {prf:'PRF-088', n:6,  wpc:0.18, art:'518251',      en:'Oil Filter',             ru:'Масляный фильтр',             ord:1,   arrv:1,   price:34.47},
+  {prf:'PRF-088', n:7,  wpc:0.23, art:'605013',      en:'Fuel Filter',            ru:'Топливный фильтр',            ord:48,  arrv:48,  price:12.26},
+  {prf:'PRF-088', n:8,  wpc:0.18, art:'476954',      en:'Oil Filter',             ru:'Масляный фильтр',             ord:127, arrv:127, price:6.46},
+  {prf:'PRF-088', n:9,  wpc:0.48, art:'964294',      en:'Oil Filter Heavy Duty',  ru:'Масляный фильтр HD',          ord:4,   arrv:4,   price:45.23},
+  {prf:'PRF-088', n:10, wpc:0.82, art:'52744205',    en:'Air Filter Outer',       ru:'Воздушный фильтр наружный',   ord:3,   arrv:3,   price:43.57},
+  {prf:'PRF-087', n:11, wpc:0.23, art:'52645181',    en:'Electronic Control Unit',ru:'Электронный блок управления', ord:1,   arrv:1,   price:451.43},
+  {prf:'PRF-087', n:12, wpc:1.16, art:'895894',      en:'Solenoid Coil',          ru:'Катушка соленоида',           ord:1,   arrv:1,   price:138.50},
+  {prf:'PRF-087', n:13, wpc:0.58, art:'52701341',    en:'Solenoid Coil 794705',   ru:'Катушка соленоида 794705',    ord:1,   arrv:1,   price:174.64},
+  {prf:'PRF-087', n:14, wpc:0.45, art:'259357',      en:'Tail Light Assembly',    ru:'Фонарь задний в сборе',       ord:2,   arrv:2,   price:17.93},
+  {prf:'PRF-087', n:15, wpc:1.04, art:'G7168610004', en:'Push Button Switch',     ru:'Переключатель кнопочный',     ord:2,   arrv:2,   price:14.20},
+];
 
-  document.getElementById('cl-transport-total').textContent = total.toLocaleString('de-DE', {minimumFractionDigits:0, maximumFractionDigits:0}) + ' €';
-  document.getElementById('cl-transport-pct').textContent   = pct.toFixed(2) + '%';
-  document.getElementById('cl-grand-total').textContent     = grand.toLocaleString('de-DE', {minimumFractionDigits:0, maximumFractionDigits:0}) + ' €';
-  document.getElementById('cl-footer-transport').textContent = total.toLocaleString('de-DE', {minimumFractionDigits:0, maximumFractionDigits:0}) + ' €';
-  document.getElementById('cl-footer-grand').textContent    = grand.toLocaleString('de-DE', {minimumFractionDigits:0, maximumFractionDigits:0}) + ' €';
+function fmt(n) {
+  return n.toLocaleString('de-DE', {minimumFractionDigits:2, maximumFractionDigits:2});
+}
+function fmtInt(n) {
+  return n.toLocaleString('de-DE', {minimumFractionDigits:0, maximumFractionDigits:0});
+}
+
+function clRenderRows() {
+  var tbody = document.getElementById('cl-tbody');
+  if (!tbody) return;
+  var transport = parseFloat(document.getElementById('cl-inp-transport').value) || 3150;
+  var transitPct = parseFloat(document.getElementById('cl-inp-transit').value) || 3.10;
+  var imtekPct = parseFloat(document.getElementById('cl-inp-imtek').value) || 3.50;
+  var transportRate = CL_TOTAL_NETTO > 0 ? transport / CL_TOTAL_NETTO : 0;
+
+  var html = '';
+  CL_ROWS.forEach(function(r) {
+    var netto = r.arrv * r.price;
+    var totalW = (r.arrv * r.wpc).toFixed(2);
+    var imtek = netto * (imtekPct / 100);
+    var transp = netto * transportRate;
+    var transit = netto * (transitPct / 100);
+    var rowTotal = netto + imtek + transit;
+    var bo = r.bo;
+    var rowBg = bo ? 'background:#FFF5F5;' : '';
+    var artColor = bo ? 'color:#DC2626;font-weight:600;' : 'font-weight:600;';
+    var arrvColor = bo ? 'color:#DC2626;font-weight:700;' : 'color:#16A34A;font-weight:600;';
+    html += '<tr style="' + rowBg + '" data-netto="' + netto + '">'
+      + '<td class="mono" style="font-size:10px;color:#64748B;white-space:nowrap;">' + r.prf + '</td>'
+      + '<td class="mono" style="text-align:center;color:#94A3B8;">' + r.n + '</td>'
+      + '<td class="mono" style="text-align:right;color:#64748B;">' + r.wpc.toFixed(2) + ' кг</td>'
+      + '<td class="mono" style="text-align:right;color:#64748B;">' + totalW + ' кг</td>'
+      + '<td class="mono" style="' + artColor + (bo?'color:#DC2626;':'') + '">' + r.art + '</td>'
+      + '<td style="font-size:11px;color:#475569;">' + r.en + '</td>'
+      + '<td style="font-size:11px;">' + r.ru + '</td>'
+      + '<td class="mono" style="text-align:center;">' + r.ord + '</td>'
+      + '<td class="mono" style="text-align:center;' + arrvColor + '">' + r.arrv + '</td>'
+      + '<td class="mono" style="text-align:right;">' + fmt(r.price) + '</td>'
+      + '<td class="mono" style="text-align:right;font-weight:600;">' + (bo ? '—' : fmt(netto)) + '</td>'
+      + '<td class="mono cl-cell-imtek" style="text-align:right;color:#7C3AED;">' + (bo ? '—' : fmt(imtek)) + '</td>'
+      + '<td class="mono cl-cell-transport" style="text-align:right;color:#0F766E;">' + (bo ? '—' : fmt(transp)) + '</td>'
+      + '<td class="mono cl-cell-transit" style="text-align:right;color:#2563EB;">' + (bo ? '—' : fmt(transit)) + '</td>'
+      + '<td class="mono cl-cell-rowtotal" style="text-align:right;font-weight:700;">' + (bo ? '—' : fmt(rowTotal)) + '</td>'
+      + '</tr>';
+  });
+  tbody.innerHTML = html;
+}
+
+function clApply() {
+  var transport = parseFloat(document.getElementById('cl-inp-transport').value) || 0;
+  var transitPct = parseFloat(document.getElementById('cl-inp-transit').value) || 0;
+  var imtekPct = parseFloat(document.getElementById('cl-inp-imtek').value) || 3.5;
+  var transportRate = CL_TOTAL_NETTO > 0 ? transport / CL_TOTAL_NETTO : 0;
+
+  /* update per-row cells */
+  document.querySelectorAll('#cl-tbody tr[data-netto]').forEach(function(tr) {
+    var netto = parseFloat(tr.getAttribute('data-netto'));
+    if (netto === 0) return;
+    var imtek = netto * (imtekPct / 100);
+    var transp = netto * transportRate;
+    var transit = netto * (transitPct / 100);
+    var rowTotal = netto + imtek + transit;
+    var ci = tr.querySelector('.cl-cell-imtek');
+    var ct = tr.querySelector('.cl-cell-transport');
+    var ctr = tr.querySelector('.cl-cell-transit');
+    var crt = tr.querySelector('.cl-cell-rowtotal');
+    if (ci)  ci.textContent  = fmt(imtek);
+    if (ct)  ct.textContent  = fmt(transp);
+    if (ctr) ctr.textContent = fmt(transit);
+    if (crt) crt.textContent = fmt(rowTotal);
+  });
+
+  /* summary */
+  var totalImtek   = CL_TOTAL_NETTO * (imtekPct / 100);
+  var totalTransit = CL_TOTAL_NETTO * (transitPct / 100);
+  var noTransport  = CL_TOTAL_NETTO + totalImtek + totalTransit;
+  var grand        = noTransport + transport;
+
+  function setEl(id, val) { var e = document.getElementById(id); if (e) e.textContent = val; }
+  setEl('cl-sum-imtek',       fmtInt(totalImtek) + ' €');
+  setEl('cl-sum-transit',     fmtInt(totalTransit) + ' €');
+  setEl('cl-sum-transport',   fmtInt(transport) + ' €');
+  setEl('cl-sum-notransport', fmtInt(noTransport) + ' €');
+  setEl('cl-sum-grand',       fmtInt(grand) + ' €');
+  setEl('cl-foot-imtek',      fmtInt(totalImtek) + ' €');
+  setEl('cl-foot-transit',    fmtInt(totalTransit) + ' €');
+  setEl('cl-foot-transport',  fmtInt(transport) + ' €');
+  setEl('cl-foot-grand',      fmtInt(grand) + ' €');
 }
 
 function clHandleUpload(file) {
@@ -2925,9 +2956,14 @@ function clHandleUpload(file) {
   var notice = document.getElementById('cl-upload-notice');
   notice.style.display = 'flex';
   document.getElementById('cl-upload-notice-text').textContent =
-    '✓ Файл "' + file.name + '" загружен — контрольный лист обновлён';
+    'Файл "' + file.name + '" загружен — контрольный лист обновлён';
   setTimeout(function() { notice.style.display = 'none'; }, 5000);
 }
+
+/* init rows on first page visit */
+document.addEventListener('DOMContentLoaded', function() {
+  clRenderRows();
+});
 
 window.addEventListener('popstate', function() {
   var id = location.hash.slice(1) || 'dashboard';
