@@ -1,0 +1,2239 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>АГР ПАРТС ERP</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600;700&family=Fira+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Fira Sans', sans-serif; background: #F1F5F9; color: #0F172A; min-height: 100vh; font-size: 12px; }
+.mono { font-family: 'Fira Code', monospace; }
+.card { background: #fff; border: 1px solid #E2E8F0; border-radius: 12px; }
+a { color: #2563EB; text-decoration: none; cursor: pointer; }
+a:hover { color: #1D4ED8; }
+
+/* Routing */
+.page { display: none; }
+.page.active { display: block; }
+
+/* Top nav */
+.topnav { position: sticky; top: 0; z-index: 50; background: #fff; border-bottom: 1px solid #E2E8F0; box-shadow: 0 1px 3px rgba(0,0,0,0.06); }
+.nav-link { font-size: 12px; color: #64748B; cursor: pointer; transition: color 120ms; }
+.nav-link:hover { color: #0F172A; }
+.nav-link.active { color: #2563EB; font-weight: 600; }
+
+/* Tables */
+table { width: 100%; border-collapse: collapse; }
+thead th { font-size: 10px; font-weight: 600; color: #94A3B8; text-transform: uppercase; letter-spacing: 0.5px; padding: 8px 10px; text-align: left; border-bottom: 1px solid #F1F5F9; white-space: nowrap; background: #FAFAFA; }
+thead th:first-child { border-radius: 8px 0 0 0; }
+thead th:last-child  { border-radius: 0 8px 0 0; }
+tbody tr { border-bottom: 1px solid #F8FAFC; transition: background 150ms; }
+tbody tr:last-child { border-bottom: none; }
+tbody tr:hover { background: #F8FAFC; }
+tbody td { padding: 7px 10px; vertical-align: middle; }
+
+/* Section headers */
+.section-header { display: flex; align-items: center; justify-content: space-between; padding: 12px 14px 10px; border-bottom: 1px solid #F1F5F9; }
+.section-title { font-size: 13px; font-weight: 700; color: #0F172A; display: flex; align-items: center; gap: 8px; }
+.section-accent { width: 3px; height: 16px; border-radius: 2px; }
+
+/* Badges */
+.badge { display: inline-flex; align-items: center; padding: 2px 7px; border-radius: 20px; font-size: 10px; font-weight: 600; white-space: nowrap; }
+.badge-orange { background: #FEF3C7; color: #D97706; border: 1px solid #FDE68A; }
+.badge-red    { background: #FEE2E2; color: #DC2626; border: 1px solid #FECACA; }
+.badge-green  { background: #DCFCE7; color: #16A34A; border: 1px solid #BBF7D0; }
+.badge-blue   { background: #DBEAFE; color: #2563EB; border: 1px solid #BFDBFE; }
+.badge-slate  { background: #F1F5F9; color: #475569; border: 1px solid #E2E8F0; }
+.badge-teal   { background: #CCFBF1; color: #0F766E; border: 1px solid #99F6E4; }
+
+/* Type chips */
+.type-std { background:#EFF6FF; color:#3B82F6; border:1px solid #DBEAFE; padding:1px 6px; border-radius:4px; font-size:10px; font-weight:700; font-family:'Fira Code',monospace; }
+.type-so  { background:#CCFBF1; color:#0F766E; border:1px solid #99F6E4;  padding:1px 6px; border-radius:4px; font-size:10px; font-weight:700; font-family:'Fira Code',monospace; }
+.type-an  { background:#EDE9FE; color:#7C3AED; border:1px solid #DDD6FE;  padding:1px 6px; border-radius:4px; font-size:10px; font-weight:700; font-family:'Fira Code',monospace; }
+.type-md  { background:#E0E7FF; color:#4338CA; border:1px solid #C7D2FE;  padding:1px 6px; border-radius:4px; font-size:10px; font-weight:700; font-family:'Fira Code',monospace; }
+
+/* Dots */
+.dot { width:8px; height:8px; border-radius:50%; flex-shrink:0; display:inline-block; }
+.dot-green  { background:#16A34A; }
+.dot-orange { background:#D97706; }
+.dot-red    { background:#DC2626; }
+.dot-purple { background:#7C3AED; }
+.dot-blue   { background:#2563EB; }
+
+/* Buttons */
+.btn { display:inline-flex; align-items:center; gap:4px; padding:5px 12px; border-radius:7px; font-size:11px; font-weight:500; cursor:pointer; border:none; font-family:'Fira Sans',sans-serif; transition:all 160ms; white-space:nowrap; }
+.btn-primary { background:#2563EB; color:#fff; }
+.btn-primary:hover { background:#1D4ED8; }
+.btn-success { background:#16A34A; color:#fff; }
+.btn-success:hover { background:#15803D; }
+.btn-danger  { background:#DC2626; color:#fff; }
+.btn-danger:hover  { background:#B91C1C; }
+.btn-ghost   { background:#fff; color:#475569; border:1px solid #E2E8F0; }
+.btn-ghost:hover   { background:#F8FAFC; color:#0F172A; }
+
+/* Inputs */
+.input { height:32px; padding:0 10px; border:1px solid #E2E8F0; border-radius:7px; font-size:12px; color:#0F172A; font-family:'Fira Sans',sans-serif; background:#fff; outline:none; width:100%; }
+.input:focus { border-color:#93C5FD; box-shadow:0 0 0 3px rgba(147,197,253,0.2); }
+.search-input { height:32px; padding:0 10px 0 32px; border:1px solid #E2E8F0; border-radius:8px; font-size:12px; color:#0F172A; background:#fff; outline:none; font-family:'Fira Sans',sans-serif; width:280px; }
+.search-input:focus { border-color:#93C5FD; }
+.filter-btn { height:32px; padding:0 12px; border:1px solid #E2E8F0; border-radius:8px; font-size:12px; color:#475569; background:#fff; cursor:pointer; display:inline-flex; align-items:center; gap:5px; font-family:'Fira Sans',sans-serif; }
+.filter-btn:hover { border-color:#CBD5E1; color:#0F172A; }
+
+/* Footer stat */
+.footer-stat { font-size:11px; color:#64748B; }
+.footer-stat strong { color:#0F172A; }
+.accent-red    { color:#DC2626; font-weight:600; }
+.accent-orange { color:#D97706; font-weight:600; }
+.accent-green  { color:#16A34A; font-weight:600; }
+
+/* Modal */
+.modal-overlay { display:none; position:fixed; inset:0; z-index:100; background:rgba(15,23,42,0.5); align-items:flex-start; justify-content:center; padding-top:60px; }
+.modal-overlay.active { display:flex; }
+.modal-box { background:#fff; border-radius:14px; box-shadow:0 20px 60px rgba(0,0,0,0.18); max-height:82vh; overflow-y:auto; }
+.modal-header { display:flex; align-items:center; justify-content:space-between; padding:14px 16px 12px; border-bottom:1px solid #F1F5F9; }
+.modal-title { font-size:14px; font-weight:700; }
+
+/* Tab bar */
+.tab-bar { display:flex; gap:4px; }
+.tab-btn { padding:4px 10px; border-radius:6px; font-size:11px; font-weight:500; cursor:pointer; border:none; background:transparent; color:#64748B; font-family:'Fira Sans',sans-serif; transition:all 150ms; }
+.tab-btn.active { background:#2563EB; color:#fff; }
+.tab-btn:not(.active):hover { background:#F1F5F9; color:#0F172A; }
+
+/* Reason picker */
+.reason-row { background:#FFFBEB !important; }
+.reason-row:hover { background:#FFFBEB !important; }
+.reason-row td { padding:0 !important; border-bottom:none !important; }
+.reason-inner { display:flex; align-items:center; gap:8px; padding:5px 14px 5px 46px; border-top:1px dashed #FDE68A; }
+.reason-chip { padding:3px 10px; border-radius:20px; font-size:11px; font-weight:500; cursor:pointer; border:1px solid #E2E8F0; background:#fff; color:#475569; font-family:'Fira Sans',sans-serif; transition:all 120ms; white-space:nowrap; }
+.reason-chip:hover { border-color:#2563EB; color:#2563EB; background:#EFF6FF; }
+.reason-chip.selected { background:#DBEAFE; color:#2563EB; border-color:#93C5FD; font-weight:600; }
+.reason-chip.cancel-chip { color:#94A3B8; }
+.reason-chip.cancel-chip:hover { color:#DC2626; border-color:#FECACA; background:#FEF2F2; }
+.row-excluded td { color:#CBD5E1 !important; }
+.row-excluded .type-so,.row-excluded .type-std,.row-excluded .type-an,.row-excluded .type-md { opacity:0.4; }
+
+/* Placed order status */
+.st { display:inline-flex; align-items:center; gap:3px; padding:2px 7px; border-radius:20px; font-size:10px; font-weight:600; white-space:nowrap; }
+.st-confirmed { background:#F1F5F9; color:#475569; border:1px solid #E2E8F0; }
+.st-shipped   { background:#CCFBF1; color:#0F766E; border:1px solid #99F6E4; }
+.st-transit   { background:#DBEAFE; color:#2563EB; border:1px solid #BFDBFE; }
+.st-arrived   { background:#DCFCE7; color:#16A34A; border:1px solid #BBF7D0; }
+.st-backorder { background:#FEF3C7; color:#D97706; border:1px solid #FDE68A; }
+.st-cancel    { background:#FEE2E2; color:#DC2626; border:1px solid #FECACA; }
+.shp { display:inline-block; padding:2px 7px; border-radius:20px; font-size:10px; font-weight:700; white-space:nowrap; font-family:'Fira Code',monospace; }
+.shp-current   { background:#DBEAFE; color:#2563EB; border:1px solid #BFDBFE; }
+.shp-arrived   { background:#DCFCE7; color:#16A34A; border:1px solid #BBF7D0; }
+.shp-moved     { background:#FEF3C7; color:#D97706; border:1px solid #FDE68A; }
+.shp-cancelled { background:#FEE2E2; color:#DC2626; border:1px solid #FECACA; }
+
+/* Order chips */
+.order-chip { border:1px solid #E2E8F0; border-radius:10px; padding:8px 12px; cursor:pointer; transition:all 150ms; min-width:160px; }
+.order-chip:hover { border-color:#CBD5E1; background:#FAFAFA; }
+.order-chip.current { border-color:#93C5FD; background:#EFF6FF; }
+
+/* Info labels */
+.info-label { font-size:10px; font-weight:600; color:#94A3B8; text-transform:uppercase; letter-spacing:0.4px; margin-bottom:2px; }
+.info-value { font-size:12px; color:#0F172A; font-weight:500; }
+
+/* ── DASHBOARD ── */
+.dash-bg { background:#F0F4F8; min-height:100vh; }
+.dash-tile { background:#fff; border-radius:14px; box-shadow:0 2px 8px rgba(0,0,0,0.07); border:1px solid #E8ECF1; padding:20px 12px 16px; display:flex; flex-direction:column; align-items:center; gap:10px; cursor:pointer; transition:all 180ms; width:130px; }
+.dash-tile:hover { box-shadow:0 4px 16px rgba(0,0,0,0.12); transform:translateY(-2px); border-color:#CBD5E1; }
+.dash-tile.highlight { border-color:#3082D6; background:#EFF6FF; }
+.dash-tile-icon { width:40px; height:40px; display:flex; align-items:center; justify-content:center; color:#334155; }
+.dash-tile-label { font-size:12px; font-weight:500; color:#334155; text-align:center; line-height:1.3; }
+
+/* ── SUPPLIER TILES ── */
+.sup-tile { background:#fff; border-radius:14px; box-shadow:0 2px 8px rgba(0,0,0,0.07); border:1px solid #E8ECF1; padding:28px 16px 20px; display:flex; flex-direction:column; align-items:center; gap:12px; cursor:pointer; transition:all 180ms; width:165px; }
+.sup-tile:hover { box-shadow:0 4px 16px rgba(0,0,0,0.12); transform:translateY(-2px); border-color:#3082D6; }
+.sup-tile-icon { width:48px; height:48px; display:flex; align-items:center; justify-content:center; color:#3082D6; }
+.sup-tile-label { font-size:13px; font-weight:500; color:#334155; text-align:center; line-height:1.35; }
+
+/* ── QUOTATION STATUS DOTS ── */
+.qdot { width:10px; height:10px; border-radius:50%; display:inline-block; flex-shrink:0; }
+.qdot-green  { background:#16A34A; }
+.qdot-orange { background:#D97706; }
+.qdot-red    { background:#DC2626; }
+
+/* ── QUOTATION POSITION STATUS ── */
+.qst { display:inline-flex; align-items:center; justify-content:center; width:18px; height:18px; border-radius:50%; font-size:9px; font-weight:700; }
+.qst-ok   { background:#DCFCE7; color:#16A34A; }
+.qst-up   { background:#FEF3C7; color:#D97706; }
+.qst-no   { background:#FEE2E2; color:#DC2626; }
+.qst-new  { background:#DBEAFE; color:#2563EB; }
+.qst-row-new { background:#EFF6FF !important; }
+
+/* ── CHAT ── */
+.chat-wrap { flex:1; overflow-y:auto; padding:12px; display:flex; flex-direction:column; gap:10px; }
+.chat-msg { max-width:76%; }
+.chat-msg.out { align-self:flex-end; }
+.chat-msg.in  { align-self:flex-start; }
+.chat-bubble { padding:8px 11px; border-radius:10px; font-size:11px; line-height:1.5; }
+.chat-bubble.out { background:#2563EB; color:#fff; border-radius:10px 10px 2px 10px; }
+.chat-bubble.in  { background:#F1F5F9; color:#0F172A; border-radius:10px 10px 10px 2px; }
+.chat-time { font-size:9px; color:#94A3B8; margin-top:3px; }
+.chat-time.out { text-align:right; }
+
+/* ── NEW REQUEST LANG TOGGLE ── */
+.lang-btn { padding:4px 10px; border-radius:6px; font-size:11px; font-weight:600; cursor:pointer; border:1px solid #E2E8F0; background:#fff; color:#64748B; font-family:'Fira Sans',sans-serif; }
+.lang-btn.active { background:#2563EB; color:#fff; border-color:#2563EB; }
+
+/* ── ZPO QUEUE ── */
+.zpo-row { display:flex; align-items:center; gap:8px; padding:6px 8px; border-radius:7px; cursor:pointer; transition:background 120ms; }
+.zpo-row:hover { background:#F8FAFC; }
+.zpo-row.selected { background:#EFF6FF; }
+</style>
+</head>
+<body>
+
+<!-- ══ TOP NAV (hidden on dashboard) ══════════════════════════════════ -->
+<nav class="topnav" id="topnav" style="display:none;">
+  <div style="max-width:1440px;margin:0 auto;padding:0 20px;height:44px;display:flex;align-items:center;gap:28px;">
+    <div style="display:flex;align-items:center;gap:7px;flex-shrink:0;cursor:pointer;" onclick="nav('dashboard')">
+      <div style="width:26px;height:26px;background:linear-gradient(135deg,#2563EB,#1D4ED8);border-radius:6px;display:flex;align-items:center;justify-content:center;">
+        <span class="mono" style="font-size:8px;font-weight:700;color:#fff;letter-spacing:-0.5px;">AGR</span>
+      </div>
+      <span style="font-size:11px;font-weight:700;color:#475569;letter-spacing:1.5px;">PARTS</span>
+    </div>
+    <div style="display:flex;gap:20px;align-items:center;">
+      <a class="nav-link" onclick="nav('orders')">Заказы</a>
+      <a class="nav-link" style="color:#64748B;">Заказчики</a>
+      <a class="nav-link" style="color:#64748B;">Реестр КП</a>
+      <a class="nav-link" style="color:#64748B;">Техника</a>
+      <a class="nav-link" style="color:#64748B;">Поставки</a>
+      <a class="nav-link active" onclick="nav('supplier')" id="nav-supplier">Поставщик</a>
+    </div>
+    <div style="margin-left:auto;display:flex;align-items:center;gap:10px;">
+      <span style="font-size:11px;color:#64748B;">Антон Климов</span>
+      <div style="width:28px;height:28px;background:#E2E8F0;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#475569;">АК</div>
+    </div>
+  </div>
+</nav>
+
+<!-- ══════════════════════════════════════════════════════════════════ -->
+<!-- PAGE: DASHBOARD                                                    -->
+<!-- ══════════════════════════════════════════════════════════════════ -->
+<div id="page-dashboard" class="page active dash-bg">
+  <!-- Dashboard header -->
+  <div style="background:#fff;border-bottom:1px solid #E8ECF1;padding:0 32px;height:52px;display:flex;align-items:center;">
+    <div style="display:flex;align-items:center;gap:8px;">
+      <div style="width:32px;height:32px;background:linear-gradient(135deg,#2563EB,#1D4ED8);border-radius:8px;display:flex;align-items:center;justify-content:center;">
+        <span class="mono" style="font-size:9px;font-weight:700;color:#fff;letter-spacing:-0.5px;">AGR</span>
+      </div>
+      <div>
+        <div style="font-size:13px;font-weight:700;color:#0F172A;letter-spacing:0.5px;">АГР ПАРТС</div>
+        <div style="font-size:9px;color:#94A3B8;letter-spacing:1px;text-transform:uppercase;">ERP System</div>
+      </div>
+    </div>
+    <div style="margin-left:auto;display:flex;align-items:center;gap:10px;">
+      <span style="font-size:11px;color:#64748B;">Антон Климов</span>
+      <div style="width:28px;height:28px;background:#E2E8F0;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#475569;">АК</div>
+    </div>
+  </div>
+
+  <div style="max-width:1200px;margin:0 auto;padding:32px 20px;">
+    <!-- Row 1 -->
+    <div style="display:flex;gap:14px;flex-wrap:wrap;margin-bottom:14px;">
+      <div class="dash-tile" onclick="nav('dashboard')">
+        <div class="dash-tile-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></div>
+        <div class="dash-tile-label">Создать заявку</div>
+      </div>
+      <div class="dash-tile">
+        <div class="dash-tile-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg></div>
+        <div class="dash-tile-label">Поиск</div>
+      </div>
+      <div class="dash-tile">
+        <div class="dash-tile-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg></div>
+        <div class="dash-tile-label">Заказчики</div>
+      </div>
+      <div class="dash-tile">
+        <div class="dash-tile-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg></div>
+        <div class="dash-tile-label">Реестр КП</div>
+      </div>
+      <div class="dash-tile" style="position:relative;">
+        <div style="position:absolute;top:8px;right:8px;background:#DC2626;color:#fff;border-radius:50%;width:16px;height:16px;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;">5</div>
+        <div class="dash-tile-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
+        <div class="dash-tile-label">Пользователи</div>
+      </div>
+      <div class="dash-tile">
+        <div class="dash-tile-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg></div>
+        <div class="dash-tile-label">Заказы</div>
+      </div>
+      <div class="dash-tile">
+        <div class="dash-tile-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></div>
+        <div class="dash-tile-label">Статистика</div>
+      </div>
+      <div class="dash-tile">
+        <div class="dash-tile-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg></div>
+        <div class="dash-tile-label">Склад</div>
+      </div>
+      <div class="dash-tile">
+        <div class="dash-tile-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"/></svg></div>
+        <div class="dash-tile-label">Обновить склад</div>
+      </div>
+      <div class="dash-tile">
+        <div class="dash-tile-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg></div>
+        <div class="dash-tile-label">Обновить прайс</div>
+      </div>
+      <div class="dash-tile">
+        <div class="dash-tile-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></div>
+        <div class="dash-tile-label">Календарь поставок</div>
+      </div>
+    </div>
+    <!-- Row 2 -->
+    <div style="display:flex;gap:14px;flex-wrap:wrap;margin-bottom:24px;">
+      <div class="dash-tile">
+        <div class="dash-tile-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg></div>
+        <div class="dash-tile-label">Поставки</div>
+      </div>
+      <div class="dash-tile">
+        <div class="dash-tile-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 010 14.14M4.93 4.93a10 10 0 000 14.14"/></svg></div>
+        <div class="dash-tile-label">Техника</div>
+      </div>
+      <div class="dash-tile">
+        <div class="dash-tile-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg></div>
+        <div class="dash-tile-label">Классификация</div>
+      </div>
+      <div class="dash-tile">
+        <div class="dash-tile-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></div>
+        <div class="dash-tile-label">Внешний заказ</div>
+      </div>
+      <div class="dash-tile">
+        <div class="dash-tile-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg></div>
+        <div class="dash-tile-label">Печатные формы</div>
+      </div>
+      <div class="dash-tile highlight" onclick="nav('supplier')">
+        <div class="dash-tile-icon" style="color:#3082D6;">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7">
+            <path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/>
+            <polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/>
+          </svg>
+        </div>
+        <div class="dash-tile-label" style="color:#2563EB;font-weight:600;">Поставщики</div>
+      </div>
+    </div>
+
+    <!-- Status bar -->
+    <div style="background:#fff;border:1px solid #E2E8F0;border-radius:10px;padding:10px 16px;display:flex;align-items:center;gap:10px;max-width:500px;">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#16A34A" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+      <span style="font-size:12px;color:#475569;">Действия не требуются</span>
+      <button class="btn btn-primary" style="margin-left:auto;font-size:11px;" onclick="nav('supplier')">Перейти в предзаказ</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════════ -->
+<!-- PAGE: SUPPLIER LANDING                                             -->
+<!-- ══════════════════════════════════════════════════════════════════ -->
+<div id="page-supplier" class="page">
+<div style="max-width:1200px;margin:0 auto;padding:32px 20px;">
+  <h1 style="font-size:20px;font-weight:700;color:#0F172A;margin-bottom:28px;">Поставщик</h1>
+  <div style="display:flex;gap:20px;flex-wrap:wrap;">
+
+    <div class="sup-tile" onclick="nav('quotation')">
+      <div class="sup-tile-icon">
+        <svg width="38" height="38" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+          <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/>
+          <line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/>
+        </svg>
+      </div>
+      <div class="sup-tile-label">Запросы<br>Quotation</div>
+    </div>
+
+    <div class="sup-tile" onclick="nav('orders')">
+      <div class="sup-tile-icon">
+        <svg width="38" height="38" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+          <path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/>
+          <polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/>
+        </svg>
+      </div>
+      <div class="sup-tile-label">Заказы</div>
+    </div>
+
+    <div class="sup-tile">
+      <div class="sup-tile-icon">
+        <svg width="38" height="38" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+          <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/>
+          <polyline points="9 15 11 17 15 13"/>
+        </svg>
+      </div>
+      <div class="sup-tile-label">Контрольные<br>листы</div>
+    </div>
+
+    <div class="sup-tile">
+      <div class="sup-tile-icon">
+        <svg width="38" height="38" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+          <rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/>
+          <path d="M7 8h2m0 0h2m-2 0v4"/>
+        </svg>
+      </div>
+      <div class="sup-tile-label">Финн расчет</div>
+    </div>
+
+    <div class="sup-tile">
+      <div class="sup-tile-icon">
+        <svg width="38" height="38" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+          <path d="M13 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V9z"/><polyline points="13 2 13 9 20 9"/>
+          <path d="M9 2H4a2 2 0 00-2 2v16a2 2 0 002 2h3" style="stroke-dasharray:3 2"/>
+        </svg>
+      </div>
+      <div class="sup-tile-label">Инвойсы /<br>Проформы</div>
+    </div>
+
+    <div class="sup-tile">
+      <div class="sup-tile-icon" style="position:relative;">
+        <svg width="38" height="38" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+          <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
+        </svg>
+        <div style="position:absolute;top:-4px;right:-4px;background:#DC2626;border-radius:50%;width:14px;height:14px;display:flex;align-items:center;justify-content:center;">
+          <svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>
+        </div>
+      </div>
+      <div class="sup-tile-label">Backorder</div>
+    </div>
+
+  </div>
+</div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════════ -->
+<!-- PAGE: QUOTATION LIST (03)                                          -->
+<!-- ══════════════════════════════════════════════════════════════════ -->
+<div id="page-quotation" class="page">
+<div style="max-width:1440px;margin:0 auto;padding:16px 20px 28px;">
+
+  <div style="display:flex;align-items:center;gap:5px;font-size:11px;color:#94A3B8;margin-bottom:14px;">
+    <a onclick="nav('supplier')" style="color:#94A3B8;cursor:pointer;">Поставщик</a>
+    <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+    <span style="color:#0F172A;font-weight:600;">Запросы / Quotation</span>
+  </div>
+
+  <div style="display:flex;gap:12px;align-items:flex-start;">
+
+    <!-- LEFT: main table -->
+    <div style="flex:1;min-width:0;">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;">
+        <div style="position:relative;flex:1;max-width:400px;">
+          <svg style="position:absolute;left:9px;top:50%;transform:translateY(-50%);color:#94A3B8;" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+          <input class="search-input" style="width:100%;" type="text" placeholder="Поиск по номеру, марке, заказчику, артикулу…">
+        </div>
+        <button class="filter-btn">Марка <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></button>
+        <button class="filter-btn">Менеджер <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></button>
+        <button class="filter-btn">Статус <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></button>
+      </div>
+
+      <!-- Активные -->
+      <div class="card" style="margin-bottom:12px;overflow:hidden;">
+        <div style="padding:10px 14px;border-bottom:1px solid #F1F5F9;">
+          <span style="font-size:12px;font-weight:700;color:#D97706;">● Активные</span>
+        </div>
+        <div style="overflow-x:auto;">
+          <table>
+            <thead><tr>
+              <th>№ ЗПО</th><th>Дата</th><th>Заказ</th><th>Марка</th>
+              <th style="text-align:center;">Позиций</th><th style="text-align:right;">Сумма EUR</th>
+              <th>Маржа €/%</th><th style="text-align:right;">Вес кг</th>
+              <th>Статус</th><th>Инициатор</th><th></th>
+            </tr></thead>
+            <tbody>
+              <tr onclick="nav('quotation-detail')" style="cursor:pointer;">
+                <td class="mono" style="font-weight:600;color:#2563EB;">ЗПО-031</td>
+                <td class="mono" style="color:#94A3B8;font-size:11px;">11.06</td>
+                <td><a class="mono" style="font-size:11px;">№000367</a></td>
+                <td style="color:#475569;">John Deere</td>
+                <td style="text-align:center;" class="mono"><strong>41</strong></td>
+                <td style="text-align:right;" class="mono"><strong>12 450</strong></td>
+                <td class="mono" style="color:#475569;">1 240/9.9%</td>
+                <td style="text-align:right;" class="mono" style="color:#64748B;">684</td>
+                <td><span style="display:flex;align-items:center;gap:5px;"><span class="qdot qdot-orange"></span><span style="color:#475569;">Ожидание</span></span></td>
+                <td style="color:#475569;">Петров И.М.</td>
+                <td><button class="btn btn-primary" onclick="event.stopPropagation();nav('quotation-detail')">Открыть</button></td>
+              </tr>
+              <tr onclick="nav('quotation-detail')" style="cursor:pointer;">
+                <td class="mono" style="font-weight:600;color:#2563EB;">ЗПО-030</td>
+                <td class="mono" style="color:#94A3B8;font-size:11px;">11.06</td>
+                <td><a class="mono" style="font-size:11px;">№000368</a></td>
+                <td style="color:#475569;">AGCO</td>
+                <td style="text-align:center;" class="mono"><strong>28</strong></td>
+                <td style="text-align:right;" class="mono"><strong>8 320</strong></td>
+                <td class="mono" style="color:#475569;">980/11.7%</td>
+                <td style="text-align:right;" class="mono" style="color:#64748B;">421</td>
+                <td><span style="display:flex;align-items:center;gap:5px;"><span class="qdot qdot-orange"></span><span style="color:#475569;">Ожидание</span></span></td>
+                <td style="color:#475569;">Сидорова А.</td>
+                <td><button class="btn btn-primary" onclick="event.stopPropagation();nav('quotation-detail')">Открыть</button></td>
+              </tr>
+              <tr onclick="nav('quotation-detail')" style="cursor:pointer;">
+                <td class="mono" style="font-weight:600;color:#2563EB;">ЗПО-029</td>
+                <td class="mono" style="color:#94A3B8;font-size:11px;">11.06</td>
+                <td><a class="mono" style="font-size:11px;">№000365</a></td>
+                <td style="color:#475569;">Claas</td>
+                <td style="text-align:center;" class="mono"><strong>15</strong></td>
+                <td style="text-align:right;" class="mono"><strong>3 100</strong></td>
+                <td class="mono" style="color:#475569;">410/13.2%</td>
+                <td style="text-align:right;" class="mono" style="color:#64748B;">198</td>
+                <td><span style="display:flex;align-items:center;gap:5px;"><span class="qdot qdot-red"></span><span style="color:#475569;">Новый</span></span></td>
+                <td style="color:#475569;">Миронов С.К.</td>
+                <td><button class="btn btn-primary" onclick="event.stopPropagation();nav('quotation-detail')">Открыть</button></td>
+              </tr>
+              <tr onclick="nav('quotation-detail')" style="cursor:pointer;">
+                <td class="mono" style="font-weight:600;color:#2563EB;">ЗПО-028</td>
+                <td class="mono" style="color:#94A3B8;font-size:11px;">10.06</td>
+                <td><a class="mono" style="font-size:11px;">№000361</a></td>
+                <td style="color:#475569;">Manitou</td>
+                <td style="text-align:center;" class="mono"><strong>12</strong></td>
+                <td style="text-align:right;" class="mono"><strong>4 870</strong></td>
+                <td class="mono" style="color:#475569;">520/10.6%</td>
+                <td style="text-align:right;" class="mono" style="color:#64748B;">312</td>
+                <td><span style="display:flex;align-items:center;gap:5px;"><span class="qdot qdot-red"></span><span style="color:#475569;">Новый</span></span></td>
+                <td style="color:#475569;">Петров И.М.</td>
+                <td><button class="btn btn-primary" onclick="event.stopPropagation();nav('quotation-detail')">Открыть</button></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Обработанные -->
+      <div class="card" style="overflow:hidden;">
+        <div style="padding:10px 14px;border-bottom:1px solid #F1F5F9;">
+          <span style="font-size:12px;font-weight:700;color:#16A34A;">● Обработанные</span>
+        </div>
+        <div style="overflow-x:auto;">
+          <table>
+            <thead><tr>
+              <th>№ ЗПО</th><th>Дата</th><th>Заказ</th><th>Марка</th>
+              <th style="text-align:center;">Позиций</th><th style="text-align:right;">Сумма EUR</th>
+              <th>Маржа €/%</th><th style="text-align:right;">Вес кг</th>
+              <th>Статус</th><th>Инициатор</th><th></th>
+            </tr></thead>
+            <tbody>
+              <tr style="opacity:0.7;">
+                <td class="mono" style="font-weight:600;color:#475569;">ЗПО-027</td>
+                <td class="mono" style="color:#94A3B8;font-size:11px;">10.06</td>
+                <td><a class="mono" style="font-size:11px;">№000358</a></td>
+                <td style="color:#475569;">John Deere</td>
+                <td style="text-align:center;" class="mono">33</td>
+                <td style="text-align:right;" class="mono">9 800</td>
+                <td class="mono" style="color:#475569;">1 050/10.7%</td>
+                <td style="text-align:right;" class="mono" style="color:#64748B;">522</td>
+                <td><span style="display:flex;align-items:center;gap:5px;"><span class="qdot qdot-green"></span><span style="color:#475569;">Завершён</span></span></td>
+                <td style="color:#475569;">Сидорова А.</td>
+                <td><button class="btn btn-ghost">Открыть</button></td>
+              </tr>
+              <tr style="opacity:0.7;">
+                <td class="mono" style="font-weight:600;color:#475569;">ЗПО-026</td>
+                <td class="mono" style="color:#94A3B8;font-size:11px;">09.06</td>
+                <td><a class="mono" style="font-size:11px;">№000354</a></td>
+                <td style="color:#475569;">AGCO</td>
+                <td style="text-align:center;" class="mono">19</td>
+                <td style="text-align:right;" class="mono">5 240</td>
+                <td class="mono" style="color:#475569;">690/13.1%</td>
+                <td style="text-align:right;" class="mono" style="color:#64748B;">301</td>
+                <td><span style="display:flex;align-items:center;gap:5px;"><span class="qdot qdot-green"></span><span style="color:#475569;">Завершён</span></span></td>
+                <td style="color:#475569;">Миронов С.К.</td>
+                <td><button class="btn btn-ghost">Открыть</button></td>
+              </tr>
+              <tr style="opacity:0.7;">
+                <td class="mono" style="font-weight:600;color:#475569;">ЗПО-025</td>
+                <td class="mono" style="color:#94A3B8;font-size:11px;">09.06</td>
+                <td><a class="mono" style="font-size:11px;">№000350</a></td>
+                <td style="color:#475569;">Claas</td>
+                <td style="text-align:center;" class="mono">8</td>
+                <td style="text-align:right;" class="mono">2 100</td>
+                <td class="mono" style="color:#475569;">310/14.7%</td>
+                <td style="text-align:right;" class="mono" style="color:#64748B;">142</td>
+                <td><span style="display:flex;align-items:center;gap:5px;"><span class="qdot qdot-green"></span><span style="color:#475569;">Завершён</span></span></td>
+                <td style="color:#475569;">Петров И.М.</td>
+                <td><button class="btn btn-ghost">Открыть</button></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT: widget -->
+    <div style="width:320px;flex-shrink:0;">
+      <div class="card" style="overflow:hidden;">
+        <div style="padding:10px 14px;border-bottom:1px solid #F1F5F9;display:flex;align-items:center;justify-content:space-between;">
+          <span style="font-size:12px;font-weight:700;color:#0F172A;">Статусы запросов поставщику</span>
+          <button class="btn btn-primary" onclick="nav('new-request')">+ Новый запрос</button>
+        </div>
+        <div style="padding:8px 0;">
+          <div style="display:grid;grid-template-columns:40px 1fr 80px 50px 24px;gap:0;padding:5px 14px;font-size:10px;font-weight:600;color:#94A3B8;text-transform:uppercase;letter-spacing:0.4px;border-bottom:1px solid #F8FAFC;">
+            <span>№</span><span>Марка</span><span>Лицо</span><span>Время</span><span>Ст.</span>
+          </div>
+          <div onclick="nav('quotation-detail')" style="display:grid;grid-template-columns:40px 1fr 80px 50px 24px;gap:0;padding:8px 14px;cursor:pointer;transition:background 120ms;align-items:center;" onmouseover="this.style.background='#F8FAFC'" onmouseout="this.style.background=''">
+            <span class="mono" style="font-size:11px;font-weight:600;">12347</span>
+            <span style="font-size:11px;color:#0F172A;">John Deere</span>
+            <span style="font-size:11px;color:#475569;">Tommy B.</span>
+            <span class="mono" style="font-size:11px;color:#94A3B8;">09:15</span>
+            <span class="qdot qdot-green"></span>
+          </div>
+          <div onclick="nav('quotation-detail')" style="display:grid;grid-template-columns:40px 1fr 80px 50px 24px;gap:0;padding:8px 14px;cursor:pointer;transition:background 120ms;align-items:center;" onmouseover="this.style.background='#F8FAFC'" onmouseout="this.style.background=''">
+            <span class="mono" style="font-size:11px;font-weight:600;">12346</span>
+            <span style="font-size:11px;color:#0F172A;">AGCO</span>
+            <span style="font-size:11px;color:#475569;">Hans M.</span>
+            <span class="mono" style="font-size:11px;color:#94A3B8;">08:40</span>
+            <span class="qdot qdot-orange"></span>
+          </div>
+          <div onclick="nav('quotation-detail')" style="display:grid;grid-template-columns:40px 1fr 80px 50px 24px;gap:0;padding:8px 14px;cursor:pointer;transition:background 120ms;align-items:center;" onmouseover="this.style.background='#F8FAFC'" onmouseout="this.style.background=''">
+            <span class="mono" style="font-size:11px;font-weight:600;">12345</span>
+            <span style="font-size:11px;color:#0F172A;">Claas</span>
+            <span style="font-size:11px;color:#475569;">Fritz W.</span>
+            <span class="mono" style="font-size:11px;color:#94A3B8;">Вчера</span>
+            <span class="qdot qdot-orange"></span>
+          </div>
+          <div onclick="nav('quotation-detail')" style="display:grid;grid-template-columns:40px 1fr 80px 50px 24px;gap:0;padding:8px 14px;cursor:pointer;transition:background 120ms;align-items:center;" onmouseover="this.style.background='#F8FAFC'" onmouseout="this.style.background=''">
+            <span class="mono" style="font-size:11px;font-weight:600;">12344</span>
+            <span style="font-size:11px;color:#0F172A;">Manitou</span>
+            <span style="font-size:11px;color:#475569;">Jean P.</span>
+            <span class="mono" style="font-size:11px;color:#94A3B8;">Вчера</span>
+            <span class="qdot qdot-red"></span>
+          </div>
+          <div onclick="nav('quotation-detail')" style="display:grid;grid-template-columns:40px 1fr 80px 50px 24px;gap:0;padding:8px 14px;cursor:pointer;transition:background 120ms;align-items:center;" onmouseover="this.style.background='#F8FAFC'" onmouseout="this.style.background=''">
+            <span class="mono" style="font-size:11px;font-weight:600;">12343</span>
+            <span style="font-size:11px;color:#0F172A;">CNH</span>
+            <span style="font-size:11px;color:#475569;">Luigi R.</span>
+            <span class="mono" style="font-size:11px;color:#94A3B8;">09.06</span>
+            <span class="qdot qdot-green"></span>
+          </div>
+        </div>
+        <div style="padding:8px 14px;border-top:1px solid #F8FAFC;">
+          <div style="display:flex;gap:12px;flex-wrap:wrap;">
+            <span style="display:flex;align-items:center;gap:4px;font-size:10px;color:#475569;"><span class="qdot qdot-orange"></span>Отправлен, жду ответа</span>
+            <span style="display:flex;align-items:center;gap:4px;font-size:10px;color:#475569;"><span class="qdot qdot-green"></span>Ответ получен</span>
+            <span style="display:flex;align-items:center;gap:4px;font-size:10px;color:#475569;"><span class="qdot qdot-red"></span>Не отправлен</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+</div>
+
+
+<!-- ══════════════════════════════════════════════════════════════════ -->
+<!-- PAGE: QUOTATION-DETAIL                                             -->
+<!-- ══════════════════════════════════════════════════════════════════ -->
+<div id="page-quotation-detail" class="page">
+<div style="max-width:1440px;margin:0 auto;padding:16px 20px 28px;">
+
+  <!-- Breadcrumb -->
+  <div style="display:flex;align-items:center;gap:5px;font-size:11px;color:#94A3B8;margin-bottom:12px;">
+    <a onclick="nav('supplier')" style="color:#94A3B8;cursor:pointer;">Поставщик</a>
+    <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+    <a onclick="nav('quotation')" style="color:#94A3B8;cursor:pointer;">Запросы</a>
+    <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+    <span style="color:#0F172A;font-weight:600;">ЗПО-029 — AGCO / Hans Mueller</span>
+  </div>
+
+  <!-- Header card -->
+  <div class="card" style="padding:14px 16px;margin-bottom:12px;">
+    <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;">
+      <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap;">
+        <div>
+          <div class="info-label">Запрос</div>
+          <div style="font-size:15px;font-weight:700;color:#0F172A;" class="mono">№12346</div>
+        </div>
+        <div>
+          <div class="info-label">Поставщик</div>
+          <div class="info-value">Hans Mueller &amp; Co.</div>
+        </div>
+        <div>
+          <div class="info-label">Контакт</div>
+          <div class="info-value">Hans Mueller</div>
+        </div>
+        <div>
+          <div class="info-label">Позиций</div>
+          <div class="info-value mono" style="font-weight:700;">28</div>
+        </div>
+        <div>
+          <div class="info-label">Сумма EUR</div>
+          <div class="info-value mono" style="font-weight:700;">8 320 €</div>
+        </div>
+        <div>
+          <div class="info-label">Ожидаю</div>
+          <div class="info-value mono" style="color:#D97706;">3ч 20мин</div>
+        </div>
+        <span class="badge badge-orange" style="font-size:11px;">Ожидаю ответа</span>
+      </div>
+      <button class="btn btn-success" onclick="nav('actualization')">Актуализировать позиции</button>
+    </div>
+  </div>
+
+  <!-- 3-column layout -->
+  <div style="display:flex;gap:12px;align-items:flex-start;">
+
+    <!-- LEFT: ЗПО list + files (260px) -->
+    <div style="width:260px;flex-shrink:0;display:flex;flex-direction:column;gap:10px;">
+
+      <!-- ЗПО list -->
+      <div class="card" style="overflow:hidden;">
+        <div style="padding:10px 12px;border-bottom:1px solid #F1F5F9;">
+          <span style="font-size:11px;font-weight:700;color:#0F172A;">Заказы в этом запросе</span>
+        </div>
+        <div style="padding:6px 0;">
+          <div onclick="nav('order-detail')" style="padding:8px 12px;cursor:pointer;transition:background 120ms;border-radius:6px;" onmouseover="this.style.background='#F8FAFC'" onmouseout="this.style.background=''">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:2px;">
+              <span class="mono" style="font-size:12px;font-weight:700;color:#2563EB;">ЗПО-030</span>
+              <span class="badge badge-blue" style="font-size:9px;">8 поз.</span>
+            </div>
+            <div style="font-size:11px;color:#64748B;">3 240 €</div>
+          </div>
+          <div onclick="nav('order-detail')" style="padding:8px 12px;cursor:pointer;transition:background 120ms;border-radius:6px;" onmouseover="this.style.background='#F8FAFC'" onmouseout="this.style.background=''">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:2px;">
+              <span class="mono" style="font-size:12px;font-weight:700;color:#2563EB;">ЗПО-031</span>
+              <span class="badge badge-blue" style="font-size:9px;">12 поз.</span>
+            </div>
+            <div style="font-size:11px;color:#64748B;">2 870 €</div>
+          </div>
+          <div onclick="nav('order-detail')" style="padding:8px 12px;cursor:pointer;transition:background 120ms;border-radius:6px;" onmouseover="this.style.background='#F8FAFC'" onmouseout="this.style.background=''">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:2px;">
+              <span class="mono" style="font-size:12px;font-weight:700;color:#2563EB;">ЗПО-025</span>
+              <span class="badge badge-blue" style="font-size:9px;">5 поз.</span>
+            </div>
+            <div style="font-size:11px;color:#64748B;">1 450 €</div>
+          </div>
+          <div onclick="nav('order-detail')" style="padding:8px 12px;cursor:pointer;transition:background 120ms;border-radius:6px;" onmouseover="this.style.background='#F8FAFC'" onmouseout="this.style.background=''">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:2px;">
+              <span class="mono" style="font-size:12px;font-weight:700;color:#2563EB;">ЗПО-022</span>
+              <span class="badge badge-blue" style="font-size:9px;">3 поз.</span>
+            </div>
+            <div style="font-size:11px;color:#64748B;">760 €</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Files -->
+      <div class="card" style="overflow:hidden;">
+        <div style="padding:10px 12px;border-bottom:1px solid #F1F5F9;">
+          <span style="font-size:11px;font-weight:700;color:#0F172A;">Файлы</span>
+        </div>
+        <div style="padding:6px 8px;display:flex;flex-direction:column;gap:4px;">
+          <div style="display:flex;align-items:center;gap:7px;padding:6px;border-radius:6px;cursor:pointer;" onmouseover="this.style.background='#F8FAFC'" onmouseout="this.style.background=''">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#2563EB" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+            <div>
+              <div style="font-size:11px;color:#2563EB;font-weight:500;">Request_12346.xlsx</div>
+              <div style="font-size:9px;color:#94A3B8;">28 позиций · 22 KB</div>
+            </div>
+          </div>
+          <div style="display:flex;align-items:center;gap:7px;padding:6px;border-radius:6px;cursor:pointer;" onmouseover="this.style.background='#F8FAFC'" onmouseout="this.style.background=''">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#2563EB" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+            <div>
+              <div style="font-size:11px;color:#2563EB;font-weight:500;">Quote_AGCO_0609.pdf</div>
+              <div style="font-size:9px;color:#94A3B8;">Ответ поставщика · 184 KB</div>
+            </div>
+          </div>
+          <div style="display:flex;align-items:center;gap:7px;padding:6px;border-radius:6px;cursor:pointer;" onmouseover="this.style.background='#F8FAFC'" onmouseout="this.style.background=''">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#475569" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+            <div>
+              <div style="font-size:11px;color:#475569;font-weight:500;">Email_12346.eml</div>
+              <div style="font-size:9px;color:#94A3B8;">Переписка · 8 KB</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CENTER: positions table -->
+    <div style="flex:1;min-width:0;">
+      <div class="card" style="overflow:hidden;">
+        <div class="section-header">
+          <div class="section-title">
+            <div class="section-accent" style="background:#D97706;"></div>
+            Позиции запроса
+            <span class="badge badge-orange">28 поз.</span>
+          </div>
+          <button class="btn btn-ghost" style="font-size:11px;">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            Экспорт
+          </button>
+        </div>
+        <div style="overflow-x:auto;">
+          <table>
+            <thead><tr>
+              <th style="width:24px;">#</th>
+              <th>Артикул</th>
+              <th>Наименование</th>
+              <th style="text-align:center;">Кол-во</th>
+              <th style="text-align:right;">ЗЦ ₽</th>
+              <th style="text-align:right;">ЗЦ €</th>
+              <th style="text-align:center;">Тип</th>
+              <th style="text-align:center;">Статус</th>
+            </tr></thead>
+            <tbody>
+              <tr>
+                <td class="mono" style="color:#CBD5E1;font-size:10px;">1</td>
+                <td><a class="mono" style="font-size:12px;font-weight:600;">GCA5301</a></td>
+                <td>Сцепление муфта</td>
+                <td style="text-align:center;" class="mono">2</td>
+                <td style="text-align:right;" class="mono">12 450</td>
+                <td style="text-align:right;" class="mono">138.00</td>
+                <td style="text-align:center;"><span class="type-so">SO</span></td>
+                <td style="text-align:center;"><span class="qst qst-ok">✓</span></td>
+              </tr>
+              <tr>
+                <td class="mono" style="color:#CBD5E1;font-size:10px;">2</td>
+                <td><a class="mono" style="font-size:12px;font-weight:600;">700719827</a></td>
+                <td>Фильтр воздушный</td>
+                <td style="text-align:center;" class="mono">4</td>
+                <td style="text-align:right;" class="mono">3 780</td>
+                <td style="text-align:right;" class="mono">42.00</td>
+                <td style="text-align:center;"><span class="type-std">STD</span></td>
+                <td style="text-align:center;"><span class="qst qst-ok">✓</span></td>
+              </tr>
+              <tr>
+                <td class="mono" style="color:#CBD5E1;font-size:10px;">3</td>
+                <td><a class="mono" style="font-size:12px;font-weight:600;">700726219</a></td>
+                <td>Прокладка головки цил.</td>
+                <td style="text-align:center;" class="mono">1</td>
+                <td style="text-align:right;" class="mono">8 910</td>
+                <td style="text-align:right;" class="mono">99.00</td>
+                <td style="text-align:center;"><span class="type-so">SO</span></td>
+                <td style="text-align:center;"><span class="qst qst-up">↑</span></td>
+              </tr>
+              <tr>
+                <td class="mono" style="color:#CBD5E1;font-size:10px;">4</td>
+                <td><a class="mono" style="font-size:12px;font-weight:600;">836853897</a></td>
+                <td>Подшипник карданного вала</td>
+                <td style="text-align:center;" class="mono">2</td>
+                <td style="text-align:right;" class="mono">5 400</td>
+                <td style="text-align:right;" class="mono">60.00</td>
+                <td style="text-align:center;"><span class="type-so">SO</span></td>
+                <td style="text-align:center;"><span class="qst qst-ok">✓</span></td>
+              </tr>
+              <tr style="background:#FEF3C7;">
+                <td class="mono" style="color:#CBD5E1;font-size:10px;">5</td>
+                <td><a class="mono" style="font-size:12px;font-weight:600;color:#DC2626;">4283835M1</a></td>
+                <td style="color:#DC2626;font-weight:500;">Форсунка топливная</td>
+                <td style="text-align:center;" class="mono">3</td>
+                <td style="text-align:right;" class="mono" style="color:#94A3B8;">—</td>
+                <td style="text-align:right;" class="mono" style="color:#94A3B8;">—</td>
+                <td style="text-align:center;"><span class="type-an">AN</span></td>
+                <td style="text-align:center;"><span class="qst qst-no">✗</span></td>
+              </tr>
+              <tr>
+                <td class="mono" style="color:#CBD5E1;font-size:10px;">6</td>
+                <td><a class="mono" style="font-size:12px;font-weight:600;">700715621</a></td>
+                <td>Ремень клиновой</td>
+                <td style="text-align:center;" class="mono">6</td>
+                <td style="text-align:right;" class="mono">2 160</td>
+                <td style="text-align:right;" class="mono">24.00</td>
+                <td style="text-align:center;"><span class="type-std">STD</span></td>
+                <td style="text-align:center;"><span class="qst qst-ok">✓</span></td>
+              </tr>
+              <tr class="qst-row-new">
+                <td class="mono" style="color:#CBD5E1;font-size:10px;">7</td>
+                <td><a class="mono" style="font-size:12px;font-weight:600;color:#2563EB;">836866294</a></td>
+                <td style="color:#2563EB;">Клапан гидравлический</td>
+                <td style="text-align:center;" class="mono">1</td>
+                <td style="text-align:right;" class="mono">19 350</td>
+                <td style="text-align:right;" class="mono">215.00</td>
+                <td style="text-align:center;"><span class="type-so">SO</span></td>
+                <td style="text-align:center;"><span class="qst qst-new">★</span></td>
+              </tr>
+              <tr>
+                <td class="mono" style="color:#CBD5E1;font-size:10px;">8</td>
+                <td><a class="mono" style="font-size:12px;font-weight:600;">GCA4712</a></td>
+                <td>Уплотнение вала трансмиссии</td>
+                <td style="text-align:center;" class="mono">4</td>
+                <td style="text-align:right;" class="mono">4 770</td>
+                <td style="text-align:right;" class="mono">53.00</td>
+                <td style="text-align:center;"><span class="type-an">AN</span></td>
+                <td style="text-align:center;"><span class="qst qst-ok">✓</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <!-- Summary bar -->
+        <div style="padding:10px 14px;border-top:1px solid #F1F5F9;background:#FAFAFA;display:flex;justify-content:space-between;align-items:center;">
+          <span class="footer-stat">Показано 8 из 28 позиций</span>
+          <div style="display:flex;gap:14px;align-items:center;">
+            <span style="display:flex;align-items:center;gap:4px;font-size:11px;"><span class="qst qst-ok" style="width:14px;height:14px;font-size:8px;">✓</span><span class="accent-green">22 подтверждено</span></span>
+            <span style="display:flex;align-items:center;gap:4px;font-size:11px;"><span class="qst qst-up" style="width:14px;height:14px;font-size:8px;">↑</span><span class="accent-orange">4 цена выросла</span></span>
+            <span style="display:flex;align-items:center;gap:4px;font-size:11px;"><span class="qst qst-no" style="width:14px;height:14px;font-size:8px;">✗</span><span class="accent-red">1 backorder</span></span>
+            <span style="display:flex;align-items:center;gap:4px;font-size:11px;"><span class="qst qst-new" style="width:14px;height:14px;font-size:8px;">★</span><span style="color:#2563EB;font-weight:600;">1 новых цен</span></span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT: chat (280px) -->
+    <div style="width:280px;flex-shrink:0;" id="chat-panel">
+      <div class="card" style="overflow:hidden;display:flex;flex-direction:column;height:480px;">
+        <div style="padding:10px 12px;border-bottom:1px solid #F1F5F9;display:flex;align-items:center;justify-content:space-between;">
+          <span style="font-size:11px;font-weight:700;color:#0F172A;">Чат с Hans M.</span>
+          <button onclick="document.getElementById('chat-panel').style.display='none'" style="background:none;border:none;cursor:pointer;font-size:11px;color:#94A3B8;padding:2px 5px;">Скрыть ▶</button>
+        </div>
+        <div class="chat-wrap">
+          <div class="chat-msg out">
+            <div class="chat-bubble out">Dear Hans, please find the availability request for 28 positions attached. Kindly confirm and advise lead times.</div>
+            <div class="chat-time out">09:15 · AI Claude</div>
+          </div>
+          <div class="chat-msg in">
+            <div class="chat-bubble in">Hello, I'm checking our stock for all positions. Will reply shortly with prices and availability.</div>
+            <div class="chat-time">09:28 · Hans M.</div>
+          </div>
+          <div class="chat-msg in">
+            <div class="chat-bubble in">Positions 1-6 confirmed. Position 5 (4283835M1) — backorder, ETA unknown. Position 7 is new price, see updated quote.</div>
+            <div class="chat-time">10:40 · Hans M.</div>
+          </div>
+        </div>
+        <div style="padding:8px;border-top:1px solid #F1F5F9;">
+          <div style="display:flex;gap:6px;">
+            <input type="text" placeholder="Ответить…" class="input" style="font-size:11px;height:30px;">
+            <button class="btn btn-primary" style="padding:5px 10px;">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+</div><!-- /page-quotation-detail -->
+
+
+<!-- ══════════════════════════════════════════════════════════════════ -->
+<!-- PAGE: NEW-REQUEST                                                  -->
+<!-- ══════════════════════════════════════════════════════════════════ -->
+<div id="page-new-request" class="page">
+<div style="max-width:1440px;margin:0 auto;padding:16px 20px 80px;">
+
+  <!-- Breadcrumb -->
+  <div style="display:flex;align-items:center;gap:5px;font-size:11px;color:#94A3B8;margin-bottom:12px;">
+    <a onclick="nav('supplier')" style="color:#94A3B8;cursor:pointer;">Поставщик</a>
+    <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+    <a onclick="nav('quotation')" style="color:#94A3B8;cursor:pointer;">Запросы</a>
+    <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+    <span style="color:#0F172A;font-weight:600;">Новый запрос поставщику</span>
+  </div>
+
+  <!-- 3-column layout -->
+  <div style="display:flex;gap:12px;align-items:flex-start;">
+
+    <!-- LEFT: params + ЗПО queue (260px) -->
+    <div style="width:260px;flex-shrink:0;display:flex;flex-direction:column;gap:10px;">
+
+      <div class="card" style="padding:14px;">
+        <div style="font-size:12px;font-weight:700;color:#0F172A;margin-bottom:12px;">Параметры запроса</div>
+
+        <div style="margin-bottom:10px;">
+          <label style="display:block;font-size:10px;font-weight:600;color:#94A3B8;text-transform:uppercase;letter-spacing:0.4px;margin-bottom:4px;">Поставщик</label>
+          <select class="input" style="height:32px;padding:0 8px;cursor:pointer;">
+            <option value="">— выбрать —</option>
+            <option>Hans Mueller &amp; Co.</option>
+            <option>Midwest Parts GmbH</option>
+            <option>AgriTech Europa BV</option>
+          </select>
+        </div>
+
+        <div style="margin-bottom:10px;">
+          <label style="display:block;font-size:10px;font-weight:600;color:#94A3B8;text-transform:uppercase;letter-spacing:0.4px;margin-bottom:4px;">Марка</label>
+          <select class="input" style="height:32px;padding:0 8px;cursor:pointer;">
+            <option value="">— выбрать —</option>
+            <option>AGCO</option>
+            <option>John Deere</option>
+            <option>Claas</option>
+            <option>Fendt</option>
+          </select>
+        </div>
+
+        <div style="margin-bottom:14px;">
+          <label style="display:block;font-size:10px;font-weight:600;color:#94A3B8;text-transform:uppercase;letter-spacing:0.4px;margin-bottom:4px;">Поставка</label>
+          <select class="input" style="height:32px;padding:0 8px;cursor:pointer;">
+            <option value="">— выбрать —</option>
+            <option>Поставка 44</option>
+            <option>Поставка 45</option>
+            <option>Поставка 46</option>
+          </select>
+        </div>
+
+        <div>
+          <label style="display:block;font-size:10px;font-weight:600;color:#94A3B8;text-transform:uppercase;letter-spacing:0.4px;margin-bottom:6px;">Язык письма</label>
+          <div style="display:flex;gap:4px;">
+            <button class="lang-btn">RU</button>
+            <button class="lang-btn active">EN</button>
+            <button class="lang-btn">DE</button>
+            <button class="lang-btn">PL</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ЗПО queue -->
+      <div class="card" style="overflow:hidden;">
+        <div style="padding:10px 12px;border-bottom:1px solid #F1F5F9;">
+          <span style="font-size:11px;font-weight:700;color:#0F172A;">ЗПО для включения</span>
+        </div>
+        <div style="padding:6px 4px;">
+          <div class="zpo-row selected">
+            <input type="checkbox" checked style="flex-shrink:0;">
+            <div style="flex:1;min-width:0;">
+              <div style="display:flex;justify-content:space-between;">
+                <span class="mono" style="font-size:11px;font-weight:700;color:#2563EB;">ЗПО-031</span>
+                <span style="font-size:10px;color:#64748B;">41 поз.</span>
+              </div>
+              <div style="font-size:10px;color:#94A3B8;">JD · Петров</div>
+            </div>
+          </div>
+          <div class="zpo-row selected">
+            <input type="checkbox" checked style="flex-shrink:0;">
+            <div style="flex:1;min-width:0;">
+              <div style="display:flex;justify-content:space-between;">
+                <span class="mono" style="font-size:11px;font-weight:700;color:#2563EB;">ЗПО-030</span>
+                <span style="font-size:10px;color:#64748B;">28 поз.</span>
+              </div>
+              <div style="font-size:10px;color:#94A3B8;">AGCO · Сидорова</div>
+            </div>
+          </div>
+          <div class="zpo-row">
+            <input type="checkbox" style="flex-shrink:0;">
+            <div style="flex:1;min-width:0;">
+              <div style="display:flex;justify-content:space-between;">
+                <span class="mono" style="font-size:11px;font-weight:700;color:#475569;">ЗПО-029</span>
+                <span style="font-size:10px;color:#64748B;">15 поз.</span>
+              </div>
+              <div style="font-size:10px;color:#94A3B8;">Fendt · Миронов</div>
+            </div>
+          </div>
+          <div class="zpo-row">
+            <input type="checkbox" style="flex-shrink:0;">
+            <div style="flex:1;min-width:0;">
+              <div style="display:flex;justify-content:space-between;">
+                <span class="mono" style="font-size:11px;font-weight:700;color:#475569;">ЗПО-028</span>
+                <span style="font-size:10px;color:#64748B;">12 поз.</span>
+              </div>
+              <div style="font-size:10px;color:#94A3B8;">Manitou · Петров</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CENTER: positions preview -->
+    <div style="flex:1;min-width:0;">
+      <div class="card" style="overflow:hidden;">
+        <div class="section-header">
+          <div class="section-title">
+            <div class="section-accent" style="background:#2563EB;"></div>
+            Позиции для запроса
+          </div>
+          <span class="footer-stat">Включено: <strong>67 из 69 позиций</strong> &nbsp;·&nbsp; <span class="accent-orange">2 исключены вручную</span></span>
+        </div>
+        <div style="overflow-x:auto;">
+          <table>
+            <thead><tr>
+              <th style="width:28px;"><input type="checkbox" checked></th>
+              <th>Артикул</th>
+              <th>Наименование</th>
+              <th style="text-align:center;">Кол-во</th>
+              <th>ЗПО</th>
+              <th style="text-align:center;">Тип</th>
+            </tr></thead>
+            <tbody>
+              <tr>
+                <td><input type="checkbox" checked></td>
+                <td><a class="mono" style="font-size:12px;font-weight:600;">AXE21234</a></td>
+                <td>Фильтр воздушный двигателя</td>
+                <td style="text-align:center;" class="mono">2</td>
+                <td class="mono" style="font-size:11px;color:#64748B;">ЗПО-031</td>
+                <td style="text-align:center;"><span class="type-so">SO</span></td>
+              </tr>
+              <tr>
+                <td><input type="checkbox" checked></td>
+                <td><a class="mono" style="font-size:12px;font-weight:600;">RE522878</a></td>
+                <td>Масляный фильтр</td>
+                <td style="text-align:center;" class="mono">5</td>
+                <td class="mono" style="font-size:11px;color:#64748B;">ЗПО-031</td>
+                <td style="text-align:center;"><span class="type-so">SO</span></td>
+              </tr>
+              <tr>
+                <td><input type="checkbox" checked></td>
+                <td><a class="mono" style="font-size:12px;font-weight:600;">GCA5301</a></td>
+                <td>Сцепление муфта</td>
+                <td style="text-align:center;" class="mono">1</td>
+                <td class="mono" style="font-size:11px;color:#64748B;">ЗПО-030</td>
+                <td style="text-align:center;"><span class="type-so">SO</span></td>
+              </tr>
+              <tr>
+                <td><input type="checkbox" checked></td>
+                <td><a class="mono" style="font-size:12px;font-weight:600;">700719827</a></td>
+                <td>Фильтр воздушный AGCO</td>
+                <td style="text-align:center;" class="mono">4</td>
+                <td class="mono" style="font-size:11px;color:#64748B;">ЗПО-030</td>
+                <td style="text-align:center;"><span class="type-std">STD</span></td>
+              </tr>
+              <tr class="row-excluded">
+                <td><input type="checkbox"></td>
+                <td><a class="mono" style="font-size:12px;font-weight:600;color:#CBD5E1;">R130137</a></td>
+                <td style="color:#CBD5E1;">Подшипник конусный</td>
+                <td style="text-align:center;" class="mono" style="color:#CBD5E1;">4</td>
+                <td class="mono" style="font-size:11px;color:#CBD5E1;">ЗПО-031</td>
+                <td style="text-align:center;"><span class="type-so" style="opacity:0.4;">SO</span></td>
+              </tr>
+              <tr>
+                <td><input type="checkbox" checked></td>
+                <td><a class="mono" style="font-size:12px;font-weight:600;">AH212497</a></td>
+                <td>Решётка сепаратора зернового</td>
+                <td style="text-align:center;" class="mono">1</td>
+                <td class="mono" style="font-size:11px;color:#64748B;">ЗПО-031</td>
+                <td style="text-align:center;"><span class="type-so">SO</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div style="padding:10px 14px;border-top:1px solid #F1F5F9;display:flex;justify-content:space-between;align-items:center;background:#FAFAFA;">
+          <span class="footer-stat">Показано 6 из 69 позиций</span>
+          <button class="btn btn-success">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            Сформировать запрос (Excel)
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT: email template (260px) -->
+    <div style="width:260px;flex-shrink:0;">
+      <div class="card" style="overflow:hidden;">
+        <div style="padding:10px 12px;border-bottom:1px solid #F1F5F9;display:flex;align-items:center;justify-content:space-between;">
+          <span style="font-size:11px;font-weight:700;color:#0F172A;">Письмо поставщику</span>
+          <button style="font-size:10px;color:#64748B;background:none;border:1px solid #E2E8F0;border-radius:5px;padding:2px 7px;cursor:pointer;">Шаблоны ▾</button>
+        </div>
+        <div style="padding:12px;">
+          <div style="font-size:11px;color:#0F172A;line-height:1.65;white-space:pre-wrap;background:#F8FAFC;border-radius:7px;padding:10px;font-family:'Fira Sans',sans-serif;">Dear team,
+
+Please find attached our parts availability request file.
+
+Kindly confirm availability and lead times for all positions in the attached Excel.
+
+Best regards,
+AGR PARTS Procurement
+aiclaude@agr24.ru</div>
+          <div style="margin-top:10px;padding:8px 10px;background:#F8FAFC;border:1px solid #E2E8F0;border-radius:7px;display:flex;align-items:center;gap:7px;">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#94A3B8" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+            <span style="font-size:11px;color:#64748B;">Request_AGR-CO-____.xlsx</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- Bottom action bar -->
+<div style="position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:1px solid #E2E8F0;padding:10px 24px;display:flex;align-items:center;gap:10px;z-index:40;box-shadow:0 -2px 8px rgba(0,0,0,0.06);">
+  <button class="btn btn-ghost" onclick="nav('quotation')">Отмена</button>
+  <button class="btn btn-ghost">Сохранить черновик</button>
+  <div style="margin-left:auto;display:flex;align-items:center;gap:10px;">
+    <div style="display:flex;align-items:center;gap:6px;">
+      <span style="font-size:11px;color:#64748B;">Тема:</span>
+      <input type="text" value="REQUEST AGR-CO-____" class="input" style="width:220px;height:30px;font-size:11px;font-family:'Fira Code',monospace;">
+    </div>
+    <button class="btn btn-primary">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+      Отправить поставщику
+    </button>
+  </div>
+</div>
+</div><!-- /page-new-request -->
+
+
+<!-- ══════════════════════════════════════════════════════════════════ -->
+<!-- PAGE: ORDERS                                                       -->
+<!-- ══════════════════════════════════════════════════════════════════ -->
+<div id="page-orders" class="page">
+<div style="max-width:1440px;margin:0 auto;padding:16px 20px 28px;">
+
+  <div style="display:flex;align-items:center;gap:5px;font-size:11px;color:#94A3B8;margin-bottom:14px;">
+    <a onclick="nav('supplier')" style="color:#94A3B8;cursor:pointer;">Поставщик</a>
+    <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+    <span style="color:#0F172A;font-weight:600;">Заказы</span>
+  </div>
+
+  <div style="display:flex;align-items:center;gap:8px;margin-bottom:16px;">
+    <div style="position:relative;">
+      <svg style="position:absolute;left:9px;top:50%;transform:translateY(-50%);color:#94A3B8;" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+      <input class="search-input" type="text" placeholder="Поиск по номеру заказа, клиенту, поставщику…">
+    </div>
+    <button class="filter-btn">Поставщик <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></button>
+    <button class="filter-btn">Марка <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></button>
+    <button class="filter-btn">Статус <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></button>
+  </div>
+
+  <!-- К размещению -->
+  <div class="card" style="margin-bottom:12px;overflow:hidden;">
+    <div class="section-header">
+      <div class="section-title">
+        <div class="section-accent" style="background:#2563EB;"></div>
+        К размещению
+        <span class="badge badge-blue">4</span>
+      </div>
+      <span class="footer-stat">Итого: <strong>28 740 €</strong></span>
+    </div>
+    <div style="overflow-x:auto;">
+      <table>
+        <thead><tr>
+          <th>Дата</th><th>№ заказа</th><th>Клиент</th><th>Марка</th>
+          <th>Поставщик</th><th style="text-align:center;">Позиций</th>
+          <th style="text-align:center;">Тип</th><th>Дата поставки</th>
+          <th style="text-align:right;">Сумма EUR</th><th style="text-align:center;">Габарит</th>
+          <th>Поставка</th><th>Статус</th><th></th>
+        </tr></thead>
+        <tbody>
+          <tr>
+            <td class="mono" style="color:#94A3B8;font-size:11px;">11.06</td>
+            <td><a class="mono" style="font-size:12px;font-weight:600;" onclick="nav('order-detail')">№000412</a></td>
+            <td style="font-weight:500;">АФ АНА-ЮГ</td>
+            <td style="color:#475569;">John Deere</td>
+            <td style="color:#475569;">Midwest Parts GmbH</td>
+            <td style="text-align:center;" class="mono"><strong>41</strong></td>
+            <td style="text-align:center;"><span class="type-so">SO</span></td>
+            <td class="mono" style="color:#475569;font-size:11px;">25.07.2026</td>
+            <td style="text-align:right;" class="mono"><strong>12 450 €</strong></td>
+            <td style="text-align:center;"><span class="dot dot-green"></span></td>
+            <td style="color:#475569;">Поставка 45</td>
+            <td><span class="badge badge-orange">Ожидает</span></td>
+            <td><button class="btn btn-primary" onclick="nav('order-detail')">Открыть</button></td>
+          </tr>
+          <tr>
+            <td class="mono" style="color:#94A3B8;font-size:11px;">11.06</td>
+            <td><a class="mono" style="font-size:12px;font-weight:600;" onclick="nav('order-detail')">№000410</a></td>
+            <td style="font-weight:500;">ЧЕРКИЗОВО</td>
+            <td style="color:#475569;">AGCO</td>
+            <td style="color:#475569;">Hans Mueller &amp; Co.</td>
+            <td style="text-align:center;" class="mono"><strong>28</strong></td>
+            <td style="text-align:center;"><span class="type-std">STD</span></td>
+            <td class="mono" style="color:#475569;font-size:11px;">10.07.2026</td>
+            <td style="text-align:right;" class="mono"><strong>8 320 €</strong></td>
+            <td style="text-align:center;"><span class="dot dot-purple"></span></td>
+            <td style="color:#475569;">Поставка 44</td>
+            <td><span class="badge badge-orange">Ожидает</span></td>
+            <td><button class="btn btn-primary" onclick="nav('order-detail')">Открыть</button></td>
+          </tr>
+          <tr style="background:#FFFBEB;">
+            <td class="mono" style="color:#94A3B8;font-size:11px;">10.06</td>
+            <td><a class="mono" style="font-size:12px;font-weight:600;" onclick="nav('order-detail')">№000408</a></td>
+            <td style="font-weight:500;">МИРАТОРГ</td>
+            <td style="color:#475569;">Claas</td>
+            <td style="color:#475569;">AgriTech Europa BV</td>
+            <td style="text-align:center;" class="mono"><strong>15</strong></td>
+            <td style="text-align:center;"><span class="type-std">STD</span></td>
+            <td class="mono" style="color:#475569;font-size:11px;">01.07.2026</td>
+            <td style="text-align:right;" class="mono"><strong>3 100 €</strong></td>
+            <td style="text-align:center;"><span class="dot dot-orange"></span></td>
+            <td style="color:#475569;">Поставка 44</td>
+            <td><span class="badge badge-red">Срочно</span></td>
+            <td><button class="btn btn-primary" onclick="nav('order-detail')">Открыть</button></td>
+          </tr>
+          <tr>
+            <td class="mono" style="color:#94A3B8;font-size:11px;">10.06</td>
+            <td><a class="mono" style="font-size:12px;font-weight:600;" onclick="nav('order-detail')">№000405</a></td>
+            <td style="font-weight:500;">ПРОСТОРЫ</td>
+            <td style="color:#475569;">Fendt</td>
+            <td style="color:#475569;">Midwest Parts GmbH</td>
+            <td style="text-align:center;" class="mono"><strong>12</strong></td>
+            <td style="text-align:center;"><span class="type-std">STD</span></td>
+            <td class="mono" style="color:#475569;font-size:11px;">15.07.2026</td>
+            <td style="text-align:right;" class="mono"><strong>4 870 €</strong></td>
+            <td style="text-align:center;"><span class="dot dot-green"></span></td>
+            <td style="color:#475569;">Поставка 45</td>
+            <td><span class="badge badge-orange">Ожидает</span></td>
+            <td><button class="btn btn-primary" onclick="nav('order-detail')">Открыть</button></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div style="padding:8px 14px;border-top:1px solid #F8FAFC;">
+      <span class="footer-stat">Ожидают размещения: <strong>4 заказа</strong> &nbsp;·&nbsp; Итого: <strong>28 740 €</strong></span>
+    </div>
+  </div>
+
+  <!-- Размещённые -->
+  <div class="card" style="margin-bottom:12px;overflow:hidden;">
+    <div class="section-header">
+      <div class="section-title">
+        <div class="section-accent" style="background:#16A34A;"></div>
+        Размещённые
+        <span class="badge badge-green">6</span>
+      </div>
+    </div>
+    <div style="overflow-x:auto;">
+      <table>
+        <thead><tr>
+          <th>Дата</th><th>№ проформы</th><th>Поставщик</th><th>Марка</th>
+          <th style="text-align:center;">Позиций</th><th style="text-align:center;">Тип</th>
+          <th style="text-align:right;">Сумма EUR</th><th style="text-align:right;">Вес кг</th>
+          <th style="text-align:center;">Габарит</th><th>Поставка</th><th>Статус</th><th></th>
+        </tr></thead>
+        <tbody>
+          <tr>
+            <td class="mono" style="color:#94A3B8;font-size:11px;">09.06</td>
+            <td><a class="mono" style="font-size:12px;font-weight:600;" onclick="nav('placed-order')">PRF-2026-089</a></td>
+            <td style="color:#475569;">Hans Mueller &amp; Co.</td><td style="color:#475569;">AGCO</td>
+            <td style="text-align:center;" class="mono"><strong>295</strong></td>
+            <td style="text-align:center;"><span class="type-std">STD</span></td>
+            <td style="text-align:right;" class="mono"><strong>68 400 €</strong></td>
+            <td style="text-align:right;color:#64748B;" class="mono">552 кг</td>
+            <td style="text-align:center;"><span class="dot dot-orange"></span></td>
+            <td style="color:#475569;">Поставка 44</td>
+            <td><span class="badge badge-orange">В транзите</span></td>
+            <td><button class="btn btn-primary" onclick="nav('placed-order')">Открыть</button></td>
+          </tr>
+          <tr>
+            <td class="mono" style="color:#94A3B8;font-size:11px;">07.06</td>
+            <td><a class="mono" style="font-size:12px;font-weight:600;" onclick="nav('placed-order')">PRF-2026-088</a></td>
+            <td style="color:#475569;">Midwest Parts GmbH</td><td style="color:#475569;">John Deere</td>
+            <td style="text-align:center;" class="mono"><strong>184</strong></td>
+            <td style="text-align:center;"><span class="type-an">AN</span></td>
+            <td style="text-align:right;" class="mono"><strong>42 100 €</strong></td>
+            <td style="text-align:right;color:#64748B;" class="mono">318 кг</td>
+            <td style="text-align:center;"><span class="dot dot-orange"></span></td>
+            <td style="color:#475569;">Поставка 44</td>
+            <td><span class="badge badge-orange">Таможня</span></td>
+            <td><button class="btn btn-primary" onclick="nav('placed-order')">Открыть</button></td>
+          </tr>
+          <tr>
+            <td class="mono" style="color:#94A3B8;font-size:11px;">05.06</td>
+            <td><a class="mono" style="font-size:12px;font-weight:600;" onclick="nav('placed-order')">PRF-2026-087</a></td>
+            <td style="color:#475569;">AgriTech Europa BV</td><td style="color:#475569;">Claas</td>
+            <td style="text-align:center;" class="mono"><strong>97</strong></td>
+            <td style="text-align:center;"><span class="type-std">STD</span></td>
+            <td style="text-align:right;" class="mono"><strong>18 750 €</strong></td>
+            <td style="text-align:right;color:#64748B;" class="mono">186 кг</td>
+            <td style="text-align:center;"><span class="dot dot-green"></span></td>
+            <td style="color:#475569;">Поставка 43</td>
+            <td><span class="badge badge-blue">На складе</span></td>
+            <td><button class="btn btn-primary" onclick="nav('placed-order')">Открыть</button></td>
+          </tr>
+          <tr>
+            <td class="mono" style="color:#94A3B8;font-size:11px;">02.06</td>
+            <td><a class="mono" style="font-size:12px;font-weight:600;" onclick="nav('placed-order')">PRF-2026-086</a></td>
+            <td style="color:#475569;">Hans Mueller &amp; Co.</td><td style="color:#475569;">AGCO</td>
+            <td style="text-align:center;" class="mono"><strong>210</strong></td>
+            <td style="text-align:center;"><span class="type-std">STD</span></td>
+            <td style="text-align:right;" class="mono"><strong>51 200 €</strong></td>
+            <td style="text-align:right;color:#64748B;" class="mono">410 кг</td>
+            <td style="text-align:center;"><span class="dot dot-green"></span></td>
+            <td style="color:#475569;">Поставка 43</td>
+            <td><span class="badge badge-green">Готов</span></td>
+            <td><button class="btn btn-primary" onclick="nav('placed-order')">Открыть</button></td>
+          </tr>
+          <tr>
+            <td class="mono" style="color:#94A3B8;font-size:11px;">28.05</td>
+            <td><a class="mono" style="font-size:12px;font-weight:600;" onclick="nav('placed-order')">PRF-2026-085</a></td>
+            <td style="color:#475569;">Midwest Parts GmbH</td><td style="color:#475569;">Fendt</td>
+            <td style="text-align:center;" class="mono"><strong>143</strong></td>
+            <td style="text-align:center;"><span class="type-std">STD</span></td>
+            <td style="text-align:right;" class="mono"><strong>33 600 €</strong></td>
+            <td style="text-align:right;color:#64748B;" class="mono">274 кг</td>
+            <td style="text-align:center;"><span class="dot dot-green"></span></td>
+            <td style="color:#475569;">Поставка 42</td>
+            <td><span class="badge badge-green">Доставлен</span></td>
+            <td><button class="btn btn-primary" onclick="nav('placed-order')">Открыть</button></td>
+          </tr>
+          <tr>
+            <td class="mono" style="color:#94A3B8;font-size:11px;">15.05</td>
+            <td><a class="mono" style="font-size:12px;font-weight:600;" onclick="nav('placed-order')">PRF-2026-084</a></td>
+            <td style="color:#475569;">AgriTech Europa BV</td><td style="color:#475569;">John Deere</td>
+            <td style="text-align:center;" class="mono"><strong>88</strong></td>
+            <td style="text-align:center;"><span class="type-md">MD USA</span></td>
+            <td style="text-align:right;" class="mono"><strong>22 300 €</strong></td>
+            <td style="text-align:right;color:#64748B;" class="mono">158 кг</td>
+            <td style="text-align:center;"><span class="dot dot-red"></span></td>
+            <td style="color:#475569;">Поставка 42</td>
+            <td><span class="badge badge-green">Доставлен</span></td>
+            <td><button class="btn btn-primary" onclick="nav('placed-order')">Открыть</button></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Backorder -->
+  <div class="card" style="margin-bottom:16px;overflow:hidden;">
+    <div class="section-header">
+      <div class="section-title">
+        <div class="section-accent" style="background:#DC2626;"></div>
+        Backorder
+        <span class="badge badge-red">5</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px;">
+        <span class="footer-stat"><span class="accent-red">2 срочных</span></span>
+        <span style="color:#E2E8F0;">·</span>
+        <span class="footer-stat"><span class="accent-orange">3 в работе</span></span>
+      </div>
+    </div>
+    <div style="overflow-x:auto;">
+      <table>
+        <thead><tr>
+          <th>Артикул</th><th>Наименование</th><th style="text-align:center;">Кол-во</th>
+          <th>Наш заказ</th><th>Проформа</th><th>Проблема</th><th>Решение</th><th>Статус</th><th></th>
+        </tr></thead>
+        <tbody>
+          <tr style="background:#FFF5F5;">
+            <td><a class="mono" style="font-size:12px;font-weight:600;color:#DC2626;">HXE32806</a></td>
+            <td style="font-weight:500;">Прокладка головки цил.</td>
+            <td style="text-align:center;" class="mono">1</td>
+            <td><a class="mono" style="font-size:11px;" onclick="nav('order-detail')">№000368</a></td>
+            <td><a class="mono" style="font-size:11px;" onclick="nav('placed-order')">PRF-2026-089</a></td>
+            <td style="color:#475569;">Нет на складе</td>
+            <td style="color:#475569;">Экспресс склад</td>
+            <td><span class="badge badge-red">Срочно</span></td>
+            <td><button class="btn btn-ghost">Открыть</button></td>
+          </tr>
+          <tr>
+            <td><a class="mono" style="font-size:12px;font-weight:600;">AXE63131</a></td>
+            <td style="font-weight:500;">Шестерня ведущая</td>
+            <td style="text-align:center;" class="mono">1</td>
+            <td><a class="mono" style="font-size:11px;" onclick="nav('order-detail')">№000361</a></td>
+            <td><a class="mono" style="font-size:11px;" onclick="nav('placed-order')">PRF-2026-088</a></td>
+            <td style="color:#475569;">Снято с производства</td>
+            <td style="color:#475569;">Альтерн. поставщик</td>
+            <td><span class="badge badge-orange">В работе</span></td>
+            <td><button class="btn btn-ghost">Открыть</button></td>
+          </tr>
+          <tr>
+            <td><a class="mono" style="font-size:12px;font-weight:600;">AHC21949</a></td>
+            <td style="font-weight:500;">Форсунка топливная</td>
+            <td style="text-align:center;" class="mono">2</td>
+            <td><a class="mono" style="font-size:11px;" onclick="nav('order-detail')">№000368</a></td>
+            <td><a class="mono" style="font-size:11px;" onclick="nav('placed-order')">PRF-2026-089</a></td>
+            <td style="color:#475569;">Нет на складе</td>
+            <td style="color:#475569;">Заказ на пр-во</td>
+            <td><span class="badge badge-orange">В работе</span></td>
+            <td><button class="btn btn-ghost">Открыть</button></td>
+          </tr>
+          <tr>
+            <td><a class="mono" style="font-size:12px;font-weight:600;">R146680</a></td>
+            <td style="font-weight:500;">Подшипник игольчатый</td>
+            <td style="text-align:center;" class="mono">4</td>
+            <td><a class="mono" style="font-size:11px;" onclick="nav('order-detail')">№000350</a></td>
+            <td><a class="mono" style="font-size:11px;" onclick="nav('placed-order')">PRF-2026-087</a></td>
+            <td style="color:#475569;">Нет на складе</td>
+            <td style="color:#475569;">Следующая поставка</td>
+            <td><span class="badge badge-orange">В работе</span></td>
+            <td><button class="btn btn-ghost">Открыть</button></td>
+          </tr>
+          <tr style="background:#FFF5F5;">
+            <td><a class="mono" style="font-size:12px;font-weight:600;color:#DC2626;">RE505743</a></td>
+            <td style="font-weight:500;">Фильтр трансм. масла</td>
+            <td style="text-align:center;" class="mono">1</td>
+            <td><a class="mono" style="font-size:11px;" onclick="nav('order-detail')">№000344</a></td>
+            <td><a class="mono" style="font-size:11px;" onclick="nav('placed-order')">PRF-2026-086</a></td>
+            <td style="color:#475569;">Нет на складе</td>
+            <td style="color:#475569;">Экспресс склад</td>
+            <td><span class="badge badge-red">Срочно</span></td>
+            <td><button class="btn btn-ghost">Открыть</button></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div style="padding:8px 14px;border-top:1px solid #F8FAFC;">
+      <span class="footer-stat">Всего в backorder: <strong>5 позиций</strong> &nbsp;·&nbsp; <span class="accent-red">2 срочных</span> &nbsp;·&nbsp; <span class="accent-orange">3 в работе</span></span>
+    </div>
+  </div>
+
+  <!-- Gabarit legend -->
+  <div style="display:flex;align-items:center;gap:20px;padding:0 4px;">
+    <span style="font-size:10px;font-weight:600;color:#94A3B8;text-transform:uppercase;letter-spacing:0.5px;">Габарит:</span>
+    <div style="display:flex;align-items:center;gap:6px;"><span class="dot dot-green"></span><span style="font-size:11px;color:#475569;">Стандарт</span></div>
+    <div style="display:flex;align-items:center;gap:6px;"><span class="dot dot-orange"></span><span style="font-size:11px;color:#475569;">Крупные детали</span></div>
+    <div style="display:flex;align-items:center;gap:6px;"><span class="dot dot-red"></span><span style="font-size:11px;color:#475569;">Супергабарит</span></div>
+    <div style="display:flex;align-items:center;gap:6px;"><span class="dot dot-purple"></span><span style="font-size:11px;color:#475569;">Нет данных</span></div>
+  </div>
+
+</div>
+</div><!-- /page-orders -->
+
+
+<!-- ══════════════════════════════════════════════════════════════════ -->
+<!-- PAGE: ORDER-DETAIL                                                 -->
+<!-- ══════════════════════════════════════════════════════════════════ -->
+<div id="page-order-detail" class="page">
+<div style="max-width:1440px;margin:0 auto;padding:16px 20px 28px;">
+
+  <div style="display:flex;align-items:center;gap:5px;font-size:11px;color:#94A3B8;margin-bottom:14px;">
+    <a onclick="nav('supplier')" style="color:#94A3B8;cursor:pointer;">Поставщик</a>
+    <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+    <a onclick="nav('orders')" style="color:#94A3B8;cursor:pointer;">Заказы</a>
+    <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+    <span style="color:#0F172A;font-weight:600;">№000412</span>
+  </div>
+
+  <!-- Order chips -->
+  <div style="display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap;">
+    <div class="order-chip" onclick="nav('placed-order')">
+      <div style="display:flex;align-items:center;gap:6px;margin-bottom:4px;">
+        <span style="color:#94A3B8;font-size:10px;">●</span>
+        <span class="mono" style="font-size:12px;font-weight:700;color:#0F172A;">№000368</span>
+        <span style="color:#64748B;font-size:11px;">АФ АНА-ЮГ</span>
+      </div>
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;">
+        <span style="color:#64748B;font-size:11px;">120 поз. &nbsp;·&nbsp; <span class="mono" style="font-weight:600;">28 140 €</span></span>
+        <span class="badge badge-green" style="font-size:9px;">Размещённые</span>
+      </div>
+    </div>
+    <div class="order-chip" onclick="nav('placed-order')">
+      <div style="display:flex;align-items:center;gap:6px;margin-bottom:4px;">
+        <span style="color:#94A3B8;font-size:10px;">●</span>
+        <span class="mono" style="font-size:12px;font-weight:700;color:#0F172A;">№000361</span>
+        <span style="color:#64748B;font-size:11px;">ЧЕРКИЗОВО</span>
+      </div>
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;">
+        <span style="color:#64748B;font-size:11px;">98 поз. &nbsp;·&nbsp; <span class="mono" style="font-weight:600;">22 680 €</span></span>
+        <span class="badge badge-green" style="font-size:9px;">Размещённые</span>
+      </div>
+    </div>
+    <div class="order-chip current">
+      <div style="display:flex;align-items:center;gap:6px;margin-bottom:4px;">
+        <span style="color:#2563EB;font-size:10px;">●</span>
+        <span class="mono" style="font-size:12px;font-weight:700;color:#0F172A;">№000412</span>
+        <span style="color:#64748B;font-size:11px;">АФ АНА-ЮГ</span>
+      </div>
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;">
+        <span style="color:#64748B;font-size:11px;">41 поз. &nbsp;·&nbsp; <span class="mono" style="font-weight:600;">12 450 €</span></span>
+        <span class="badge badge-orange" style="font-size:9px;">К размещению</span>
+      </div>
+    </div>
+    <div class="order-chip" onclick="nav('order-detail')">
+      <div style="display:flex;align-items:center;gap:6px;margin-bottom:4px;">
+        <span style="color:#94A3B8;font-size:10px;">●</span>
+        <span class="mono" style="font-size:12px;font-weight:700;color:#0F172A;">№000350</span>
+        <span style="color:#64748B;font-size:11px;">МИРАТОРГ</span>
+      </div>
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;">
+        <span style="color:#64748B;font-size:11px;">77 поз. &nbsp;·&nbsp; <span class="mono" style="font-weight:600;">17 580 €</span></span>
+        <span class="badge badge-orange" style="font-size:9px;">К размещению</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Info card -->
+  <div class="card" style="margin-bottom:12px;padding:14px 16px;">
+    <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px;">
+      <div style="display:flex;gap:28px;flex-wrap:wrap;">
+        <div><div class="info-label">Клиент</div><div class="info-value">АФ АНА-ЮГ</div></div>
+        <div><div class="info-label">Поставщик</div><div class="info-value">Midwest Parts GmbH</div></div>
+        <div><div class="info-label">Марка</div><div class="info-value">John Deere</div></div>
+        <div><div class="info-label">Дата поставки</div><div class="info-value mono">25.07.2026</div></div>
+        <div><div class="info-label">Тип заказа</div><div class="info-value"><span class="type-so">SO</span></div></div>
+        <div><div class="info-label">Сумма</div><div class="info-value mono" style="font-weight:700;">12 450 €</div></div>
+        <div><div class="info-label">Поставка</div><div class="info-value" style="color:#475569;">Поставка 45</div></div>
+      </div>
+      <div style="display:flex;gap:8px;">
+        <button class="btn btn-ghost" onclick="nav('actualization')">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
+          Актуализация
+        </button>
+        <button class="btn btn-ghost" onclick="openModal('email')">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+          Письмо поставщику
+        </button>
+        <button class="btn btn-danger" onclick="openModal('reconcile')">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
+          Сверка заказа
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Positions -->
+  <div class="card" style="overflow:hidden;">
+    <div class="section-header">
+      <div class="section-title">
+        <div class="section-accent" style="background:#2563EB;"></div>
+        Позиции заказа
+        <span class="badge badge-blue">41</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:8px;">
+        <div class="tab-bar" id="tabs-detail">
+          <button class="tab-btn active" onclick="switchTab('tabs-detail',this)">Все (41)</button>
+          <button class="tab-btn" onclick="switchTab('tabs-detail',this)">Для запроса (31)</button>
+          <button class="tab-btn" onclick="switchTab('tabs-detail',this)">Исключено (10)</button>
+        </div>
+        <button class="btn btn-ghost">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          Экспорт
+        </button>
+      </div>
+    </div>
+    <div style="overflow-x:auto;">
+      <table>
+        <thead><tr>
+          <th style="width:28px;">#</th><th>Артикул</th><th>Наименование</th>
+          <th style="text-align:center;">Кол-во</th><th style="text-align:right;">Цена EUR</th>
+          <th style="text-align:center;">Наличие</th><th style="text-align:center;">Нал. С</th>
+          <th style="text-align:center;">Тип</th><th style="text-align:center;">В Excel</th>
+        </tr></thead>
+        <tbody>
+          <tr>
+            <td class="mono" style="color:#CBD5E1;font-size:10px;">1</td>
+            <td><a class="mono" style="font-size:12px;font-weight:600;">AXE21234</a></td>
+            <td>Фильтр воздушный двигателя</td>
+            <td style="text-align:center;" class="mono">2</td><td style="text-align:right;" class="mono">45.00</td>
+            <td style="text-align:center;"><span class="badge badge-green">10</span></td>
+            <td style="text-align:center;" class="mono" style="color:#64748B;">10</td>
+            <td style="text-align:center;"><span class="type-so">SO</span></td>
+            <td style="text-align:center;"><input type="checkbox" checked></td>
+          </tr>
+          <tr>
+            <td class="mono" style="color:#CBD5E1;font-size:10px;">2</td>
+            <td><a class="mono" style="font-size:12px;font-weight:600;">RE522878</a></td>
+            <td>Масляный фильтр</td>
+            <td style="text-align:center;" class="mono">5</td><td style="text-align:right;" class="mono">18.50</td>
+            <td style="text-align:center;"><span class="badge badge-green">24</span></td>
+            <td style="text-align:center;" class="mono" style="color:#64748B;">24</td>
+            <td style="text-align:center;"><span class="type-so">SO</span></td>
+            <td style="text-align:center;"><input type="checkbox" checked></td>
+          </tr>
+          <tr>
+            <td class="mono" style="color:#CBD5E1;font-size:10px;">3</td>
+            <td><a class="mono" style="font-size:12px;font-weight:600;">AH212497</a></td>
+            <td>Решётка сепаратора зернового</td>
+            <td style="text-align:center;" class="mono">1</td><td style="text-align:right;" class="mono">320.00</td>
+            <td style="text-align:center;"><span class="badge badge-green">3</span></td>
+            <td style="text-align:center;" class="mono" style="color:#64748B;">3</td>
+            <td style="text-align:center;"><span class="type-so">SO</span></td>
+            <td style="text-align:center;"><input type="checkbox" checked></td>
+          </tr>
+          <tr>
+            <td class="mono" style="color:#CBD5E1;font-size:10px;">4</td>
+            <td><a class="mono" style="font-size:12px;font-weight:600;">R130137</a></td>
+            <td>Подшипник конусный</td>
+            <td style="text-align:center;" class="mono">4</td><td style="text-align:right;" class="mono">22.80</td>
+            <td style="text-align:center;"><span class="badge badge-green">8</span></td>
+            <td style="text-align:center;" class="mono" style="color:#64748B;">8</td>
+            <td style="text-align:center;"><span class="type-so">SO</span></td>
+            <td style="text-align:center;"><input type="checkbox" checked></td>
+          </tr>
+          <tr>
+            <td class="mono" style="color:#CBD5E1;font-size:10px;">5</td>
+            <td><a class="mono" style="font-size:12px;font-weight:600;">AW25043</a></td>
+            <td>Уплотнение вала трансмиссии</td>
+            <td style="text-align:center;" class="mono">2</td><td style="text-align:right;" class="mono">65.50</td>
+            <td style="text-align:center;"><span class="badge badge-red">0</span></td>
+            <td style="text-align:center;" class="mono" style="color:#D97706;font-weight:600;">3 С</td>
+            <td style="text-align:center;"><span class="type-an">AN</span></td>
+            <td style="text-align:center;"><input type="checkbox" checked></td>
+          </tr>
+          <tr>
+            <td class="mono" style="color:#CBD5E1;font-size:10px;">6</td>
+            <td><a class="mono" style="font-size:12px;font-weight:600;">RE19452</a></td>
+            <td>Клапан гидравлический</td>
+            <td style="text-align:center;" class="mono">1</td><td style="text-align:right;" class="mono">215.00</td>
+            <td style="text-align:center;"><span class="badge badge-green">1</span></td>
+            <td style="text-align:center;" class="mono" style="color:#64748B;">1</td>
+            <td style="text-align:center;"><span class="type-so">SO</span></td>
+            <td style="text-align:center;"><input type="checkbox" checked></td>
+          </tr>
+          <tr>
+            <td class="mono" style="color:#CBD5E1;font-size:10px;">7</td>
+            <td><a class="mono" style="font-size:12px;font-weight:600;">RE67468</a></td>
+            <td>Ремень клиновой</td>
+            <td style="text-align:center;" class="mono">3</td><td style="text-align:right;" class="mono">28.40</td>
+            <td style="text-align:center;"><span class="badge badge-green">12</span></td>
+            <td style="text-align:center;" class="mono" style="color:#64748B;">12</td>
+            <td style="text-align:center;"><span class="type-so">SO</span></td>
+            <td style="text-align:center;"><input type="checkbox" checked></td>
+          </tr>
+          <tr>
+            <td class="mono" style="color:#CBD5E1;font-size:10px;">8</td>
+            <td><a class="mono" style="font-size:12px;font-weight:600;color:#CBD5E1;">AXE89231</a></td>
+            <td style="color:#94A3B8;text-decoration:line-through;">Манометр давления масла</td>
+            <td style="text-align:center;" class="mono" style="color:#CBD5E1;">1</td>
+            <td style="text-align:right;" class="mono" style="color:#CBD5E1;">45.00</td>
+            <td style="text-align:center;opacity:0.4;"><span class="badge badge-slate">0</span></td>
+            <td style="text-align:center;" class="mono" style="color:#CBD5E1;">0</td>
+            <td style="text-align:center;"><span class="type-so" style="opacity:0.4;">SO</span></td>
+            <td style="text-align:center;"><input type="checkbox"></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div style="padding:8px 14px;border-top:1px solid #F8FAFC;display:flex;justify-content:space-between;align-items:center;">
+      <span class="footer-stat">Показано 8 из 41 позиции</span>
+      <span class="footer-stat">В Excel: <strong>31 поз.</strong> &nbsp;·&nbsp; Исключено: <strong>10 поз.</strong> &nbsp;·&nbsp; Сумма: <span class="mono" style="font-weight:700;color:#0F172A;">10 840 €</span></span>
+    </div>
+  </div>
+
+</div>
+</div><!-- /page-order-detail -->
+
+
+<!-- ══════════════════════════════════════════════════════════════════ -->
+<!-- PAGE: ACTUALIZATION                                                -->
+<!-- ══════════════════════════════════════════════════════════════════ -->
+<div id="page-actualization" class="page">
+<div style="max-width:1440px;margin:0 auto;padding:16px 20px 28px;">
+
+  <div style="display:flex;align-items:center;gap:5px;font-size:11px;color:#94A3B8;margin-bottom:14px;">
+    <a onclick="nav('supplier')" style="color:#94A3B8;cursor:pointer;">Поставщик</a>
+    <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+    <a onclick="nav('orders')" style="color:#94A3B8;cursor:pointer;">Заказы</a>
+    <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+    <a onclick="nav('order-detail')" style="color:#94A3B8;cursor:pointer;">№000412</a>
+    <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+    <span style="color:#0F172A;font-weight:600;">Актуализация</span>
+  </div>
+
+  <div class="card" style="overflow:hidden;">
+    <div class="section-header">
+      <div class="section-title">
+        <div class="section-accent" style="background:#2563EB;"></div>
+        Актуализация заказа №000412
+        <span class="badge badge-blue">41 поз.</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:8px;">
+        <div class="tab-bar" id="tabs-act">
+          <button class="tab-btn active" onclick="switchTab('tabs-act',this)">Все (41)</button>
+          <button class="tab-btn" onclick="switchTab('tabs-act',this)">Для запроса (31)</button>
+          <button class="tab-btn" onclick="switchTab('tabs-act',this)">Исключено (10)</button>
+        </div>
+        <button class="btn btn-ghost" onclick="openModal('email')">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+          В Excel + Письмо
+        </button>
+      </div>
+    </div>
+
+    <div style="overflow-x:auto;">
+      <table>
+        <thead><tr>
+          <th style="width:28px;">#</th><th>Артикул</th><th>Наименование</th>
+          <th style="text-align:center;">Кол-во</th><th style="text-align:right;">Цена EUR</th>
+          <th style="text-align:center;">Наличие</th><th style="text-align:center;">Нал. С</th>
+          <th style="text-align:center;">Тип</th><th style="text-align:center;">В Excel</th>
+        </tr></thead>
+        <tbody>
+          <tr id="act-row-1">
+            <td class="mono" style="color:#CBD5E1;font-size:10px;">1</td>
+            <td><a class="mono" style="font-size:12px;font-weight:600;">AXE21234</a></td>
+            <td>Фильтр воздушный двигателя</td>
+            <td style="text-align:center;" class="mono">2</td><td style="text-align:right;" class="mono">45.00</td>
+            <td style="text-align:center;"><span class="badge badge-green">10</span></td>
+            <td style="text-align:center;" class="mono" style="color:#64748B;">10</td>
+            <td style="text-align:center;"><span class="type-so">SO</span></td>
+            <td style="text-align:center;"><input type="checkbox" checked onchange="toggleReason('act',1,this)"></td>
+          </tr>
+          <tr id="act-reason-1" class="reason-row" style="display:none;">
+            <td colspan="9"><div class="reason-inner">
+              <span style="font-size:11px;color:#64748B;white-space:nowrap;">Причина исключения:</span>
+              <button class="reason-chip" onclick="selectReason('act',1,this,'склад')">Есть на складе</button>
+              <button class="reason-chip" onclick="selectReason('act',1,this,'не нужна')">Не нужна</button>
+              <button class="reason-chip" onclick="selectReason('act',1,this,'другое')">Другое…</button>
+              <button class="reason-chip cancel-chip" onclick="cancelReason('act',1)">✕ Отмена</button>
+            </div></td>
+          </tr>
+          <tr id="act-row-2">
+            <td class="mono" style="color:#CBD5E1;font-size:10px;">2</td>
+            <td><a class="mono" style="font-size:12px;font-weight:600;">RE522878</a></td>
+            <td>Масляный фильтр</td>
+            <td style="text-align:center;" class="mono">5</td><td style="text-align:right;" class="mono">18.50</td>
+            <td style="text-align:center;"><span class="badge badge-green">24</span></td>
+            <td style="text-align:center;" class="mono" style="color:#64748B;">24</td>
+            <td style="text-align:center;"><span class="type-so">SO</span></td>
+            <td style="text-align:center;"><input type="checkbox" checked onchange="toggleReason('act',2,this)"></td>
+          </tr>
+          <tr id="act-reason-2" class="reason-row" style="display:none;">
+            <td colspan="9"><div class="reason-inner">
+              <span style="font-size:11px;color:#64748B;white-space:nowrap;">Причина исключения:</span>
+              <button class="reason-chip" onclick="selectReason('act',2,this,'склад')">Есть на складе</button>
+              <button class="reason-chip" onclick="selectReason('act',2,this,'не нужна')">Не нужна</button>
+              <button class="reason-chip" onclick="selectReason('act',2,this,'другое')">Другое…</button>
+              <button class="reason-chip cancel-chip" onclick="cancelReason('act',2)">✕ Отмена</button>
+            </div></td>
+          </tr>
+          <tr id="act-row-3">
+            <td class="mono" style="color:#CBD5E1;font-size:10px;">3</td>
+            <td><a class="mono" style="font-size:12px;font-weight:600;">AH212497</a></td>
+            <td>Решётка сепаратора зернового</td>
+            <td style="text-align:center;" class="mono">1</td><td style="text-align:right;" class="mono">320.00</td>
+            <td style="text-align:center;"><span class="badge badge-green">3</span></td>
+            <td style="text-align:center;" class="mono" style="color:#64748B;">3</td>
+            <td style="text-align:center;"><span class="type-so">SO</span></td>
+            <td style="text-align:center;"><input type="checkbox" id="act-cb-3" onchange="toggleReason('act',3,this)"></td>
+          </tr>
+          <tr id="act-reason-3" class="reason-row">
+            <td colspan="9"><div class="reason-inner">
+              <span style="font-size:11px;color:#64748B;white-space:nowrap;">Причина исключения:</span>
+              <button class="reason-chip selected" onclick="selectReason('act',3,this,'склад')">Есть на складе</button>
+              <button class="reason-chip" onclick="selectReason('act',3,this,'не нужна')">Не нужна</button>
+              <button class="reason-chip" onclick="selectReason('act',3,this,'другое')">Другое…</button>
+              <button class="reason-chip cancel-chip" onclick="cancelReason('act',3)">✕ Отмена</button>
+            </div></td>
+          </tr>
+          <tr id="act-row-4">
+            <td class="mono" style="color:#CBD5E1;font-size:10px;">4</td>
+            <td><a class="mono" style="font-size:12px;font-weight:600;">R130137</a></td>
+            <td>Подшипник конусный</td>
+            <td style="text-align:center;" class="mono">4</td><td style="text-align:right;" class="mono">22.80</td>
+            <td style="text-align:center;"><span class="badge badge-green">8</span></td>
+            <td style="text-align:center;" class="mono" style="color:#64748B;">8</td>
+            <td style="text-align:center;"><span class="type-so">SO</span></td>
+            <td style="text-align:center;"><input type="checkbox" checked onchange="toggleReason('act',4,this)"></td>
+          </tr>
+          <tr id="act-reason-4" class="reason-row" style="display:none;">
+            <td colspan="9"><div class="reason-inner">
+              <span style="font-size:11px;color:#64748B;white-space:nowrap;">Причина исключения:</span>
+              <button class="reason-chip" onclick="selectReason('act',4,this,'склад')">Есть на складе</button>
+              <button class="reason-chip" onclick="selectReason('act',4,this,'не нужна')">Не нужна</button>
+              <button class="reason-chip" onclick="selectReason('act',4,this,'другое')">Другое…</button>
+              <button class="reason-chip cancel-chip" onclick="cancelReason('act',4)">✕ Отмена</button>
+            </div></td>
+          </tr>
+          <tr id="act-row-5">
+            <td class="mono" style="color:#CBD5E1;font-size:10px;">5</td>
+            <td><a class="mono" style="font-size:12px;font-weight:600;">AW25043</a></td>
+            <td>Уплотнение вала трансмиссии</td>
+            <td style="text-align:center;" class="mono">2</td><td style="text-align:right;" class="mono">65.50</td>
+            <td style="text-align:center;"><span class="badge badge-red">0</span></td>
+            <td style="text-align:center;" class="mono" style="color:#D97706;font-weight:600;">3 С</td>
+            <td style="text-align:center;"><span class="type-an">AN</span></td>
+            <td style="text-align:center;"><input type="checkbox" checked onchange="toggleReason('act',5,this)"></td>
+          </tr>
+          <tr id="act-reason-5" class="reason-row" style="display:none;">
+            <td colspan="9"><div class="reason-inner">
+              <span style="font-size:11px;color:#64748B;white-space:nowrap;">Причина исключения:</span>
+              <button class="reason-chip" onclick="selectReason('act',5,this,'склад')">Есть на складе</button>
+              <button class="reason-chip" onclick="selectReason('act',5,this,'не нужна')">Не нужна</button>
+              <button class="reason-chip" onclick="selectReason('act',5,this,'другое')">Другое…</button>
+              <button class="reason-chip cancel-chip" onclick="cancelReason('act',5)">✕ Отмена</button>
+            </div></td>
+          </tr>
+          <tr id="act-row-6" class="row-excluded">
+            <td class="mono" style="color:#CBD5E1;font-size:10px;">6</td>
+            <td><a class="mono" style="font-size:12px;font-weight:600;color:#CBD5E1;">AXE89231</a></td>
+            <td style="color:#CBD5E1;">Манометр давления масла</td>
+            <td style="text-align:center;" class="mono" style="color:#CBD5E1;">1</td>
+            <td style="text-align:right;" class="mono" style="color:#CBD5E1;">45.00</td>
+            <td style="text-align:center;"><span class="badge badge-slate" style="opacity:0.5;">0</span></td>
+            <td style="text-align:center;" class="mono" style="color:#CBD5E1;">0</td>
+            <td style="text-align:center;"><span class="type-so" style="opacity:0.4;">SO</span></td>
+            <td style="text-align:center;"><input type="checkbox" onchange="toggleReason('act',6,this)"></td>
+          </tr>
+          <tr id="act-reason-6" class="reason-row" style="display:none;">
+            <td colspan="9"><div class="reason-inner">
+              <span style="font-size:11px;color:#64748B;white-space:nowrap;">Причина исключения:</span>
+              <button class="reason-chip selected">Есть на складе</button>
+              <button class="reason-chip" onclick="selectReason('act',6,this,'не нужна')">Не нужна</button>
+              <button class="reason-chip" onclick="selectReason('act',6,this,'другое')">Другое…</button>
+              <button class="reason-chip cancel-chip" onclick="cancelReason('act',6)">✕ Отмена</button>
+            </div></td>
+          </tr>
+          <tr id="act-row-7" class="row-excluded">
+            <td class="mono" style="color:#CBD5E1;font-size:10px;">7</td>
+            <td><a class="mono" style="font-size:12px;font-weight:600;color:#CBD5E1;">R116148</a></td>
+            <td style="color:#CBD5E1;">Фильтр трансмиссии</td>
+            <td style="text-align:center;" class="mono" style="color:#CBD5E1;">2</td>
+            <td style="text-align:right;" class="mono" style="color:#CBD5E1;">78.00</td>
+            <td style="text-align:center;"><span class="badge badge-slate" style="opacity:0.5;">0</span></td>
+            <td style="text-align:center;" class="mono" style="color:#CBD5E1;">0</td>
+            <td style="text-align:center;"><span class="type-so" style="opacity:0.4;">SO</span></td>
+            <td style="text-align:center;"><input type="checkbox" onchange="toggleReason('act',7,this)"></td>
+          </tr>
+          <tr id="act-reason-7" class="reason-row" style="display:none;">
+            <td colspan="9"><div class="reason-inner">
+              <span style="font-size:11px;color:#64748B;white-space:nowrap;">Причина исключения:</span>
+              <button class="reason-chip" onclick="selectReason('act',7,this,'склад')">Есть на складе</button>
+              <button class="reason-chip selected">Не нужна</button>
+              <button class="reason-chip" onclick="selectReason('act',7,this,'другое')">Другое…</button>
+              <button class="reason-chip cancel-chip" onclick="cancelReason('act',7)">✕ Отмена</button>
+            </div></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div style="padding:10px 14px;border-top:1px solid #F1F5F9;display:flex;justify-content:space-between;align-items:center;background:#FAFAFA;">
+      <span class="footer-stat">Показано 7 из 41 позиции</span>
+      <div style="display:flex;align-items:center;gap:16px;">
+        <span class="footer-stat">В Excel: <strong>31 поз.</strong></span>
+        <span style="color:#E2E8F0;">|</span>
+        <span class="footer-stat">Исключено: <span class="accent-orange">10 поз.</span></span>
+        <span style="color:#E2E8F0;">|</span>
+        <span class="footer-stat">Сумма: <span class="mono" style="font-weight:700;color:#0F172A;">10 840 €</span></span>
+      </div>
+    </div>
+  </div>
+
+</div>
+</div><!-- /page-actualization -->
+
+
+<!-- ══════════════════════════════════════════════════════════════════ -->
+<!-- PAGE: PLACED-ORDER                                                 -->
+<!-- ══════════════════════════════════════════════════════════════════ -->
+<div id="page-placed-order" class="page">
+<div style="max-width:1440px;margin:0 auto;padding:16px 20px 28px;">
+
+  <div style="display:flex;align-items:center;gap:5px;font-size:11px;color:#94A3B8;margin-bottom:14px;">
+    <a onclick="nav('supplier')" style="color:#94A3B8;cursor:pointer;">Поставщик</a>
+    <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+    <a onclick="nav('orders')" style="color:#94A3B8;cursor:pointer;">Размещённые</a>
+    <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+    <span style="color:#0F172A;font-weight:600;">PRF-2026-089</span>
+  </div>
+
+  <div class="card" style="margin-bottom:12px;padding:14px 16px;">
+    <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px;">
+      <div style="display:flex;gap:28px;flex-wrap:wrap;">
+        <div><div class="info-label">Проформа</div><div class="info-value mono" style="font-weight:700;">PRF-2026-089</div></div>
+        <div><div class="info-label">Поставщик</div><div class="info-value">Hans Mueller &amp; Co.</div></div>
+        <div><div class="info-label">Марка</div><div class="info-value">AGCO</div></div>
+        <div><div class="info-label">Поставка</div><div class="info-value">Поставка 44</div></div>
+        <div><div class="info-label">Ожид. дата</div><div class="info-value mono">25.06.2026</div></div>
+        <div><div class="info-label">Сумма</div><div class="info-value mono" style="font-weight:700;">68 400 €</div></div>
+        <div><div class="info-label">Позиций</div><div class="info-value mono"><strong>295</strong></div></div>
+      </div>
+      <div style="display:flex;gap:8px;">
+        <button class="btn btn-ghost">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          Экспорт
+        </button>
+        <button class="btn btn-ghost">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"/></svg>
+          Обновить статусы
+        </button>
+        <button class="btn btn-primary">Принять на склад</button>
+        <button class="btn btn-danger" onclick="openModal('reconcile')">Сверка заказа</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" style="overflow:hidden;">
+    <div class="section-header" style="padding-bottom:0;border-bottom:none;">
+      <div class="section-title">
+        <div class="section-accent" style="background:#16A34A;"></div>
+        Позиции поставки
+      </div>
+      <div class="tab-bar" id="tabs-placed" style="padding-bottom:10px;">
+        <button class="tab-btn active" onclick="switchTab('tabs-placed',this)">Все (100)</button>
+        <button class="tab-btn" onclick="switchTab('tabs-placed',this)">Поступило (9)</button>
+        <button class="tab-btn" onclick="switchTab('tabs-placed',this)">Transit (88)</button>
+        <button class="tab-btn" onclick="switchTab('tabs-placed',this)">Backorder (1)</button>
+        <button class="tab-btn" onclick="switchTab('tabs-placed',this)">Cancel (1)</button>
+        <button class="tab-btn" onclick="switchTab('tabs-placed',this)">Перенесена (2)</button>
+      </div>
+    </div>
+    <div style="border-top:1px solid #F1F5F9;overflow-x:auto;">
+      <table>
+        <thead><tr>
+          <th>Артикул</th><th>Наименование</th>
+          <th style="text-align:center;">Заказ.</th><th style="text-align:center;">Подтв.</th><th style="text-align:center;">Получ.</th>
+          <th>Статус</th><th>Поставка</th><th>Ожид. дата</th>
+          <th style="text-align:right;">ЗЦ €</th><th style="text-align:right;">ПЦ €</th><th style="text-align:right;">Δ €</th>
+          <th style="text-align:center;">Тип</th>
+        </tr></thead>
+        <tbody>
+          <tr>
+            <td><a class="mono" style="font-size:12px;font-weight:600;">RE522878</a></td>
+            <td>Масляный фильтр</td>
+            <td style="text-align:center;" class="mono">10</td><td style="text-align:center;" class="mono">10</td>
+            <td style="text-align:center;" class="mono" style="color:#16A34A;font-weight:600;">10</td>
+            <td><span class="st st-arrived">✓ Поступило</span></td>
+            <td><span class="shp shp-arrived">П-44</span></td>
+            <td class="mono" style="color:#475569;font-size:11px;">15.06.2026</td>
+            <td style="text-align:right;" class="mono">45.00</td><td style="text-align:right;" class="mono">44.50</td>
+            <td style="text-align:right;" class="mono" style="color:#16A34A;">−5.00</td>
+            <td style="text-align:center;"><span class="type-std">STD</span></td>
+          </tr>
+          <tr>
+            <td><a class="mono" style="font-size:12px;font-weight:600;">AXE21234</a></td>
+            <td>Фильтр воздушный двигателя</td>
+            <td style="text-align:center;" class="mono">2</td><td style="text-align:center;" class="mono">2</td>
+            <td style="text-align:center;" class="mono" style="color:#94A3B8;">—</td>
+            <td><span class="st st-transit">→ Transit</span></td>
+            <td><span class="shp shp-current">П-44</span></td>
+            <td class="mono" style="color:#475569;font-size:11px;">25.06.2026</td>
+            <td style="text-align:right;" class="mono">45.00</td><td style="text-align:right;" class="mono">45.00</td>
+            <td style="text-align:right;" class="mono" style="color:#94A3B8;">—</td>
+            <td style="text-align:center;"><span class="type-so">SO</span></td>
+          </tr>
+          <tr>
+            <td><a class="mono" style="font-size:12px;font-weight:600;">AH212497</a></td>
+            <td>Решётка сепаратора зернового</td>
+            <td style="text-align:center;" class="mono">3</td><td style="text-align:center;" class="mono">3</td>
+            <td style="text-align:center;" class="mono" style="color:#94A3B8;">—</td>
+            <td><span class="st st-transit">→ Transit</span></td>
+            <td><span class="shp shp-current">П-44</span></td>
+            <td class="mono" style="color:#475569;font-size:11px;">25.06.2026</td>
+            <td style="text-align:right;" class="mono">320.00</td><td style="text-align:right;" class="mono">319.00</td>
+            <td style="text-align:right;" class="mono" style="color:#16A34A;">−3.00</td>
+            <td style="text-align:center;"><span class="type-so">SO</span></td>
+          </tr>
+          <tr>
+            <td><a class="mono" style="font-size:12px;font-weight:600;">R130137</a></td>
+            <td>Подшипник конусный</td>
+            <td style="text-align:center;" class="mono">8</td><td style="text-align:center;" class="mono">8</td>
+            <td style="text-align:center;" class="mono" style="color:#94A3B8;">—</td>
+            <td><span class="st st-shipped">↑ Отгружено</span></td>
+            <td><span class="shp shp-current">П-44</span></td>
+            <td class="mono" style="color:#475569;font-size:11px;">20.06.2026</td>
+            <td style="text-align:right;" class="mono">22.80</td><td style="text-align:right;" class="mono">22.80</td>
+            <td style="text-align:right;" class="mono" style="color:#94A3B8;">—</td>
+            <td style="text-align:center;"><span class="type-so">SO</span></td>
+          </tr>
+          <tr>
+            <td><a class="mono" style="font-size:12px;font-weight:600;">RE19452</a></td>
+            <td>Клапан гидравлический</td>
+            <td style="text-align:center;" class="mono">1</td><td style="text-align:center;" class="mono">1</td>
+            <td style="text-align:center;" class="mono" style="color:#94A3B8;">—</td>
+            <td><span class="st st-confirmed">○ Подтверждено</span></td>
+            <td><span class="shp shp-current">П-44</span></td>
+            <td class="mono" style="color:#475569;font-size:11px;">30.06.2026</td>
+            <td style="text-align:right;" class="mono">215.00</td><td style="text-align:right;" class="mono">216.20</td>
+            <td style="text-align:right;" class="mono" style="color:#DC2626;">+1.20</td>
+            <td style="text-align:center;"><span class="type-so">SO</span></td>
+          </tr>
+          <tr>
+            <td><a class="mono" style="font-size:12px;font-weight:600;">AXE63142</a></td>
+            <td>Ремень приводной</td>
+            <td style="text-align:center;" class="mono">3</td><td style="text-align:center;" class="mono">3</td>
+            <td style="text-align:center;" class="mono" style="color:#94A3B8;">—</td>
+            <td><span class="st st-confirmed">○ Подтверждено</span></td>
+            <td><span class="shp shp-moved">Перенесена</span></td>
+            <td class="mono" style="color:#D97706;font-size:11px;">15.07.2026</td>
+            <td style="text-align:right;" class="mono">32.00</td><td style="text-align:right;" class="mono">32.00</td>
+            <td style="text-align:right;" class="mono" style="color:#94A3B8;">—</td>
+            <td style="text-align:center;"><span class="type-std">STD</span></td>
+          </tr>
+          <tr style="background:#FFF5F5;">
+            <td><a class="mono" style="font-size:12px;font-weight:600;color:#DC2626;">HXE32806</a></td>
+            <td>Прокладка головки цил.</td>
+            <td style="text-align:center;" class="mono">2</td>
+            <td style="text-align:center;" class="mono" style="color:#94A3B8;">—</td>
+            <td style="text-align:center;" class="mono" style="color:#94A3B8;">—</td>
+            <td><span class="st st-backorder">⏸ Backorder</span></td>
+            <td><span class="shp shp-current">П-44</span></td>
+            <td class="mono" style="color:#D97706;font-size:11px;">TBD</td>
+            <td style="text-align:right;" class="mono">48.50</td>
+            <td style="text-align:right;" class="mono" style="color:#94A3B8;">—</td>
+            <td style="text-align:right;" class="mono" style="color:#94A3B8;">—</td>
+            <td style="text-align:center;"><span class="type-so">SO</span></td>
+          </tr>
+          <tr style="background:#FFF5F5;">
+            <td><a class="mono" style="font-size:12px;font-weight:600;color:#DC2626;">AW25043</a></td>
+            <td style="color:#94A3B8;">Уплотнение вала трансмиссии</td>
+            <td style="text-align:center;" class="mono" style="color:#94A3B8;">2</td>
+            <td style="text-align:center;" class="mono" style="color:#94A3B8;">0</td>
+            <td style="text-align:center;" class="mono" style="color:#94A3B8;">—</td>
+            <td><span class="st st-cancel">✕ Cancel</span></td>
+            <td><span class="shp shp-cancelled">Отменена</span></td>
+            <td class="mono" style="color:#94A3B8;font-size:11px;">—</td>
+            <td style="text-align:right;" class="mono" style="color:#94A3B8;">65.50</td>
+            <td style="text-align:right;" class="mono" style="color:#94A3B8;">—</td>
+            <td style="text-align:right;" class="mono" style="color:#94A3B8;">—</td>
+            <td style="text-align:center;"><span class="type-an">AN</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div style="padding:10px 14px;border-top:1px solid #F1F5F9;display:flex;justify-content:space-between;align-items:center;background:#FAFAFA;">
+      <span class="footer-stat">Показано 8 из 100 &nbsp;·&nbsp; <span class="accent-orange">1 Backorder</span> &nbsp;·&nbsp; <span class="accent-red">1 Cancel</span> &nbsp;·&nbsp; <span class="accent-orange">2 Перенесена</span></span>
+      <div style="display:flex;align-items:center;gap:6px;">
+        <span style="font-size:11px;color:#64748B;">Итоговая разница:</span>
+        <span class="mono" style="font-size:13px;font-weight:700;color:#16A34A;">−€3.80</span>
+      </div>
+    </div>
+  </div>
+
+</div>
+</div><!-- /page-placed-order -->
+
+
+<!-- ══════════════════════════════════════════════════════════════════ -->
+<!-- MODAL: EMAIL                                                       -->
+<!-- ══════════════════════════════════════════════════════════════════ -->
+<div id="modal-email" class="modal-overlay">
+  <div class="modal-box" style="width:640px;">
+    <div class="modal-header">
+      <div class="modal-title">Письмо поставщику — Midwest Parts GmbH</div>
+      <button onclick="closeModal('email')" style="background:none;border:none;cursor:pointer;color:#94A3B8;padding:4px;" onmouseover="this.style.color='#0F172A'" onmouseout="this.style.color='#94A3B8'">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+    <div style="padding:16px;">
+      <div style="margin-bottom:12px;">
+        <label style="display:block;font-size:11px;font-weight:600;color:#475569;margin-bottom:4px;">Шаблон</label>
+        <select style="width:100%;height:32px;border:1px solid #E2E8F0;border-radius:7px;padding:0 10px;font-size:12px;font-family:'Fira Sans',sans-serif;background:#fff;outline:none;">
+          <option>Запрос наличия (Excel)</option>
+          <option>Подтверждение заказа</option>
+          <option>Запрос статуса backorder</option>
+        </select>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px;">
+        <div>
+          <label style="display:block;font-size:11px;font-weight:600;color:#475569;margin-bottom:4px;">От</label>
+          <input type="text" value="aiclaude@agr24.ru" class="input" style="font-family:'Fira Code',monospace;background:#F8FAFC;color:#475569;">
+        </div>
+        <div>
+          <label style="display:block;font-size:11px;font-weight:600;color:#475569;margin-bottom:4px;">Кому</label>
+          <input type="text" value="orders@midwest-parts.de" class="input" style="font-family:'Fira Code',monospace;">
+        </div>
+      </div>
+      <div style="margin-bottom:12px;">
+        <label style="display:block;font-size:11px;font-weight:600;color:#475569;margin-bottom:4px;">Тема</label>
+        <input type="text" value="Parts availability request — Order №000412 / АФ АНА-ЮГ" class="input">
+      </div>
+      <div style="margin-bottom:12px;">
+        <label style="display:block;font-size:11px;font-weight:600;color:#475569;margin-bottom:4px;">Текст письма</label>
+        <textarea style="width:100%;height:120px;border:1px solid #E2E8F0;border-radius:7px;padding:10px;font-size:12px;font-family:'Fira Sans',sans-serif;color:#0F172A;outline:none;resize:vertical;line-height:1.5;">Dear Midwest Parts team,
+
+Please find attached the parts availability request for order №000412 (client: АФ АНА-ЮГ).
+
+Kindly confirm availability and lead times for 31 positions listed in the Excel file.
+
+Best regards,
+AGR PARTS Procurement</textarea>
+      </div>
+      <div style="padding:10px 12px;background:#F8FAFC;border:1px solid #E2E8F0;border-radius:8px;display:flex;align-items:center;gap:8px;margin-bottom:16px;">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#2563EB" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+        <span style="font-size:12px;color:#2563EB;font-weight:500;">Order_000412_request.xlsx</span>
+        <span style="font-size:11px;color:#94A3B8;margin-left:auto;">31 позиция · 18 KB</span>
+      </div>
+      <div style="display:flex;justify-content:flex-end;gap:8px;">
+        <button class="btn btn-ghost" onclick="closeModal('email')">Отмена</button>
+        <button class="btn btn-primary">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+          Отправить письмо
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════════════════════════════════ -->
+<!-- MODAL: RECONCILE                                                   -->
+<!-- ══════════════════════════════════════════════════════════════════ -->
+<div id="modal-reconcile" class="modal-overlay">
+  <div class="modal-box" style="width:580px;">
+    <div class="modal-header">
+      <div class="modal-title">Сверка заказа — PRF-2026-089</div>
+      <button onclick="closeModal('reconcile')" style="background:none;border:none;cursor:pointer;color:#94A3B8;padding:4px;" onmouseover="this.style.color='#0F172A'" onmouseout="this.style.color='#94A3B8'">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+    <div style="padding:16px;">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px;">
+        <div style="padding:12px;background:#F8FAFC;border-radius:8px;border:1px solid #E2E8F0;">
+          <div class="info-label" style="margin-bottom:4px;">Заказано позиций</div>
+          <div style="font-size:22px;font-weight:700;font-family:'Fira Code',monospace;color:#0F172A;">100</div>
+        </div>
+        <div style="padding:12px;background:#F8FAFC;border-radius:8px;border:1px solid #E2E8F0;">
+          <div class="info-label" style="margin-bottom:4px;">Подтверждено</div>
+          <div style="font-size:22px;font-weight:700;font-family:'Fira Code',monospace;color:#16A34A;">97</div>
+        </div>
+        <div style="padding:12px;background:#FEF3C7;border-radius:8px;border:1px solid #FDE68A;">
+          <div class="info-label" style="margin-bottom:4px;color:#D97706;">Backorder</div>
+          <div style="font-size:22px;font-weight:700;font-family:'Fira Code',monospace;color:#D97706;">1</div>
+        </div>
+        <div style="padding:12px;background:#FEE2E2;border-radius:8px;border:1px solid #FECACA;">
+          <div class="info-label" style="margin-bottom:4px;color:#DC2626;">Отменено</div>
+          <div style="font-size:22px;font-weight:700;font-family:'Fira Code',monospace;color:#DC2626;">2</div>
+        </div>
+      </div>
+      <div style="padding:12px;background:#DCFCE7;border-radius:8px;border:1px solid #BBF7D0;margin-bottom:16px;display:flex;justify-content:space-between;align-items:center;">
+        <span style="font-size:12px;color:#15803D;font-weight:500;">Итоговая разница по ценам:</span>
+        <span style="font-size:16px;font-weight:700;font-family:'Fira Code',monospace;color:#16A34A;">−€3.80</span>
+      </div>
+      <div style="font-size:11px;color:#94A3B8;margin-bottom:16px;">
+        Сумма подтверждена: <strong style="color:#0F172A;">68 396.20 €</strong> из заказных <strong style="color:#0F172A;">68 400.00 €</strong>
+      </div>
+      <div style="display:flex;justify-content:flex-end;gap:8px;">
+        <button class="btn btn-ghost" onclick="closeModal('reconcile')">Закрыть</button>
+        <button class="btn btn-primary">Подтвердить сверку</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ─── JavaScript ──────────────────────────────────────────────────── -->
+<script>
+function nav(id) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  var page = document.getElementById('page-' + id);
+  if (!page) return;
+  page.classList.add('active');
+  document.getElementById('topnav').style.display = (id === 'dashboard') ? 'none' : '';
+  history.pushState(null, '', '#' + id);
+  window.scrollTo(0, 0);
+}
+
+function openModal(id) {
+  document.getElementById('modal-' + id).classList.add('active');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeModal(id) {
+  document.getElementById('modal-' + id).classList.remove('active');
+  document.body.style.overflow = '';
+}
+
+function toggleReason(prefix, rowId, checkbox) {
+  var reasonRow = document.getElementById(prefix + '-reason-' + rowId);
+  var mainRow   = document.getElementById(prefix + '-row-'    + rowId);
+  if (!checkbox.checked) {
+    reasonRow.style.display = '';
+  } else {
+    reasonRow.style.display = 'none';
+    mainRow.classList.remove('row-excluded');
+    reasonRow.querySelectorAll('.reason-chip').forEach(function(c) { c.classList.remove('selected'); });
+  }
+}
+
+function selectReason(prefix, rowId, chipEl, reason) {
+  var reasonRow = document.getElementById(prefix + '-reason-' + rowId);
+  var mainRow   = document.getElementById(prefix + '-row-'    + rowId);
+  reasonRow.querySelectorAll('.reason-chip').forEach(function(c) { c.classList.remove('selected'); });
+  chipEl.classList.add('selected');
+  mainRow.classList.add('row-excluded');
+}
+
+function cancelReason(prefix, rowId) {
+  var cb = document.querySelector('#' + prefix + '-row-' + rowId + ' input[type=checkbox]');
+  var reasonRow = document.getElementById(prefix + '-reason-' + rowId);
+  var mainRow   = document.getElementById(prefix + '-row-'    + rowId);
+  if (cb) cb.checked = true;
+  reasonRow.style.display = 'none';
+  mainRow.classList.remove('row-excluded');
+}
+
+function switchTab(tabBarId, btn) {
+  document.getElementById(tabBarId).querySelectorAll('.tab-btn').forEach(function(b) { b.classList.remove('active'); });
+  btn.classList.add('active');
+}
+
+document.querySelectorAll('.modal-overlay').forEach(function(overlay) {
+  overlay.addEventListener('click', function(e) {
+    if (e.target === overlay) {
+      overlay.classList.remove('active');
+      document.body.style.overflow = '';
+    }
+  });
+});
+
+window.addEventListener('DOMContentLoaded', function() {
+  var id = location.hash.slice(1) || 'dashboard';
+  var page = document.getElementById('page-' + id);
+  if (page) nav(id); else nav('dashboard');
+});
+
+window.addEventListener('popstate', function() {
+  var id = location.hash.slice(1) || 'dashboard';
+  var page = document.getElementById('page-' + id);
+  if (page) {
+    document.querySelectorAll('.page').forEach(function(p) { p.classList.remove('active'); });
+    page.classList.add('active');
+    document.getElementById('topnav').style.display = (id === 'dashboard') ? 'none' : '';
+    window.scrollTo(0, 0);
+  }
+});
+</script>
+</body>
+</html>
