@@ -195,6 +195,59 @@ tbody td { padding: 7px 10px; vertical-align: middle; }
 .zpo-row { display:flex; align-items:center; gap:8px; padding:6px 8px; border-radius:7px; cursor:pointer; transition:background 120ms; }
 .zpo-row:hover { background:#F8FAFC; }
 .zpo-row.selected { background:#EFF6FF; }
+
+/* ── CONTRACTORS SECTION ── */
+.form-label { display:block; font-size:11px; font-weight:600; color:#475569; margin-bottom:5px; text-transform:uppercase; letter-spacing:.3px; }
+.form-label .req { color:#EF4444; margin-left:2px; }
+.form-input { width:100%; border:1px solid #E2E8F0; border-radius:7px; padding:8px 11px; font-size:13px; font-family:'Fira Sans',sans-serif; color:#0F172A; background:#fff; outline:none; transition:border 120ms,box-shadow 120ms; }
+.form-input:focus { border-color:#93C5FD; box-shadow:0 0 0 3px rgba(37,99,235,.08); }
+.form-input::placeholder { color:#CBD5E1; }
+.form-select { width:100%; border:1px solid #E2E8F0; border-radius:7px; padding:8px 11px; font-size:13px; font-family:'Fira Sans',sans-serif; color:#0F172A; background:#fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 24 24' fill='none' stroke='%2394A3B8' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E") no-repeat right 10px center; -webkit-appearance:none; outline:none; cursor:pointer; transition:border 120ms; }
+.form-select:focus { border-color:#93C5FD; box-shadow:0 0 0 3px rgba(37,99,235,.08); }
+textarea.form-input { resize:vertical; min-height:68px; line-height:1.5; }
+.form-row { display:grid; gap:14px; }
+.form-row-2 { grid-template-columns:1fr 1fr; }
+.form-row-3 { grid-template-columns:1fr 1fr 1fr; }
+.form-row-4 { grid-template-columns:1fr 1fr 1fr 1fr; }
+.form-section { padding:20px 22px; }
+.form-section-title { font-size:12px; font-weight:700; color:#0F172A; text-transform:uppercase; letter-spacing:.5px; display:flex; align-items:center; gap:8px; margin-bottom:16px; }
+.form-section-accent { width:3px; height:14px; border-radius:2px; display:inline-block; }
+.form-hint { font-size:10px; color:#94A3B8; margin-top:3px; }
+.brand-chip { display:inline-flex; align-items:center; gap:5px; border:1px solid #E2E8F0; border-radius:6px; padding:4px 10px; font-size:11px; font-weight:600; cursor:pointer; background:#F8FAFC; color:#64748B; transition:all 120ms; user-select:none; }
+.brand-chip.sel { border-color:#2563EB; background:#EFF6FF; color:#2563EB; }
+.brand-chip input[type=checkbox] { display:none; }
+.contact-block { border:1px solid #E2E8F0; border-radius:8px; padding:14px 16px; background:#F8FAFC; }
+.add-link { font-size:12px; color:#2563EB; cursor:pointer; font-weight:600; display:inline-flex; align-items:center; gap:4px; border:none; background:none; font-family:'Fira Sans',sans-serif; }
+.add-link:hover { color:#1D4ED8; }
+.branch-card { border:1px solid #E2E8F0; border-radius:8px; padding:14px 16px; background:#fff; transition:border-color 150ms,box-shadow 150ms; }
+.branch-card:hover { border-color:#BFDBFE; box-shadow:0 2px 8px rgba(37,99,235,.06); }
+.country-pill { display:inline-flex; align-items:center; gap:4px; font-size:11px; color:#475569; background:#F8FAFC; border:1px solid #E2E8F0; border-radius:4px; padding:1px 6px; font-weight:500; }
+.role { display:inline-flex; align-items:center; border-radius:4px; padding:1px 6px; font-size:10px; font-weight:600; white-space:nowrap; }
+.role-mgr { background:#EFF6FF; color:#2563EB; }
+.role-wh  { background:#F0FDF4; color:#16A34A; }
+.role-dir { background:#FAF5FF; color:#7C3AED; }
+.role-acc { background:#FFF7ED; color:#C2410C; }
+.role-log { background:#F0FDFA; color:#0F766E; }
+.sdot { width:8px; height:8px; border-radius:50%; display:inline-block; flex-shrink:0; }
+.sdot-green  { background:#22C55E; }
+.sdot-orange { background:#F59E0B; }
+.sdot-red    { background:#EF4444; }
+.sdot-grey   { background:#CBD5E1; }
+.sum-stat { display:flex; flex-direction:column; }
+.sum-stat-val { font-size:18px; font-weight:700; color:#0F172A; font-family:'Fira Code',monospace; }
+.sum-stat-lbl { font-size:10px; color:#94A3B8; font-weight:600; text-transform:uppercase; letter-spacing:.4px; margin-top:1px; }
+.ctr-div { width:1px; background:#E2E8F0; }
+.step-item { display:flex; flex-direction:column; align-items:center; gap:4px; }
+.step-dot { width:28px; height:28px; border-radius:50%; border:2px solid #E2E8F0; background:#fff; display:flex; align-items:center; justify-content:center; font-size:11px; font-weight:700; color:#94A3B8; transition:all 200ms; }
+.step-label { font-size:10px; font-weight:600; color:#94A3B8; white-space:nowrap; transition:color 200ms; }
+.step-item.active .step-dot { border-color:#2563EB; background:#2563EB; color:#fff; }
+.step-item.active .step-label { color:#2563EB; }
+.step-item.done .step-dot { border-color:#16A34A; background:#16A34A; color:#fff; }
+.step-item.done .step-label { color:#16A34A; }
+.step-line { flex:1; height:2px; background:#E2E8F0; margin:0 6px; margin-bottom:18px; }
+.ctr-tabs .tab-btn.active { background:#EFF6FF; color:#2563EB; font-weight:600; }
+.ctr-tabs .tab-btn:not(.active) { background:transparent; color:#64748B; }
+.form-sep { border:none; border-top:1px solid #F1F5F9; margin:0; }
 </style>
 </head>
 <body>
@@ -337,30 +390,519 @@ tbody td { padding: 7px 10px; vertical-align: middle; }
 </div>
 
 <!-- ══════════════════════════════════════════════════════════════════ -->
-<!-- PAGE: CONTRACTORS                                                   -->
+<!-- PAGE: CONTRACTORS LIST                                              -->
 <!-- ══════════════════════════════════════════════════════════════════ -->
 <div id="page-contractors" class="page">
-<div style="max-width:1200px;margin:0 auto;padding:32px 20px;">
-  <div style="display:flex;align-items:center;gap:5px;font-size:11px;color:#94A3B8;margin-bottom:18px;">
+<div style="max-width:1440px;margin:0 auto;padding:16px 20px 40px;">
+  <div style="display:flex;align-items:center;gap:5px;font-size:11px;color:#94A3B8;margin-bottom:14px;">
     <a onclick="nav('supplier')" style="color:#94A3B8;cursor:pointer;">Поставщик</a>
     <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
     <span style="color:#0F172A;font-weight:600;">Контрагенты</span>
   </div>
-  <div style="background:#fff;border:1px solid #E2E8F0;border-radius:12px;padding:48px 40px;text-align:center;max-width:520px;margin:0 auto;">
-    <div style="width:56px;height:56px;background:#EFF6FF;border-radius:14px;display:flex;align-items:center;justify-content:center;margin:0 auto 18px;">
-      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#2563EB" stroke-width="1.6">
-        <path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/>
-        <circle cx="9" cy="7" r="4"/>
-        <path d="M23 21v-2a4 4 0 00-3-3.87"/>
-        <path d="M16 3.13a4 4 0 010 7.75"/>
-      </svg>
+  <div style="display:flex;gap:10px;margin-bottom:16px;">
+    <div class="card" style="padding:14px 20px;display:flex;align-items:center;gap:32px;flex:1;">
+      <div class="sum-stat"><span class="sum-stat-val">24</span><span class="sum-stat-lbl">Контрагентов</span></div>
+      <div class="ctr-div" style="height:32px;"></div>
+      <div class="sum-stat"><span class="sum-stat-val" style="color:#16A34A;">18</span><span class="sum-stat-lbl">Активных</span></div>
+      <div class="ctr-div" style="height:32px;"></div>
+      <div class="sum-stat"><span class="sum-stat-val">7</span><span class="sum-stat-lbl">Стран</span></div>
+      <div class="ctr-div" style="height:32px;"></div>
+      <div class="sum-stat"><span class="sum-stat-val" style="color:#D97706;">12</span><span class="sum-stat-lbl">Открытых проформ</span></div>
+      <div class="ctr-div" style="height:32px;"></div>
+      <div class="sum-stat"><span class="sum-stat-val">284 600 €</span><span class="sum-stat-lbl">Куплено (с начала года)</span></div>
     </div>
-    <div style="font-size:16px;font-weight:700;color:#0F172A;margin-bottom:8px;">Раздел в разработке</div>
-    <div style="font-size:13px;color:#64748B;margin-bottom:24px;line-height:1.6;">Прототип раздела уже готов и дорабатывается.<br>Открой PIL чтобы посмотреть текущую версию.</div>
-    <a href="erp-contractors.html" target="_blank" style="display:inline-flex;align-items:center;gap:7px;background:#2563EB;color:#fff;border-radius:8px;padding:9px 20px;font-size:13px;font-weight:600;text-decoration:none;">
-      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
-      Открыть PIL — Контрагенты
-    </a>
+    <button class="btn btn-primary" onclick="nav('contractors-form')" style="height:auto;padding:0 20px;white-space:nowrap;">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+      Добавить контрагента
+    </button>
+  </div>
+  <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;">
+    <div style="position:relative;flex:1;max-width:380px;">
+      <svg style="position:absolute;left:9px;top:50%;transform:translateY(-50%);color:#94A3B8;" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+      <input class="search-input" style="width:100%;padding-left:32px;" type="text" placeholder="Поиск по названию, стране, марке…">
+    </div>
+    <button class="filter-btn">Страна <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></button>
+    <button class="filter-btn">Марка <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></button>
+    <button class="filter-btn">Статус <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></button>
+  </div>
+  <div class="card" style="overflow:hidden;">
+    <div style="overflow-x:auto;">
+      <table>
+        <thead><tr>
+          <th>Контрагент</th><th>Страна</th><th>Марки</th>
+          <th style="text-align:center;">Филиалов</th><th style="text-align:center;">Контактов</th>
+          <th style="text-align:center;">Открытых проформ</th><th style="text-align:right;">Куплено (год)</th>
+          <th>Статус</th><th></th>
+        </tr></thead>
+        <tbody>
+          <tr style="cursor:pointer;" onclick="nav('contractors-detail')">
+            <td><div style="font-weight:600;color:#0F172A;margin-bottom:2px;">AGROSIEC SP Zoo</div><div style="font-size:10px;color:#94A3B8;">agrosiec.pl</div></td>
+            <td><span class="country-pill">🇵🇱 PL</span></td>
+            <td><div style="display:flex;gap:3px;flex-wrap:wrap;"><span style="font-size:9px;padding:1px 5px;background:#F0FDF4;color:#15803D;border-radius:3px;font-weight:700;border:1px solid #BBF7D0;">AGCO</span><span style="font-size:9px;padding:1px 5px;background:#F0FDF4;color:#15803D;border-radius:3px;font-weight:700;border:1px solid #BBF7D0;">John Deere</span></div></td>
+            <td style="text-align:center;" class="mono">3</td><td style="text-align:center;" class="mono">7</td>
+            <td style="text-align:center;"><span class="badge badge-orange">2</span></td>
+            <td style="text-align:right;" class="mono">84 320 €</td>
+            <td><span style="display:flex;align-items:center;gap:5px;"><span class="sdot sdot-green"></span><span>Активный</span></span></td>
+            <td><button class="btn btn-ghost" onclick="event.stopPropagation();nav('contractors-detail')">Открыть</button></td>
+          </tr>
+          <tr style="cursor:pointer;" onclick="nav('contractors-detail')">
+            <td><div style="font-weight:600;color:#0F172A;margin-bottom:2px;">Hans Mueller &amp; Co.</div><div style="font-size:10px;color:#94A3B8;">hans-mueller.de</div></td>
+            <td><span class="country-pill">🇩🇪 DE</span></td>
+            <td><div style="display:flex;gap:3px;flex-wrap:wrap;"><span style="font-size:9px;padding:1px 5px;background:#FAF5FF;color:#7C3AED;border-radius:3px;font-weight:700;border:1px solid #E9D5FF;">AGCO</span><span style="font-size:9px;padding:1px 5px;background:#FFF7ED;color:#C2410C;border-radius:3px;font-weight:700;border:1px solid #FED7AA;">Fendt</span></div></td>
+            <td style="text-align:center;" class="mono">1</td><td style="text-align:center;" class="mono">4</td>
+            <td style="text-align:center;"><span class="badge badge-orange">1</span></td>
+            <td style="text-align:right;" class="mono">62 180 €</td>
+            <td><span style="display:flex;align-items:center;gap:5px;"><span class="sdot sdot-green"></span><span>Активный</span></span></td>
+            <td><button class="btn btn-ghost" onclick="event.stopPropagation();nav('contractors-detail')">Открыть</button></td>
+          </tr>
+          <tr style="cursor:pointer;" onclick="nav('contractors-detail')">
+            <td><div style="font-weight:600;color:#0F172A;margin-bottom:2px;">Midwest Parts GmbH</div><div style="font-size:10px;color:#94A3B8;">midwest-parts.de</div></td>
+            <td><span class="country-pill">🇩🇪 DE</span></td>
+            <td><div style="display:flex;gap:3px;flex-wrap:wrap;"><span style="font-size:9px;padding:1px 5px;background:#F0FDF4;color:#15803D;border-radius:3px;font-weight:700;border:1px solid #BBF7D0;">John Deere</span></div></td>
+            <td style="text-align:center;" class="mono">2</td><td style="text-align:center;" class="mono">5</td>
+            <td style="text-align:center;"><span class="badge badge-slate">0</span></td>
+            <td style="text-align:right;" class="mono">41 500 €</td>
+            <td><span style="display:flex;align-items:center;gap:5px;"><span class="sdot sdot-green"></span><span>Активный</span></span></td>
+            <td><button class="btn btn-ghost" onclick="event.stopPropagation();nav('contractors-detail')">Открыть</button></td>
+          </tr>
+          <tr style="cursor:pointer;opacity:.75;" onclick="nav('contractors-detail')">
+            <td><div style="font-weight:600;color:#0F172A;margin-bottom:2px;">Fritz Wagner GmbH</div><div style="font-size:10px;color:#94A3B8;">fritz-wagner.de</div></td>
+            <td><span class="country-pill">🇩🇪 DE</span></td>
+            <td><div style="display:flex;gap:3px;flex-wrap:wrap;"><span style="font-size:9px;padding:1px 5px;background:#FFF7ED;color:#C2410C;border-radius:3px;font-weight:700;border:1px solid #FED7AA;">CLAAS</span></div></td>
+            <td style="text-align:center;" class="mono">1</td><td style="text-align:center;" class="mono">2</td>
+            <td style="text-align:center;"><span class="badge badge-slate">0</span></td>
+            <td style="text-align:right;" class="mono">18 900 €</td>
+            <td><span style="display:flex;align-items:center;gap:5px;"><span class="sdot sdot-orange"></span><span>Пауза</span></span></td>
+            <td><button class="btn btn-ghost" onclick="event.stopPropagation();nav('contractors-detail')">Открыть</button></td>
+          </tr>
+          <tr style="cursor:pointer;" onclick="nav('contractors-detail')">
+            <td><div style="font-weight:600;color:#0F172A;margin-bottom:2px;">Tommy B. Parts AS</div><div style="font-size:10px;color:#94A3B8;">tommyparts.no</div></td>
+            <td><span class="country-pill">🇳🇴 NO</span></td>
+            <td><div style="display:flex;gap:3px;flex-wrap:wrap;"><span style="font-size:9px;padding:1px 5px;background:#F0FDF4;color:#15803D;border-radius:3px;font-weight:700;border:1px solid #BBF7D0;">John Deere</span><span style="font-size:9px;padding:1px 5px;background:#F0FDFA;color:#0F766E;border-radius:3px;font-weight:700;border:1px solid #99F6E4;">Valtra</span></div></td>
+            <td style="text-align:center;" class="mono">1</td><td style="text-align:center;" class="mono">3</td>
+            <td style="text-align:center;"><span class="badge badge-orange">3</span></td>
+            <td style="text-align:right;" class="mono">29 440 €</td>
+            <td><span style="display:flex;align-items:center;gap:5px;"><span class="sdot sdot-green"></span><span>Активный</span></span></td>
+            <td><button class="btn btn-ghost" onclick="event.stopPropagation();nav('contractors-detail')">Открыть</button></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div style="padding:10px 14px;border-top:1px solid #F1F5F9;background:#FAFAFA;font-size:11px;color:#94A3B8;">Показано 5 из 24 контрагентов</div>
+  </div>
+</div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════════ -->
+<!-- PAGE: CONTRACTORS DETAIL                                            -->
+<!-- ══════════════════════════════════════════════════════════════════ -->
+<div id="page-contractors-detail" class="page">
+<div style="max-width:1440px;margin:0 auto;padding:16px 20px 40px;">
+  <div style="display:flex;align-items:center;gap:5px;font-size:11px;color:#94A3B8;margin-bottom:14px;">
+    <a onclick="nav('supplier')" style="color:#94A3B8;cursor:pointer;">Поставщик</a>
+    <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+    <a onclick="nav('contractors')" style="color:#94A3B8;cursor:pointer;">Контрагенты</a>
+    <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+    <span style="color:#0F172A;font-weight:600;">AGROSIEC SP Zoo</span>
+  </div>
+  <!-- Header -->
+  <div class="card" style="padding:16px 18px;margin-bottom:12px;">
+    <div style="display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:12px;">
+      <div>
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:6px;">
+          <span style="font-size:18px;font-weight:700;color:#0F172A;">AGROSIEC SP Zoo</span>
+          <span class="country-pill">🇵🇱 Польша</span>
+          <span class="badge badge-green">Активный</span>
+          <span style="background:#FEF3C7;color:#92400E;border:1px solid #FDE68A;border-radius:4px;padding:1px 7px;font-size:10px;font-weight:700;">★ Надёжный</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap;">
+          <div style="display:flex;align-items:center;gap:5px;"><span class="info-label">Валюта</span><span style="font-size:12px;font-weight:600;">EUR / PLN</span></div>
+          <div class="ctr-div" style="height:14px;"></div>
+          <div style="display:flex;align-items:center;gap:5px;"><span class="info-label">Язык</span><span style="font-size:12px;font-weight:600;">PL · EN</span></div>
+          <div class="ctr-div" style="height:14px;"></div>
+          <div style="display:flex;align-items:center;gap:5px;"><span class="info-label">Условия</span><span style="font-size:12px;font-weight:600;">Предоплата 100%</span></div>
+          <div class="ctr-div" style="height:14px;"></div>
+          <div style="display:flex;align-items:center;gap:5px;">
+            <span class="info-label">Марки</span>
+            <span style="font-size:9px;padding:1px 5px;background:#F0FDF4;color:#15803D;border-radius:3px;font-weight:700;border:1px solid #BBF7D0;">AGCO</span>
+            <span style="font-size:9px;padding:1px 5px;background:#F0FDF4;color:#15803D;border-radius:3px;font-weight:700;border:1px solid #BBF7D0;">John Deere</span>
+          </div>
+        </div>
+      </div>
+      <div style="display:flex;gap:8px;">
+        <button class="btn btn-ghost">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+          Редактировать
+        </button>
+        <button class="btn btn-primary">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+          Написать
+        </button>
+      </div>
+    </div>
+    <div style="display:flex;gap:24px;margin-top:14px;padding-top:14px;border-top:1px solid #F1F5F9;flex-wrap:wrap;">
+      <div class="sum-stat"><span class="sum-stat-val">148 650 €</span><span class="sum-stat-lbl">Куплено всего</span></div>
+      <div class="ctr-div" style="height:36px;"></div>
+      <div class="sum-stat"><span class="sum-stat-val" style="color:#D97706;">24 770 €</span><span class="sum-stat-lbl">Ожидает оплаты (проформы)</span></div>
+      <div class="ctr-div" style="height:36px;"></div>
+      <div class="sum-stat"><span class="sum-stat-val" style="color:#2563EB;">3</span><span class="sum-stat-lbl">Открытых фактур</span></div>
+      <div class="ctr-div" style="height:36px;"></div>
+      <div class="sum-stat"><span class="sum-stat-val">3</span><span class="sum-stat-lbl">Филиала</span></div>
+      <div class="ctr-div" style="height:36px;"></div>
+      <div class="sum-stat"><span class="sum-stat-val">7</span><span class="sum-stat-lbl">Контактов</span></div>
+    </div>
+  </div>
+  <!-- Tabs card -->
+  <div class="card" style="overflow:hidden;">
+    <div style="padding:10px 14px;border-bottom:1px solid #F1F5F9;display:flex;align-items:center;justify-content:space-between;">
+      <div class="tab-bar ctr-tabs" id="ctr-tabs-detail">
+        <button class="tab-btn active" onclick="ctrTab('ctr-tabs-detail',this,'ctr-tab-branches')">Филиалы <span class="badge badge-blue" style="margin-left:4px;font-size:9px;">3</span></button>
+        <button class="tab-btn" onclick="ctrTab('ctr-tabs-detail',this,'ctr-tab-contacts')">Контакты <span class="badge badge-blue" style="margin-left:4px;font-size:9px;">7</span></button>
+        <button class="tab-btn" onclick="ctrTab('ctr-tabs-detail',this,'ctr-tab-proformas')">Проформы <span class="badge badge-orange" style="margin-left:4px;font-size:9px;">2</span></button>
+        <button class="tab-btn" onclick="ctrTab('ctr-tabs-detail',this,'ctr-tab-invoices')">Фактуры <span class="badge badge-blue" style="margin-left:4px;font-size:9px;">5</span></button>
+        <button class="tab-btn" onclick="ctrTab('ctr-tabs-detail',this,'ctr-tab-docs')">Документы <span class="badge badge-slate" style="margin-left:4px;font-size:9px;">3</span></button>
+      </div>
+      <button class="btn btn-ghost" id="ctr-tab-add-btn" style="font-size:11px;">
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        Добавить филиал
+      </button>
+    </div>
+    <!-- Branches -->
+    <div id="ctr-tab-branches" style="padding:16px;display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:12px;">
+      <div class="branch-card">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
+          <div><div style="font-size:13px;font-weight:700;">Główny oddział</div><div style="font-size:10px;color:#94A3B8;margin-top:1px;">Главный офис / склад</div></div>
+          <span class="badge badge-green" style="font-size:9px;">Основной</span>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:5px;margin-bottom:12px;font-size:11px;">
+          <div style="display:flex;gap:8px;"><span class="info-label" style="min-width:90px;">Адрес</span><span style="color:#475569;">Rzedzianu Zlotki 21, 12345</span></div>
+          <div style="display:flex;gap:8px;"><span class="info-label" style="min-width:90px;">Адр. погрузки</span><span style="color:#475569;">Magazyn Główny, brama 3</span></div>
+          <div style="display:flex;gap:8px;"><span class="info-label" style="min-width:90px;">Время работы</span><span style="color:#475569;">Пн-Пт 07:00–16:00 (CET)</span></div>
+          <div style="display:flex;gap:8px;"><span class="info-label" style="min-width:90px;">Примечание</span><span style="color:#D97706;">Приём грузов только до 15:00</span></div>
+        </div>
+        <div style="border-top:1px solid #F1F5F9;padding-top:10px;">
+          <div class="info-label" style="margin-bottom:6px;">Контакты</div>
+          <div style="display:flex;flex-direction:column;gap:4px;">
+            <div style="display:flex;align-items:center;gap:8px;"><span class="role role-mgr">Менеджер</span><span style="font-size:11px;font-weight:500;">Hans Kowalski</span><span style="font-size:11px;color:#94A3B8;">hans@agrosiec.pl</span></div>
+            <div style="display:flex;align-items:center;gap:8px;"><span class="role role-wh">Склад</span><span style="font-size:11px;font-weight:500;">Zbigniew Lis</span><span style="font-size:11px;color:#94A3B8;">zbigniew@agrosiec.pl</span></div>
+            <div style="display:flex;align-items:center;gap:8px;"><span class="role role-dir">Директор</span><span style="font-size:11px;font-weight:500;">Stefan Kowalczyk</span><span style="font-size:11px;color:#94A3B8;">stefan@agrosiec.pl</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="branch-card">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
+          <div><div style="font-size:13px;font-weight:700;">Filia Wschód</div><div style="font-size:10px;color:#94A3B8;margin-top:1px;">Восточный филиал — Краков</div></div>
+          <span class="badge badge-slate" style="font-size:9px;">Филиал</span>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:5px;margin-bottom:12px;font-size:11px;">
+          <div style="display:flex;gap:8px;"><span class="info-label" style="min-width:90px;">Адрес</span><span style="color:#475569;">ul. Przemysłowa 14, 30-701 Kraków</span></div>
+          <div style="display:flex;gap:8px;"><span class="info-label" style="min-width:90px;">Время работы</span><span style="color:#475569;">Пн-Пт 08:00–17:00 (CET)</span></div>
+        </div>
+        <div style="border-top:1px solid #F1F5F9;padding-top:10px;">
+          <div class="info-label" style="margin-bottom:6px;">Контакты</div>
+          <div style="display:flex;flex-direction:column;gap:4px;">
+            <div style="display:flex;align-items:center;gap:8px;"><span class="role role-mgr">Менеджер</span><span style="font-size:11px;font-weight:500;">Maria Nowak</span><span style="font-size:11px;color:#94A3B8;">m.nowak@agrosiec.pl</span></div>
+            <div style="display:flex;align-items:center;gap:8px;"><span class="role role-acc">Бухгалтерия</span><span style="font-size:11px;font-weight:500;">Anna Wiśniewska</span><span style="font-size:11px;color:#94A3B8;">anna@agrosiec.pl</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="branch-card">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
+          <div><div style="font-size:13px;font-weight:700;">Filia Zachód</div><div style="font-size:10px;color:#94A3B8;margin-top:1px;">Западный филиал — Познань</div></div>
+          <span class="badge badge-slate" style="font-size:9px;">Филиал</span>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:5px;margin-bottom:12px;font-size:11px;">
+          <div style="display:flex;gap:8px;"><span class="info-label" style="min-width:90px;">Адрес</span><span style="color:#475569;">ul. Logistyczna 7, 61-003 Poznań</span></div>
+          <div style="display:flex;gap:8px;"><span class="info-label" style="min-width:90px;">Адр. погрузки</span><span style="color:#475569;">Centrum logistyczne, dok C</span></div>
+          <div style="display:flex;gap:8px;"><span class="info-label" style="min-width:90px;">Время работы</span><span style="color:#475569;">Пн-Пт 06:00–14:00 (CET)</span></div>
+          <div style="display:flex;gap:8px;"><span class="info-label" style="min-width:90px;">Примечание</span><span style="color:#475569;">Только крупный опт от 10 000 €</span></div>
+        </div>
+        <div style="border-top:1px solid #F1F5F9;padding-top:10px;">
+          <div class="info-label" style="margin-bottom:6px;">Контакты</div>
+          <div style="display:flex;flex-direction:column;gap:4px;">
+            <div style="display:flex;align-items:center;gap:8px;"><span class="role role-log">Логистика</span><span style="font-size:11px;font-weight:500;">Piotr Dąbrowski</span><span style="font-size:11px;color:#94A3B8;">p.dabrowski@agrosiec.pl</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Contacts -->
+    <div id="ctr-tab-contacts" style="display:none;overflow-x:auto;">
+      <table>
+        <thead><tr><th>Имя</th><th>Роль</th><th>Филиал</th><th>Email</th><th>Телефон</th><th>Язык</th><th>Канал</th><th></th></tr></thead>
+        <tbody>
+          <tr><td style="font-weight:600;">Hans Kowalski</td><td><span class="role role-mgr">Менеджер</span></td><td style="font-size:11px;color:#475569;">Główny oddział</td><td style="font-size:11px;color:#2563EB;">hans@agrosiec.pl</td><td class="mono" style="font-size:11px;">+48 123 456 789</td><td><span class="badge badge-slate" style="font-size:9px;">PL · EN</span></td><td style="font-size:11px;color:#475569;">Email</td><td><button class="btn btn-ghost" style="font-size:11px;padding:3px 10px;">Написать</button></td></tr>
+          <tr><td style="font-weight:600;">Stefan Kowalczyk</td><td><span class="role role-dir">Директор</span></td><td style="font-size:11px;color:#475569;">Główny oddział</td><td style="font-size:11px;color:#2563EB;">stefan@agrosiec.pl</td><td class="mono" style="font-size:11px;">+48 123 456 700</td><td><span class="badge badge-slate" style="font-size:9px;">PL · EN · DE</span></td><td style="font-size:11px;color:#475569;">Email · Тел.</td><td><button class="btn btn-ghost" style="font-size:11px;padding:3px 10px;">Написать</button></td></tr>
+          <tr><td style="font-weight:600;">Zbigniew Lis</td><td><span class="role role-wh">Склад</span></td><td style="font-size:11px;color:#475569;">Główny oddział</td><td style="font-size:11px;color:#2563EB;">zbigniew@agrosiec.pl</td><td class="mono" style="font-size:11px;">+48 123 456 750</td><td><span class="badge badge-slate" style="font-size:9px;">PL</span></td><td style="font-size:11px;color:#475569;">Тел.</td><td><button class="btn btn-ghost" style="font-size:11px;padding:3px 10px;">Написать</button></td></tr>
+          <tr><td style="font-weight:600;">Maria Nowak</td><td><span class="role role-mgr">Менеджер</span></td><td style="font-size:11px;color:#475569;">Filia Wschód</td><td style="font-size:11px;color:#2563EB;">m.nowak@agrosiec.pl</td><td class="mono" style="font-size:11px;">+48 122 333 444</td><td><span class="badge badge-slate" style="font-size:9px;">PL · EN</span></td><td style="font-size:11px;color:#475569;">Email</td><td><button class="btn btn-ghost" style="font-size:11px;padding:3px 10px;">Написать</button></td></tr>
+          <tr><td style="font-weight:600;">Anna Wiśniewska</td><td><span class="role role-acc">Бухгалтерия</span></td><td style="font-size:11px;color:#475569;">Filia Wschód</td><td style="font-size:11px;color:#2563EB;">anna@agrosiec.pl</td><td class="mono" style="font-size:11px;">+48 122 333 400</td><td><span class="badge badge-slate" style="font-size:9px;">PL</span></td><td style="font-size:11px;color:#475569;">Email</td><td><button class="btn btn-ghost" style="font-size:11px;padding:3px 10px;">Написать</button></td></tr>
+          <tr><td style="font-weight:600;">Piotr Dąbrowski</td><td><span class="role role-log">Логистика</span></td><td style="font-size:11px;color:#475569;">Filia Zachód</td><td style="font-size:11px;color:#2563EB;">p.dabrowski@agrosiec.pl</td><td class="mono" style="font-size:11px;">+48 161 777 888</td><td><span class="badge badge-slate" style="font-size:9px;">PL · EN</span></td><td style="font-size:11px;color:#475569;">Email · WhatsApp</td><td><button class="btn btn-ghost" style="font-size:11px;padding:3px 10px;">Написать</button></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <!-- Proformas -->
+    <div id="ctr-tab-proformas" style="display:none;overflow-x:auto;">
+      <div style="padding:10px 14px;background:#FFFBEB;border-bottom:1px solid #FDE68A;display:flex;align-items:center;gap:20px;">
+        <span style="font-size:11px;font-weight:600;color:#92400E;">Ожидает оплаты:</span>
+        <span class="mono" style="font-size:13px;font-weight:700;color:#D97706;">24 770 €</span>
+        <span style="font-size:11px;color:#92400E;">· 2 открытые проформы</span>
+      </div>
+      <table>
+        <thead><tr><th>Номер</th><th>Дата выст.</th><th style="text-align:right;">Сумма</th><th>Статус</th><th>Фактура</th><th>Комментарий</th></tr></thead>
+        <tbody>
+          <tr><td class="mono" style="font-weight:600;color:#2563EB;">PRF-2026-094</td><td class="mono" style="font-size:11px;color:#94A3B8;">10.06.2026</td><td style="text-align:right;" class="mono"><strong>12 450 €</strong></td><td><span class="badge badge-orange">Ожидает оплаты</span></td><td style="font-size:11px;color:#94A3B8;">— не выставлена</td><td style="font-size:11px;color:#475569;">ЗПО-031 · 41 позиция</td></tr>
+          <tr><td class="mono" style="font-weight:600;color:#2563EB;">PRF-2026-091</td><td class="mono" style="font-size:11px;color:#94A3B8;">05.06.2026</td><td style="text-align:right;" class="mono"><strong>12 320 €</strong></td><td><span class="badge badge-orange">Ожидает оплаты</span></td><td style="font-size:11px;color:#94A3B8;">— не выставлена</td><td style="font-size:11px;color:#475569;">ЗПО-028 · 12 позиций</td></tr>
+          <tr style="opacity:.65;"><td class="mono" style="font-weight:600;color:#475569;">PRF-2026-089</td><td class="mono" style="font-size:11px;color:#94A3B8;">01.06.2026</td><td style="text-align:right;" class="mono">8 320 €</td><td><span class="badge badge-green">Оплачена</span></td><td class="mono" style="font-size:11px;color:#2563EB;">FAK-2026-012</td><td style="font-size:11px;color:#475569;">ЗПО-030</td></tr>
+          <tr style="opacity:.65;"><td class="mono" style="font-weight:600;color:#475569;">PRF-2026-088</td><td class="mono" style="font-size:11px;color:#94A3B8;">28.05.2026</td><td style="text-align:right;" class="mono">3 240 €</td><td><span class="badge badge-green">Оплачена</span></td><td class="mono" style="font-size:11px;color:#2563EB;">FAK-2026-011</td><td style="font-size:11px;color:#475569;">ЗПО-025</td></tr>
+        </tbody>
+      </table>
+      <div style="padding:10px 14px;border-top:1px solid #F1F5F9;background:#FAFAFA;display:flex;justify-content:space-between;"><span class="footer-stat">Оплачено всего: <strong class="mono">148 650 €</strong></span></div>
+    </div>
+    <!-- Invoices -->
+    <div id="ctr-tab-invoices" style="display:none;overflow-x:auto;">
+      <div style="padding:10px 14px;background:#EFF6FF;border-bottom:1px solid #BFDBFE;display:flex;align-items:center;gap:20px;">
+        <span style="font-size:11px;font-weight:600;color:#1E40AF;">Открытых фактур (в доставке):</span>
+        <span class="mono" style="font-size:13px;font-weight:700;color:#2563EB;">3</span>
+        <span style="font-size:11px;color:#1E40AF;">на сумму 44 210 €</span>
+      </div>
+      <table>
+        <thead><tr><th>Номер фактуры</th><th>Дата отгрузки</th><th style="text-align:right;">Сумма</th><th>Статус</th><th>Проформы</th></tr></thead>
+        <tbody>
+          <tr><td class="mono" style="font-weight:600;color:#2563EB;">FAK-2026-015</td><td class="mono" style="font-size:11px;color:#94A3B8;">12.06.2026</td><td style="text-align:right;" class="mono"><strong>24 770 €</strong></td><td><span class="badge badge-blue">В доставке</span></td><td style="font-size:11px;color:#2563EB;">PRF-094 · PRF-091</td></tr>
+          <tr><td class="mono" style="font-weight:600;color:#2563EB;">FAK-2026-013</td><td class="mono" style="font-size:11px;color:#94A3B8;">08.06.2026</td><td style="text-align:right;" class="mono"><strong>11 440 €</strong></td><td><span class="badge badge-blue">В доставке</span></td><td style="font-size:11px;color:#2563EB;">PRF-090</td></tr>
+          <tr style="opacity:.65;"><td class="mono" style="font-weight:600;color:#475569;">FAK-2026-012</td><td class="mono" style="font-size:11px;color:#94A3B8;">05.06.2026</td><td style="text-align:right;" class="mono">11 560 €</td><td><span class="badge badge-green">Закрыта</span></td><td style="font-size:11px;color:#475569;">PRF-089 · PRF-087</td></tr>
+          <tr style="opacity:.65;"><td class="mono" style="font-weight:600;color:#475569;">FAK-2026-011</td><td class="mono" style="font-size:11px;color:#94A3B8;">30.05.2026</td><td style="text-align:right;" class="mono">3 240 €</td><td><span class="badge badge-green">Закрыта</span></td><td style="font-size:11px;color:#475569;">PRF-088</td></tr>
+        </tbody>
+      </table>
+      <div style="padding:10px 14px;border-top:1px solid #F1F5F9;background:#FAFAFA;"><span class="footer-stat">Отгружено всего: <strong class="mono">148 650 €</strong></span></div>
+    </div>
+    <!-- Docs -->
+    <div id="ctr-tab-docs" style="display:none;padding:16px;">
+      <div style="display:flex;flex-direction:column;gap:8px;">
+        <div style="display:flex;align-items:center;gap:12px;padding:12px 14px;border:1px solid #E2E8F0;border-radius:8px;">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#16A34A" stroke-width="1.8"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          <div style="flex:1;"><div style="font-size:12px;font-weight:600;">Договор поставки №AG-2024-001</div><div style="font-size:10px;color:#94A3B8;margin-top:2px;">Подписан 15.01.2024 · Действует до 31.12.2026</div></div>
+          <span class="badge badge-green">Активен</span><button class="btn btn-ghost" style="font-size:11px;">Открыть</button>
+        </div>
+        <div style="display:flex;align-items:center;gap:12px;padding:12px 14px;border:1px solid #E2E8F0;border-radius:8px;">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2563EB" stroke-width="1.8"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          <div style="flex:1;"><div style="font-size:12px;font-weight:600;">Сертификат авторизованного дилера AGCO</div><div style="font-size:10px;color:#94A3B8;margin-top:2px;">Выдан 01.03.2024 · Истёк 01.03.2025</div></div>
+          <span class="badge badge-red">Истёк</span><button class="btn btn-ghost" style="font-size:11px;">Открыть</button>
+        </div>
+        <div style="display:flex;align-items:center;gap:12px;padding:12px 14px;border:1px solid #E2E8F0;border-radius:8px;">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#475569" stroke-width="1.8"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          <div style="flex:1;"><div style="font-size:12px;font-weight:600;">Реквизиты банка (EUR)</div><div style="font-size:10px;color:#94A3B8;margin-top:2px;">Обновлено 10.04.2026</div></div>
+          <span class="badge badge-slate">Реквизиты</span><button class="btn btn-ghost" style="font-size:11px;">Открыть</button>
+        </div>
+        <button class="btn btn-ghost" style="width:fit-content;"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg> Добавить документ</button>
+      </div>
+    </div>
+  </div><!-- /card -->
+</div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════════ -->
+<!-- PAGE: CONTRACTORS FORM                                              -->
+<!-- ══════════════════════════════════════════════════════════════════ -->
+<div id="page-contractors-form" class="page">
+<div style="max-width:860px;margin:0 auto;padding:16px 20px 40px;">
+  <div style="display:flex;align-items:center;gap:5px;font-size:11px;color:#94A3B8;margin-bottom:14px;">
+    <a onclick="nav('supplier')" style="color:#94A3B8;cursor:pointer;">Поставщик</a>
+    <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+    <a onclick="nav('contractors')" style="color:#94A3B8;cursor:pointer;">Контрагенты</a>
+    <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+    <span style="color:#0F172A;font-weight:600;">Новый контрагент</span>
+  </div>
+  <!-- Steps -->
+  <div style="display:flex;align-items:center;gap:0;margin-bottom:20px;">
+    <div class="step-item active" id="ctr-si-1"><div class="step-dot">1</div><span class="step-label">Юридическое лицо</span></div>
+    <div class="step-line"></div>
+    <div class="step-item" id="ctr-si-2"><div class="step-dot">2</div><span class="step-label">Филиал</span></div>
+    <div class="step-line"></div>
+    <div class="step-item" id="ctr-si-3"><div class="step-dot">3</div><span class="step-label">Контакты</span></div>
+    <div class="step-line"></div>
+    <div class="step-item" id="ctr-si-4"><div class="step-dot">4</div><span class="step-label">Реквизиты</span></div>
+  </div>
+  <!-- Step 1 -->
+  <div id="ctr-step-1">
+    <div class="card" style="overflow:hidden;margin-bottom:14px;">
+      <div class="form-section">
+        <div class="form-section-title"><span class="form-section-accent" style="background:#2563EB;"></span>Юридическое лицо</div>
+        <div class="form-row form-row-2" style="margin-bottom:14px;">
+          <div><label class="form-label">Название юр. лица <span class="req">*</span></label><input class="form-input" type="text" placeholder="AGROSIEC SP Zoo"></div>
+          <div><label class="form-label">Торговое / короткое</label><input class="form-input" type="text" placeholder="Agrosiec"></div>
+        </div>
+        <div class="form-row form-row-3" style="margin-bottom:14px;">
+          <div><label class="form-label">Страна <span class="req">*</span></label>
+            <select class="form-select"><option value="">— выбрать —</option><option>🇵🇱 Польша (PL)</option><option>🇩🇪 Германия (DE)</option><option>🇫🇷 Франция (FR)</option><option>🇦🇹 Австрия (AT)</option><option>🇳🇱 Нидерланды (NL)</option><option>🇨🇿 Чехия (CZ)</option><option>🇸🇰 Словакия (SK)</option><option>🇭🇺 Венгрия (HU)</option><option>🇩🇰 Дания (DK)</option><option>🇸🇪 Швеция (SE)</option><option>🇫🇮 Финляндия (FI)</option><option>🇳🇴 Норвегия (NO)</option><option>🇬🇧 Великобритания (GB)</option><option>🇮🇹 Италия (IT)</option><option>🇪🇸 Испания (ES)</option><option>🇺🇸 США (US)</option><option>🇹🇷 Турция (TR)</option></select>
+          </div>
+          <div><label class="form-label">Почтовый индекс</label><input class="form-input" type="text" placeholder="12-345"></div>
+          <div><label class="form-label">Город</label><input class="form-input" type="text" placeholder="Rzedzian Złotki"></div>
+        </div>
+        <div style="margin-bottom:14px;"><label class="form-label">Юридический адрес</label><input class="form-input" type="text" placeholder="ул. Główna 21, офис 3"></div>
+        <div class="form-row form-row-2" style="margin-bottom:0;">
+          <div><label class="form-label">Сайт</label><input class="form-input" type="text" placeholder="agrosiec.pl"></div>
+          <div><label class="form-label">NIP / VAT ID</label><input class="form-input" type="text" placeholder="PL1234567890"></div>
+        </div>
+      </div>
+      <hr class="form-sep">
+      <div class="form-section">
+        <div class="form-section-title"><span class="form-section-accent" style="background:#7C3AED;"></span>Условия работы</div>
+        <div class="form-row form-row-4" style="margin-bottom:14px;">
+          <div><label class="form-label">Валюта <span class="req">*</span></label><select class="form-select"><option>EUR</option><option>PLN</option><option>USD</option><option>GBP</option><option>CHF</option><option>DKK</option><option>SEK</option><option>NOK</option><option>CZK</option></select></div>
+          <div><label class="form-label">Условия оплаты <span class="req">*</span></label><select class="form-select"><option>Предоплата 100%</option><option>30 дней с даты инвойса</option><option>45 дней с даты инвойса</option><option>60 дней с даты инвойса</option><option>Предоплата 50%+50%</option><option>По договору</option></select></div>
+          <div><label class="form-label">Язык <span class="req">*</span></label><select class="form-select"><option>EN</option><option>PL</option><option>DE</option><option>FR</option><option>RU</option><option>EN + PL</option><option>EN + DE</option></select></div>
+          <div><label class="form-label">Статус</label><select class="form-select"><option>Активный</option><option>Пауза</option><option>Архив</option></select></div>
+        </div>
+        <div style="margin-bottom:4px;">
+          <label class="form-label">Марки / Бренды <span class="req">*</span></label>
+          <div style="display:flex;flex-wrap:wrap;gap:7px;margin-top:6px;">
+            <label class="brand-chip sel"><input type="checkbox" checked>John Deere</label>
+            <label class="brand-chip"><input type="checkbox">CLAAS</label>
+            <label class="brand-chip sel"><input type="checkbox" checked>AGCO</label>
+            <label class="brand-chip"><input type="checkbox">Fendt</label>
+            <label class="brand-chip"><input type="checkbox">Massey Ferguson</label>
+            <label class="brand-chip"><input type="checkbox">Valtra</label>
+            <label class="brand-chip"><input type="checkbox">AMAZONE</label>
+            <label class="brand-chip"><input type="checkbox">Lemken</label>
+            <label class="brand-chip"><input type="checkbox">Siemens</label>
+            <label class="brand-chip"><input type="checkbox">ABB</label>
+            <label class="brand-chip"><input type="checkbox">Festo</label>
+            <label class="brand-chip" style="border-style:dashed;">+ Другое</label>
+          </div>
+        </div>
+      </div>
+      <hr class="form-sep">
+      <div class="form-section">
+        <div class="form-section-title"><span class="form-section-accent" style="background:#F59E0B;"></span>Дополнительно</div>
+        <div class="form-row form-row-2" style="margin-bottom:14px;">
+          <div>
+            <label class="form-label">Рейтинг</label>
+            <div style="display:flex;gap:6px;margin-top:4px;">
+              <button type="button" class="brand-chip sel" style="font-size:13px;padding:3px 9px;">★</button>
+              <button type="button" class="brand-chip sel" style="font-size:13px;padding:3px 9px;">★</button>
+              <button type="button" class="brand-chip sel" style="font-size:13px;padding:3px 9px;">★</button>
+              <button type="button" class="brand-chip" style="font-size:13px;padding:3px 9px;color:#CBD5E1;">★</button>
+              <button type="button" class="brand-chip" style="font-size:13px;padding:3px 9px;color:#CBD5E1;">★</button>
+            </div>
+            <div class="form-hint">3 из 5 — Хороший поставщик</div>
+          </div>
+          <div><label class="form-label">Теги</label><input class="form-input" type="text" placeholder="надёжный, OEM, склад в ЕС …"><div class="form-hint">Через запятую</div></div>
+        </div>
+        <div><label class="form-label">Внутренние заметки</label><textarea class="form-input" placeholder="Особые условия, история отношений…"></textarea></div>
+      </div>
+    </div>
+    <div style="display:flex;justify-content:flex-end;gap:10px;">
+      <button class="btn btn-ghost" onclick="nav('contractors')">Отмена</button>
+      <button class="btn btn-primary" onclick="ctrGoStep(2)">Далее — Филиал <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button>
+    </div>
+  </div>
+  <!-- Step 2 -->
+  <div id="ctr-step-2" style="display:none;">
+    <div class="card" style="overflow:hidden;margin-bottom:14px;">
+      <div class="form-section">
+        <div class="form-section-title"><span class="form-section-accent" style="background:#2563EB;"></span>Первый филиал <span class="badge badge-blue" style="font-size:9px;margin-left:4px;">Обязательный</span></div>
+        <div class="form-row form-row-2" style="margin-bottom:14px;">
+          <div><label class="form-label">Название филиала <span class="req">*</span></label><input class="form-input" type="text" placeholder="Główny oddział / Склад 1"></div>
+          <div><label class="form-label">Тип</label><select class="form-select"><option>Главный офис</option><option>Склад</option><option>Региональный филиал</option><option>Производство</option><option>Логистический центр</option></select></div>
+        </div>
+        <div style="margin-bottom:14px;"><label class="form-label">Фактический адрес <span class="req">*</span></label><input class="form-input" type="text" placeholder="ул. Główna 21, 12-345 Rzedzian, Польша"></div>
+        <div style="margin-bottom:14px;"><label class="form-label">Адрес погрузки / склада</label><input class="form-input" type="text" placeholder="Magazyn Główny, brama 3"><div class="form-hint">Куда приедет экспедитор забирать товар</div></div>
+        <div class="form-row form-row-3" style="margin-bottom:14px;">
+          <div><label class="form-label">Время работы — с</label><input class="form-input" type="time" value="07:00"></div>
+          <div><label class="form-label">Время работы — до</label><input class="form-input" type="time" value="16:00"></div>
+          <div><label class="form-label">Часовой пояс</label><select class="form-select"><option>CET (UTC+1)</option><option>CEST (UTC+2)</option><option>GMT (UTC+0)</option><option>EET (UTC+2)</option><option>MSK (UTC+3)</option><option>EST (UTC-5)</option></select></div>
+        </div>
+        <div class="form-row form-row-2" style="margin-bottom:14px;">
+          <div>
+            <label class="form-label">Рабочие дни</label>
+            <div style="display:flex;gap:5px;margin-top:4px;">
+              <label class="brand-chip sel" style="padding:3px 8px;font-size:10px;"><input type="checkbox" checked>Пн</label>
+              <label class="brand-chip sel" style="padding:3px 8px;font-size:10px;"><input type="checkbox" checked>Вт</label>
+              <label class="brand-chip sel" style="padding:3px 8px;font-size:10px;"><input type="checkbox" checked>Ср</label>
+              <label class="brand-chip sel" style="padding:3px 8px;font-size:10px;"><input type="checkbox" checked>Чт</label>
+              <label class="brand-chip sel" style="padding:3px 8px;font-size:10px;"><input type="checkbox" checked>Пт</label>
+              <label class="brand-chip" style="padding:3px 8px;font-size:10px;"><input type="checkbox">Сб</label>
+              <label class="brand-chip" style="padding:3px 8px;font-size:10px;"><input type="checkbox">Вс</label>
+            </div>
+          </div>
+          <div><label class="form-label">Телефон филиала</label><input class="form-input" type="tel" placeholder="+48 123 456 789"></div>
+        </div>
+        <div><label class="form-label">Примечания для логистики</label><textarea class="form-input" placeholder="Приём грузов только до 15:00. Уведомить за 24ч…"></textarea></div>
+      </div>
+    </div>
+    <div style="display:flex;justify-content:flex-end;gap:10px;">
+      <button class="btn btn-ghost" onclick="ctrGoStep(1)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg> Назад</button>
+      <button class="btn btn-primary" onclick="ctrGoStep(3)">Далее — Контакты <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button>
+    </div>
+  </div>
+  <!-- Step 3 -->
+  <div id="ctr-step-3" style="display:none;">
+    <div class="card" style="overflow:hidden;margin-bottom:14px;">
+      <div class="form-section">
+        <div class="form-section-title"><span class="form-section-accent" style="background:#2563EB;"></span>Контакты</div>
+        <div class="contact-block" id="ctr-contact-1">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;"><span style="font-size:12px;font-weight:700;">Контакт 1</span><span class="badge badge-blue" style="font-size:9px;">Основной</span></div>
+          <div class="form-row form-row-2" style="margin-bottom:12px;">
+            <div><label class="form-label">Имя и фамилия <span class="req">*</span></label><input class="form-input" type="text" placeholder="Hans Kowalski"></div>
+            <div><label class="form-label">Роль <span class="req">*</span></label><select class="form-select"><option>Менеджер по продажам</option><option>Склад / Приёмка</option><option>Бухгалтерия</option><option>Директор</option><option>Логистика</option><option>Технический специалист</option></select></div>
+          </div>
+          <div class="form-row form-row-2" style="margin-bottom:12px;">
+            <div><label class="form-label">Email <span class="req">*</span></label><input class="form-input" type="email" placeholder="hans@agrosiec.pl"></div>
+            <div><label class="form-label">Телефон</label><input class="form-input" type="tel" placeholder="+48 123 456 789"></div>
+          </div>
+          <div class="form-row form-row-3">
+            <div><label class="form-label">Язык общения</label><select class="form-select"><option>EN</option><option>PL</option><option>DE</option><option>FR</option><option>RU</option></select></div>
+            <div><label class="form-label">Второй язык</label><select class="form-select"><option value="">— нет —</option><option>EN</option><option>PL</option><option>DE</option><option>FR</option></select></div>
+            <div><label class="form-label">Предпочтительный канал</label><select class="form-select"><option>Email</option><option>WhatsApp</option><option>Телефон</option><option>Telegram</option></select></div>
+          </div>
+        </div>
+        <div id="ctr-contacts-extra"></div>
+        <div style="margin-top:12px;"><button type="button" class="add-link" onclick="ctrAddContact()"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg> Добавить ещё контакт</button></div>
+      </div>
+    </div>
+    <div style="display:flex;justify-content:flex-end;gap:10px;">
+      <button class="btn btn-ghost" onclick="ctrGoStep(2)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg> Назад</button>
+      <button class="btn btn-primary" onclick="ctrGoStep(4)">Далее — Реквизиты <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button>
+    </div>
+  </div>
+  <!-- Step 4 -->
+  <div id="ctr-step-4" style="display:none;">
+    <div class="card" style="overflow:hidden;margin-bottom:14px;">
+      <div class="form-section">
+        <div class="form-section-title"><span class="form-section-accent" style="background:#16A34A;"></span>Банковские реквизиты</div>
+        <div style="border:1px solid #E2E8F0;border-radius:8px;padding:16px;background:#F8FAFC;margin-bottom:10px;">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;"><span style="font-size:12px;font-weight:700;">Счёт 1</span><span class="badge badge-green" style="font-size:9px;">Основной</span></div>
+          <div class="form-row form-row-2" style="margin-bottom:14px;">
+            <div><label class="form-label">Наименование банка <span class="req">*</span></label><input class="form-input" type="text" placeholder="Bank PKO S.A."></div>
+            <div><label class="form-label">Валюта счёта <span class="req">*</span></label><select class="form-select"><option>EUR</option><option>PLN</option><option>USD</option><option>GBP</option><option>CHF</option></select></div>
+          </div>
+          <div style="margin-bottom:14px;"><label class="form-label">IBAN <span class="req">*</span></label><input class="form-input mono" type="text" placeholder="PL12 1234 5678 9012 3456 7890 1234" style="font-family:'Fira Code',monospace;letter-spacing:.5px;"></div>
+          <div class="form-row form-row-2" style="margin-bottom:14px;">
+            <div><label class="form-label">SWIFT / BIC <span class="req">*</span></label><input class="form-input" type="text" placeholder="PKOPPLPW" style="font-family:'Fira Code',monospace;text-transform:uppercase;"></div>
+            <div><label class="form-label">Получатель</label><input class="form-input" type="text" placeholder="AGROSIEC SP Zoo"></div>
+          </div>
+          <div><label class="form-label">Адрес банка</label><input class="form-input" type="text" placeholder="ul. Bankowa 1, 00-001 Warszawa, Польша"></div>
+        </div>
+        <button type="button" class="add-link"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg> Добавить счёт в другой валюте</button>
+      </div>
+    </div>
+    <!-- Summary -->
+    <div class="card" style="padding:16px 18px;margin-bottom:14px;border-left:3px solid #2563EB;">
+      <div style="font-size:12px;font-weight:700;margin-bottom:10px;">Проверьте перед сохранением</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px 24px;font-size:12px;">
+        <div style="display:flex;gap:8px;align-items:center;"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#22C55E" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg><span style="color:#475569;">Юридическое лицо</span><span style="font-weight:600;">AGROSIEC SP Zoo</span></div>
+        <div style="display:flex;gap:8px;align-items:center;"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#22C55E" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg><span style="color:#475569;">Страна</span><span style="font-weight:600;">🇵🇱 Польша</span></div>
+        <div style="display:flex;gap:8px;align-items:center;"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#22C55E" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg><span style="color:#475569;">Валюта</span><span style="font-weight:600;">EUR</span></div>
+        <div style="display:flex;gap:8px;align-items:center;"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#22C55E" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg><span style="color:#475569;">Марки</span><span style="font-weight:600;">AGCO · John Deere</span></div>
+        <div style="display:flex;gap:8px;align-items:center;"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#22C55E" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg><span style="color:#475569;">Филиал</span><span style="font-weight:600;">Główny oddział</span></div>
+        <div style="display:flex;gap:8px;align-items:center;"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#22C55E" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg><span style="color:#475569;">Контакты</span><span style="font-weight:600;">1 контакт</span></div>
+      </div>
+    </div>
+    <div style="display:flex;justify-content:flex-end;gap:10px;">
+      <button class="btn btn-ghost" onclick="ctrGoStep(3)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg> Назад</button>
+      <button class="btn btn-ghost" onclick="nav('contractors')">Сохранить черновик</button>
+      <button class="btn btn-success" onclick="nav('contractors-detail')"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Сохранить контрагента</button>
+    </div>
   </div>
 </div>
 </div>
@@ -4236,6 +4778,61 @@ document.addEventListener('DOMContentLoaded', function() {
   });
   document.addEventListener('change', function(e) {
     if (e.target.dataset.autosave) asMarkDirty();
+  });
+});
+
+/* ── CONTRACTORS ── */
+function ctrTab(barId, btn, tabId) {
+  var bar = document.getElementById(barId);
+  if (bar) bar.querySelectorAll('.tab-btn').forEach(function(b){ b.classList.remove('active'); });
+  btn.classList.add('active');
+  var panels = ['ctr-tab-branches','ctr-tab-contacts','ctr-tab-proformas','ctr-tab-invoices','ctr-tab-docs'];
+  panels.forEach(function(id){ var el=document.getElementById(id); if(el) el.style.display='none'; });
+  var t = document.getElementById(tabId);
+  if (t) t.style.display = (tabId === 'ctr-tab-branches') ? 'grid' : 'block';
+  var labels = {'ctr-tab-branches':'Добавить филиал','ctr-tab-contacts':'Добавить контакт','ctr-tab-proformas':'Новая проформа','ctr-tab-invoices':'Новая фактура','ctr-tab-docs':'Добавить документ'};
+  var ab = document.getElementById('ctr-tab-add-btn');
+  if (ab && labels[tabId]) { var nodes = ab.childNodes; nodes[nodes.length-1].textContent = labels[tabId]; }
+}
+
+var ctrContactCount = 1;
+function ctrAddContact() {
+  ctrContactCount++;
+  var n = ctrContactCount;
+  var block = document.createElement('div');
+  block.className = 'contact-block';
+  block.style.marginTop = '10px';
+  block.innerHTML = '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">'
+    +'<span style="font-size:12px;font-weight:700;">Контакт '+n+'</span>'
+    +'<button type="button" style="background:none;border:none;color:#94A3B8;cursor:pointer;font-size:11px;" onclick="this.closest(\'.contact-block\').remove();">✕ Удалить</button></div>'
+    +'<div class="form-row form-row-2" style="margin-bottom:12px;">'
+    +'<div><label class="form-label">Имя и фамилия</label><input class="form-input" type="text" placeholder="Имя Фамилия"></div>'
+    +'<div><label class="form-label">Роль</label><select class="form-select"><option>Менеджер по продажам</option><option>Склад / Приёмка</option><option>Бухгалтерия</option><option>Директор</option><option>Логистика</option></select></div>'
+    +'</div><div class="form-row form-row-2" style="margin-bottom:12px;">'
+    +'<div><label class="form-label">Email</label><input class="form-input" type="email" placeholder="name@company.com"></div>'
+    +'<div><label class="form-label">Телефон</label><input class="form-input" type="tel" placeholder="+XX XXX XXX XXXX"></div>'
+    +'</div><div class="form-row form-row-3">'
+    +'<div><label class="form-label">Язык</label><select class="form-select"><option>EN</option><option>PL</option><option>DE</option><option>FR</option><option>RU</option></select></div>'
+    +'<div><label class="form-label">Второй язык</label><select class="form-select"><option value="">— нет —</option><option>EN</option><option>PL</option><option>DE</option></select></div>'
+    +'<div><label class="form-label">Канал</label><select class="form-select"><option>Email</option><option>WhatsApp</option><option>Телефон</option><option>Telegram</option></select></div>'
+    +'</div>';
+  var extra = document.getElementById('ctr-contacts-extra');
+  if (extra) extra.appendChild(block);
+}
+
+function ctrGoStep(n) {
+  for (var i = 1; i <= 4; i++) {
+    var s = document.getElementById('ctr-step-' + i);
+    if (s) s.style.display = (i === n) ? 'block' : 'none';
+    var si = document.getElementById('ctr-si-' + i);
+    if (si) { si.classList.remove('active','done'); if (i===n) si.classList.add('active'); else if (i<n) si.classList.add('done'); }
+  }
+  window.scrollTo(0,0);
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+  document.querySelectorAll('.brand-chip input[type=checkbox]').forEach(function(cb){
+    cb.addEventListener('change', function(){ this.closest('.brand-chip').classList.toggle('sel', this.checked); });
   });
 });
 
