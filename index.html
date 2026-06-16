@@ -1968,7 +1968,7 @@ Anton</div>
         </div>
         <div style="padding:10px 14px;border-top:1px solid #F1F5F9;display:flex;justify-content:space-between;align-items:center;background:#FAFAFA;">
           <span class="footer-stat">Показано 6 из 69 позиций</span>
-          <button class="btn btn-success">
+          <button class="btn btn-success" onclick="document.getElementById('modal-excel-action').classList.add('show')">
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
             Сформировать запрос (Excel)
           </button>
@@ -1993,9 +1993,14 @@ Kindly confirm availability and lead times for all positions in the attached Exc
 Best regards,
 AGR PARTS Procurement
 aiclaude@agr24.ru</div>
-          <div style="margin-top:10px;padding:8px 10px;background:#F8FAFC;border:1px solid #E2E8F0;border-radius:7px;display:flex;align-items:center;gap:7px;">
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#94A3B8" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
-            <span style="font-size:11px;color:#64748B;">Request_AGR-CO-____.xlsx</span>
+          <div id="nr-file-chip" style="display:none;margin-top:10px;padding:8px 10px;background:#EFF6FF;border:1px solid #BFDBFE;border-radius:7px;align-items:center;gap:7px;">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#2563EB" stroke-width="2"><path d="M21.44 11.05l-9.19 9.19a6 6 0 01-8.49-8.49l9.19-9.19a4 4 0 015.66 5.66l-9.2 9.19a2 2 0 01-2.83-2.83l8.49-8.48"/></svg>
+            <span style="font-size:11px;font-weight:600;color:#2563EB;font-family:'Fira Code',monospace;">Request_AGR-CO-____.xlsx</span>
+            <button onclick="document.getElementById('nr-file-chip').style.display='none'" style="border:none;background:none;cursor:pointer;padding:0;color:#94A3B8;font-size:14px;margin-left:auto;">×</button>
+          </div>
+          <div id="nr-file-chip-placeholder" style="margin-top:10px;padding:8px 10px;background:#F8FAFC;border:1px dashed #E2E8F0;border-radius:7px;display:flex;align-items:center;gap:7px;">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#CBD5E1" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+            <span style="font-size:11px;color:#CBD5E1;">Файл появится после «Прикрепить к письму»</span>
           </div>
           <!-- Subject + Send -->
           <div style="margin-top:12px;border-top:1px solid #F1F5F9;padding-top:12px;">
@@ -2010,6 +2015,39 @@ aiclaude@agr24.ru</div>
       </div>
     </div>
 
+  </div>
+</div>
+
+<!-- Modal: Excel action -->
+<div id="modal-excel-action" class="inv-modal" onclick="if(event.target===this)this.classList.remove('show')">
+  <div style="background:#fff;border-radius:14px;padding:28px 28px 22px;width:340px;box-shadow:0 20px 60px rgba(0,0,0,0.18);">
+    <div style="font-size:14px;font-weight:700;color:#0F172A;margin-bottom:6px;">Сформировать запрос (Excel)</div>
+    <div style="font-size:11px;color:#64748B;margin-bottom:20px;">Файл сформирован. Выберите действие:</div>
+
+    <label style="display:flex;align-items:center;gap:12px;padding:12px 14px;border:2px solid #E2E8F0;border-radius:10px;cursor:pointer;margin-bottom:10px;transition:border-color 100ms;" onclick="nrExcelSelect(this,'download')">
+      <input type="radio" name="excel-action" value="download" style="display:none;">
+      <div id="excel-opt-download" style="width:18px;height:18px;border-radius:50%;border:2px solid #E2E8F0;flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:all 100ms;"></div>
+      <div>
+        <div style="font-size:12px;font-weight:600;color:#0F172A;">Скачать файл</div>
+        <div style="font-size:11px;color:#64748B;">Сохранить Excel на компьютер</div>
+      </div>
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#22C55E" stroke-width="1.5" style="margin-left:auto;flex-shrink:0;"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+    </label>
+
+    <label style="display:flex;align-items:center;gap:12px;padding:12px 14px;border:2px solid #E2E8F0;border-radius:10px;cursor:pointer;margin-bottom:22px;transition:border-color 100ms;" onclick="nrExcelSelect(this,'attach')">
+      <input type="radio" name="excel-action" value="attach" style="display:none;">
+      <div id="excel-opt-attach" style="width:18px;height:18px;border-radius:50%;border:2px solid #E2E8F0;flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:all 100ms;"></div>
+      <div>
+        <div style="font-size:12px;font-weight:600;color:#0F172A;">Прикрепить к письму</div>
+        <div style="font-size:11px;color:#64748B;">Добавить как вложение к письму поставщику</div>
+      </div>
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2563EB" stroke-width="1.5" style="margin-left:auto;flex-shrink:0;"><path d="M21.44 11.05l-9.19 9.19a6 6 0 01-8.49-8.49l9.19-9.19a4 4 0 015.66 5.66l-9.2 9.19a2 2 0 01-2.83-2.83l8.49-8.48"/></svg>
+    </label>
+
+    <div style="display:flex;justify-content:flex-end;gap:8px;">
+      <button class="btn btn-ghost" onclick="document.getElementById('modal-excel-action').classList.remove('show')">Отмена</button>
+      <button class="btn btn-primary" onclick="nrExcelConfirm()">OK</button>
+    </div>
   </div>
 </div>
 
@@ -5510,6 +5548,38 @@ function invSubmitPayment() {
   invToast('Payment recorded · ' + invFmt(amount));
 }
 function invClosePayModal() { document.getElementById('inv-modal-payment').classList.remove('show'); }
+
+function nrExcelSelect(label, val) {
+  ['download','attach'].forEach(function(k) {
+    var dot = document.getElementById('excel-opt-' + k);
+    var lbl = dot.closest('label');
+    if (k === val) {
+      dot.style.background = '#2563EB';
+      dot.style.borderColor = '#2563EB';
+      dot.innerHTML = '<div style="width:7px;height:7px;border-radius:50%;background:#fff;"></div>';
+      lbl.style.borderColor = '#2563EB';
+    } else {
+      dot.style.background = '';
+      dot.style.borderColor = '#E2E8F0';
+      dot.innerHTML = '';
+      lbl.style.borderColor = '#E2E8F0';
+    }
+  });
+  document.querySelector('input[name="excel-action"][value="'+val+'"]').checked = true;
+}
+
+function nrExcelConfirm() {
+  var val = (document.querySelector('input[name="excel-action"]:checked') || {}).value;
+  if (!val) { alert('Выберите действие'); return; }
+  document.getElementById('modal-excel-action').classList.remove('show');
+  if (val === 'attach') {
+    var chip = document.getElementById('nr-file-chip');
+    var ph = document.getElementById('nr-file-chip-placeholder');
+    if (chip) chip.style.display = 'flex';
+    if (ph) ph.style.display = 'none';
+  }
+  // 'download' — browser would trigger file download in real impl
+}
 
 function nrFilterSuppliers(brand) {
   var sel = document.getElementById('nr-supplier');
