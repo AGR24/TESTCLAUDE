@@ -1775,15 +1775,22 @@ Anton</div>
 <!-- PAGE: NEW-REQUEST                                                  -->
 <!-- ══════════════════════════════════════════════════════════════════ -->
 <div id="page-new-request" class="page">
-<div style="max-width:1440px;margin:0 auto;padding:16px 20px 80px;">
+<div style="max-width:1440px;margin:0 auto;padding:16px 20px 28px;">
 
-  <!-- Breadcrumb -->
+  <!-- Breadcrumb + draft/cancel actions -->
   <div style="display:flex;align-items:center;gap:5px;font-size:11px;color:#94A3B8;margin-bottom:12px;">
     <a onclick="nav('supplier')" style="color:#94A3B8;cursor:pointer;">Поставщик</a>
     <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
     <a onclick="nav('quotation')" style="color:#94A3B8;cursor:pointer;">Запросы</a>
     <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
     <span style="color:#0F172A;font-weight:600;">Новый запрос поставщику</span>
+    <div style="margin-left:auto;display:flex;align-items:center;gap:8px;">
+      <button class="btn btn-ghost" style="font-size:11px;height:28px;padding:0 12px;" onclick="nav('quotation')">Отмена</button>
+      <button class="btn btn-ghost" style="font-size:11px;height:28px;padding:0 12px;">
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right:4px;vertical-align:-1px;"><path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+        Сохранить черновик
+      </button>
+    </div>
   </div>
 
   <!-- 3-column layout -->
@@ -1990,6 +1997,15 @@ aiclaude@agr24.ru</div>
             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#94A3B8" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
             <span style="font-size:11px;color:#64748B;">Request_AGR-CO-____.xlsx</span>
           </div>
+          <!-- Subject + Send -->
+          <div style="margin-top:12px;border-top:1px solid #F1F5F9;padding-top:12px;">
+            <label style="display:block;font-size:10px;font-weight:600;color:#94A3B8;text-transform:uppercase;letter-spacing:0.4px;margin-bottom:4px;">Тема письма</label>
+            <input type="text" value="REQUEST AGR-CO-____" data-autosave="nr-email-subject" class="input" style="width:100%;height:30px;font-size:11px;font-family:'Fira Code',monospace;margin-bottom:10px;">
+            <button class="btn btn-primary" style="width:100%;justify-content:center;">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+              Отправить поставщику
+            </button>
+          </div>
         </div>
       </div>
     </div>
@@ -1997,21 +2013,6 @@ aiclaude@agr24.ru</div>
   </div>
 </div>
 
-<!-- Bottom action bar -->
-<div style="position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:1px solid #E2E8F0;padding:10px 24px;display:flex;align-items:center;gap:10px;z-index:40;box-shadow:0 -2px 8px rgba(0,0,0,0.06);">
-  <button class="btn btn-ghost" onclick="nav('quotation')">Отмена</button>
-  <button class="btn btn-ghost">Сохранить черновик</button>
-  <div style="margin-left:auto;display:flex;align-items:center;gap:10px;">
-    <div style="display:flex;align-items:center;gap:6px;">
-      <span style="font-size:11px;color:#64748B;">Тема:</span>
-      <input type="text" value="REQUEST AGR-CO-____" data-autosave="nr-email-subject" class="input" style="width:220px;height:30px;font-size:11px;font-family:'Fira Code',monospace;">
-    </div>
-    <button class="btn btn-primary">
-      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
-      Отправить поставщику
-    </button>
-  </div>
-</div>
 </div><!-- /page-new-request -->
 
 
