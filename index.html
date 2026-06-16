@@ -1796,23 +1796,23 @@ Anton</div>
         <div style="font-size:12px;font-weight:700;color:#0F172A;margin-bottom:12px;">Параметры запроса</div>
 
         <div style="margin-bottom:10px;">
-          <label style="display:block;font-size:10px;font-weight:600;color:#94A3B8;text-transform:uppercase;letter-spacing:0.4px;margin-bottom:4px;">Поставщик</label>
-          <select class="input" style="height:32px;padding:0 8px;cursor:pointer;">
+          <label style="display:block;font-size:10px;font-weight:600;color:#94A3B8;text-transform:uppercase;letter-spacing:0.4px;margin-bottom:4px;">Марка</label>
+          <select id="nr-brand" class="input" style="height:32px;padding:0 8px;cursor:pointer;" onchange="nrFilterSuppliers(this.value)">
             <option value="">— выбрать —</option>
-            <option>Hans Mueller &amp; Co.</option>
-            <option>Midwest Parts GmbH</option>
-            <option>AgriTech Europa BV</option>
+            <option value="jd">John Deere</option>
+            <option value="agco">AGCO</option>
+            <option value="claas">Claas</option>
+            <option value="fendt">Fendt</option>
           </select>
         </div>
 
         <div style="margin-bottom:10px;">
-          <label style="display:block;font-size:10px;font-weight:600;color:#94A3B8;text-transform:uppercase;letter-spacing:0.4px;margin-bottom:4px;">Марка</label>
-          <select class="input" style="height:32px;padding:0 8px;cursor:pointer;">
+          <label style="display:block;font-size:10px;font-weight:600;color:#94A3B8;text-transform:uppercase;letter-spacing:0.4px;margin-bottom:4px;">Поставщик</label>
+          <select id="nr-supplier" class="input" style="height:32px;padding:0 8px;cursor:pointer;">
             <option value="">— выбрать —</option>
-            <option>AGCO</option>
-            <option>John Deere</option>
-            <option>Claas</option>
-            <option>Fendt</option>
+            <option data-brands="jd">Midwest Parts GmbH</option>
+            <option data-brands="jd agco">Hans Mueller &amp; Co.</option>
+            <option data-brands="claas fendt">AgriTech Europa BV</option>
           </select>
         </div>
 
@@ -5509,6 +5509,17 @@ function invSubmitPayment() {
   invToast('Payment recorded · ' + invFmt(amount));
 }
 function invClosePayModal() { document.getElementById('inv-modal-payment').classList.remove('show'); }
+
+function nrFilterSuppliers(brand) {
+  var sel = document.getElementById('nr-supplier');
+  if (!sel) return;
+  var opts = sel.querySelectorAll('option');
+  opts.forEach(function(o) {
+    if (!o.value) return;
+    o.hidden = brand ? o.getAttribute('data-brands').indexOf(brand) === -1 : false;
+  });
+  sel.value = '';
+}
 
 function qdSearch(val) {
   var q = val.trim().toLowerCase();
