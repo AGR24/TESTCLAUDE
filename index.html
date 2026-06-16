@@ -1421,6 +1421,23 @@ textarea.form-input { resize:vertical; min-height:68px; line-height:1.5; }
       </div>
       <div style="width:1px;height:14px;background:#E2E8F0;"></div>
       <span style="display:inline-flex;align-items:center;gap:5px;background:#FEE2E2;color:#DC2626;border:1px solid #FECACA;border-radius:6px;padding:3px 10px;font-size:11px;font-weight:700;"><span style="font-size:8px;">●</span> СРОЧНО</span>
+      <div style="flex:1;"></div>
+      <!-- Файл запроса -->
+      <div style="display:flex;align-items:center;gap:10px;margin-left:auto;">
+        <span style="font-size:10px;font-weight:600;color:#94A3B8;text-transform:uppercase;letter-spacing:.4px;">Файл запроса</span>
+        <div style="display:flex;align-items:center;gap:6px;background:#F0FDF4;border:1px solid #BBF7D0;border-radius:7px;padding:5px 10px;">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#16A34A" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          <span style="font-size:11px;font-weight:600;color:#15803D;font-family:'Fira Code',monospace;">REQ12346_Hans-Mueller_02.06.xlsx</span>
+          <button onclick="event.stopPropagation()" style="border:none;background:none;cursor:pointer;padding:0;display:flex;align-items:center;" title="Скачать">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#16A34A" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          </button>
+        </div>
+        <label style="display:flex;align-items:center;gap:5px;background:#F8FAFC;border:1px solid #E2E8F0;border-radius:7px;padding:5px 10px;cursor:pointer;font-size:11px;color:#475569;">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+          Загрузить новый
+          <input type="file" accept=".xlsx,.xls" style="display:none;" onchange="this.parentElement.querySelector('span') && (document.querySelector('#qd-file-name').textContent = this.files[0]?.name || '')">
+        </label>
+      </div>
     </div>
   </div>
 
@@ -1571,12 +1588,25 @@ textarea.form-input { resize:vertical; min-height:68px; line-height:1.5; }
           <select style="border:1px solid #E2E8F0;border-radius:7px;padding:7px 10px;font-size:12px;font-family:'Fira Sans',sans-serif;color:#475569;outline:none;background:#fff;"><option>Hans Mueller &amp; Co.</option><option>Fritz Wagner GmbH</option></select>
         </div>
         <textarea rows="4" style="width:100%;border:1px solid #E2E8F0;border-radius:7px;padding:9px 11px;font-size:12px;font-family:'Fira Sans',sans-serif;outline:none;resize:vertical;margin-bottom:10px;" placeholder="Текст письма…"></textarea>
-        <div style="display:flex;justify-content:flex-end;gap:8px;">
-          <button class="btn btn-ghost" style="font-size:11px;" onclick="document.getElementById('qd-compose').style.display='none'">Отмена</button>
-          <button class="btn btn-primary" style="font-size:11px;">
-            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
-            Отправить
-          </button>
+        <!-- Attached file chip -->
+        <div id="qd-compose-attach" style="display:flex;align-items:center;gap:8px;margin-bottom:10px;padding:7px 10px;background:#F0FDF4;border:1px solid #BBF7D0;border-radius:7px;width:fit-content;">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#16A34A" stroke-width="2"><path d="M21.44 11.05l-9.19 9.19a6 6 0 01-8.49-8.49l9.19-9.19a4 4 0 015.66 5.66l-9.2 9.19a2 2 0 01-2.83-2.83l8.49-8.48"/></svg>
+          <span id="qd-compose-fname" style="font-size:11px;font-weight:600;color:#15803D;font-family:'Fira Code',monospace;">REQ12346_Hans-Mueller_02.06.xlsx</span>
+          <button onclick="document.getElementById('qd-compose-attach').style.display='none'" style="border:none;background:none;cursor:pointer;padding:0;color:#94A3B8;font-size:14px;line-height:1;" title="Убрать">×</button>
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;">
+          <label style="display:flex;align-items:center;gap:5px;cursor:pointer;font-size:11px;color:#64748B;">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.44 11.05l-9.19 9.19a6 6 0 01-8.49-8.49l9.19-9.19a4 4 0 015.66 5.66l-9.2 9.19a2 2 0 01-2.83-2.83l8.49-8.48"/></svg>
+            Прикрепить файл
+            <input type="file" style="display:none;" onchange="if(this.files[0]){var d=document.getElementById('qd-compose-attach');d.style.display='flex';document.getElementById('qd-compose-fname').textContent=this.files[0].name;}">
+          </label>
+          <div style="display:flex;gap:8px;">
+            <button class="btn btn-ghost" style="font-size:11px;" onclick="document.getElementById('qd-compose').style.display='none'">Отмена</button>
+            <button class="btn btn-primary" style="font-size:11px;">
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+              Отправить
+            </button>
+          </div>
         </div>
       </div>
 
@@ -1622,6 +1652,15 @@ Please send prices in EUR. We need lead time in calendar days from payment.
 Best regards,
 Anton Klimov
 AGR PARTS</div>
+            <!-- Attachment -->
+            <div style="display:flex;align-items:center;gap:8px;margin-top:12px;padding:8px 12px;background:#F0FDF4;border:1px solid #BBF7D0;border-radius:8px;width:fit-content;">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#16A34A" stroke-width="2"><path d="M21.44 11.05l-9.19 9.19a6 6 0 01-8.49-8.49l9.19-9.19a4 4 0 015.66 5.66l-9.2 9.19a2 2 0 01-2.83-2.83l8.49-8.48"/></svg>
+              <span style="font-size:11px;font-weight:600;color:#15803D;font-family:'Fira Code',monospace;">REQ12346_Hans-Mueller_02.06.xlsx</span>
+              <span style="font-size:10px;color:#94A3B8;">· 48 кБ</span>
+              <button style="border:none;background:none;cursor:pointer;padding:0;display:flex;align-items:center;" title="Скачать">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#16A34A" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+              </button>
+            </div>
             <div style="display:flex;gap:8px;margin-top:10px;">
               <button class="btn btn-ghost" style="font-size:11px;">
                 <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 014-4h14"/></svg>
@@ -2537,6 +2576,247 @@ aiclaude@agr24.ru</div>
       <span class="footer-stat">В Excel: <strong>31 поз.</strong> &nbsp;·&nbsp; Исключено: <strong>10 поз.</strong> &nbsp;·&nbsp; Сумма: <span class="mono" style="font-weight:700;color:#0F172A;">10 840 €</span></span>
     </div>
   </div>
+
+  <!-- ORDER CORRESPONDENCE -->
+  <div class="card" style="overflow:hidden;margin-top:16px;">
+    <div class="section-header">
+      <div class="section-title">
+        <div class="section-accent" style="background:#7C3AED;"></div>
+        Переписка с поставщиком
+        <span class="badge badge-purple">4 письма</span>
+        <span style="font-size:10px;color:#94A3B8;font-weight:400;margin-left:4px;">Midwest Parts GmbH</span>
+      </div>
+      <button class="btn btn-ghost" style="font-size:11px;" onclick="document.getElementById('od-compose').style.display=document.getElementById('od-compose').style.display==='none'?'block':'none'">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+        Написать
+      </button>
+    </div>
+
+    <!-- Compose form -->
+    <div id="od-compose" style="display:none;padding:14px 20px;background:#F8FAFC;border-bottom:1px solid #E2E8F0;">
+      <div style="display:grid;grid-template-columns:1fr auto;gap:10px;margin-bottom:10px;">
+        <input type="text" value="Order #000412 — AXE21234 & others (41 positions)" style="border:1px solid #E2E8F0;border-radius:7px;padding:7px 10px;font-size:12px;font-family:'Fira Sans',sans-serif;outline:none;color:#0F172A;" placeholder="Тема письма">
+        <select style="border:1px solid #E2E8F0;border-radius:7px;padding:7px 10px;font-size:12px;font-family:'Fira Sans',sans-serif;color:#475569;outline:none;background:#fff;"><option>Midwest Parts GmbH</option></select>
+      </div>
+      <textarea rows="4" style="width:100%;border:1px solid #E2E8F0;border-radius:7px;padding:9px 11px;font-size:12px;font-family:'Fira Sans',sans-serif;outline:none;resize:vertical;margin-bottom:10px;" placeholder="Текст письма…"></textarea>
+      <div id="od-compose-attach" style="display:flex;align-items:center;gap:8px;margin-bottom:10px;padding:7px 10px;background:#EFF6FF;border:1px solid #BFDBFE;border-radius:7px;width:fit-content;">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#2563EB" stroke-width="2"><path d="M21.44 11.05l-9.19 9.19a6 6 0 01-8.49-8.49l9.19-9.19a4 4 0 015.66 5.66l-9.2 9.19a2 2 0 01-2.83-2.83l8.49-8.48"/></svg>
+        <span id="od-compose-fname" style="font-size:11px;font-weight:600;color:#2563EB;font-family:'Fira Code',monospace;">Order_000412_Midwest_Parts_11.06.xlsx</span>
+        <button onclick="document.getElementById('od-compose-attach').style.display='none'" style="border:none;background:none;cursor:pointer;padding:0;color:#94A3B8;font-size:14px;line-height:1;">×</button>
+      </div>
+      <div style="display:flex;justify-content:space-between;align-items:center;">
+        <label style="display:flex;align-items:center;gap:5px;cursor:pointer;font-size:11px;color:#64748B;">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.44 11.05l-9.19 9.19a6 6 0 01-8.49-8.49l9.19-9.19a4 4 0 015.66 5.66l-9.2 9.19a2 2 0 01-2.83-2.83l8.49-8.48"/></svg>
+          Прикрепить файл
+          <input type="file" style="display:none;" onchange="if(this.files[0]){var d=document.getElementById('od-compose-attach');d.style.display='flex';document.getElementById('od-compose-fname').textContent=this.files[0].name;}">
+        </label>
+        <div style="display:flex;gap:8px;">
+          <button class="btn btn-ghost" style="font-size:11px;" onclick="document.getElementById('od-compose').style.display='none'">Отмена</button>
+          <button class="btn btn-primary" style="font-size:11px;">
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+            Отправить
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Messages -->
+    <div id="od-thread">
+
+      <!-- Msg 1: Outgoing order placement -->
+      <div style="border-bottom:1px solid #F1F5F9;" onclick="qdToggleMsg('od-msg-1')">
+        <div style="padding:14px 20px;display:flex;gap:12px;cursor:pointer;transition:background 100ms;" onmouseover="this.style.background='#FAFCFF'" onmouseout="this.style.background=''">
+          <div style="width:34px;height:34px;background:#EFF6FF;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px;">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#2563EB" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+          </div>
+          <div style="flex:1;min-width:0;">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px;">
+              <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+                <span style="font-size:12px;font-weight:700;color:#0F172A;">→ Исходящее</span>
+                <span class="badge badge-blue" style="font-size:9px;">Отправлено</span>
+                <span style="font-size:11px;color:#64748B;">Кому: orders@midwest-parts.de</span>
+              </div>
+              <span style="font-size:10px;color:#94A3B8;font-family:'Fira Code',monospace;white-space:nowrap;">11.06.2026 · 09:14</span>
+            </div>
+            <div style="font-size:12px;font-weight:600;color:#0F172A;margin-bottom:3px;">Purchase Order #000412 — АФ АНА-ЮГ / John Deere (41 pcs)</div>
+            <div style="font-size:11px;color:#64748B;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">Dear Midwest Parts, please find attached our purchase order #000412. Delivery requested by 25.07.2026...</div>
+          </div>
+          <svg style="flex-shrink:0;color:#CBD5E1;margin-top:4px;" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+        </div>
+        <div id="od-msg-1" style="display:none;padding:0 20px 16px 66px;">
+          <div style="background:#F8FAFC;border:1px solid #E2E8F0;border-radius:8px;padding:14px 16px;font-size:12px;line-height:1.7;color:#0F172A;white-space:pre-wrap;">Dear Midwest Parts Team,
+
+Please find attached our Purchase Order #000412 for the following delivery:
+
+Client: АФ АНА-ЮГ
+Supplier: Midwest Parts GmbH
+Positions: 41 items (John Deere OEM)
+Total amount: 12 450.00 EUR
+Delivery requested: 25.07.2026
+Incoterms: EXW Warsaw
+Payment: 100% prepayment upon proforma confirmation
+
+Please confirm receipt and provide a proforma invoice at your earliest convenience.
+
+Best regards,
+Anton Klimov | AGR PARTS</div>
+          <!-- Order file attachment -->
+          <div style="display:flex;align-items:center;gap:8px;margin-top:12px;padding:8px 12px;background:#EFF6FF;border:1px solid #BFDBFE;border-radius:8px;width:fit-content;">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#2563EB" stroke-width="2"><path d="M21.44 11.05l-9.19 9.19a6 6 0 01-8.49-8.49l9.19-9.19a4 4 0 015.66 5.66l-9.2 9.19a2 2 0 01-2.83-2.83l8.49-8.48"/></svg>
+            <span style="font-size:11px;font-weight:600;color:#2563EB;font-family:'Fira Code',monospace;">Order_000412_Midwest_Parts_11.06.xlsx</span>
+            <span style="font-size:10px;color:#94A3B8;">· 62 кБ</span>
+            <button style="border:none;background:none;cursor:pointer;padding:0;" title="Скачать">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#2563EB" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            </button>
+          </div>
+          <div style="display:flex;gap:8px;margin-top:10px;">
+            <button class="btn btn-ghost" style="font-size:11px;" onclick="event.stopPropagation();document.getElementById('od-compose').style.display='block'">
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 014-4h14"/></svg>
+              Ответить
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Msg 2: Incoming proforma -->
+      <div style="border-bottom:1px solid #F1F5F9;" onclick="qdToggleMsg('od-msg-2')">
+        <div style="padding:14px 20px;display:flex;gap:12px;cursor:pointer;transition:background 100ms;" onmouseover="this.style.background='#FAFCFF'" onmouseout="this.style.background=''">
+          <div style="width:34px;height:34px;background:#F0FDF4;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px;">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#16A34A" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+          </div>
+          <div style="flex:1;min-width:0;">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px;">
+              <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+                <span style="font-size:12px;font-weight:700;color:#0F172A;">← Входящее</span>
+                <span class="badge badge-green" style="font-size:9px;">Получено</span>
+                <span style="font-size:11px;color:#64748B;">От: k.schmidt@midwest-parts.de</span>
+              </div>
+              <span style="font-size:10px;color:#94A3B8;font-family:'Fira Code',monospace;white-space:nowrap;">11.06.2026 · 13:42</span>
+            </div>
+            <div style="font-size:12px;font-weight:600;color:#0F172A;margin-bottom:3px;">RE: Purchase Order #000412 — Proforma Invoice PRF-2026-089</div>
+            <div style="font-size:11px;color:#64748B;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">Dear Anton, thank you for your order. Please find attached proforma invoice PRF-2026-089. Total: 12 450 EUR...</div>
+          </div>
+          <svg style="flex-shrink:0;color:#CBD5E1;margin-top:4px;" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+        </div>
+        <div id="od-msg-2" style="display:none;padding:0 20px 16px 66px;">
+          <div style="background:#F0FDF4;border:1px solid #BBF7D0;border-radius:8px;padding:14px 16px;font-size:12px;line-height:1.7;color:#0F172A;white-space:pre-wrap;">Dear Anton,
+
+Thank you for your purchase order #000412.
+
+Please find attached our Proforma Invoice PRF-2026-089.
+
+Total amount: 12 450.00 EUR
+Payment terms: 100% prepayment
+Delivery: EXW Warsaw, 25.07.2026
+
+Please arrange payment to the account indicated in the proforma.
+After receipt of payment we will confirm the order and process shipment.
+
+Best regards,
+Klaus Schmidt
+Midwest Parts GmbH</div>
+          <div style="display:flex;align-items:center;gap:8px;margin-top:12px;padding:8px 12px;background:#F0FDF4;border:1px solid #BBF7D0;border-radius:8px;width:fit-content;">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#16A34A" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+            <span style="font-size:11px;font-weight:600;color:#15803D;font-family:'Fira Code',monospace;">PRF-2026-089_Midwest_11.06.pdf</span>
+            <span style="font-size:10px;color:#94A3B8;">· 124 кБ</span>
+            <button style="border:none;background:none;cursor:pointer;padding:0;" title="Скачать">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#16A34A" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            </button>
+          </div>
+          <div style="display:flex;gap:8px;margin-top:10px;">
+            <button class="btn btn-primary" style="font-size:11px;" onclick="event.stopPropagation();document.getElementById('od-compose').style.display='block'">
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 014-4h14"/></svg>
+              Ответить
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Msg 3: Outgoing payment confirmation -->
+      <div style="border-bottom:1px solid #F1F5F9;" onclick="qdToggleMsg('od-msg-3')">
+        <div style="padding:14px 20px;display:flex;gap:12px;cursor:pointer;transition:background 100ms;" onmouseover="this.style.background='#FAFCFF'" onmouseout="this.style.background=''">
+          <div style="width:34px;height:34px;background:#EFF6FF;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px;">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#2563EB" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+          </div>
+          <div style="flex:1;min-width:0;">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px;">
+              <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+                <span style="font-size:12px;font-weight:700;color:#0F172A;">→ Исходящее</span>
+                <span class="badge badge-blue" style="font-size:9px;">Отправлено</span>
+                <span style="font-size:11px;color:#64748B;">Кому: k.schmidt@midwest-parts.de</span>
+              </div>
+              <span style="font-size:10px;color:#94A3B8;font-family:'Fira Code',monospace;white-space:nowrap;">12.06.2026 · 10:05</span>
+            </div>
+            <div style="font-size:12px;font-weight:600;color:#0F172A;margin-bottom:3px;">Payment confirmation — PRF-2026-089</div>
+            <div style="font-size:11px;color:#64748B;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">Klaus, payment of 12 450 EUR has been sent today via SWIFT. Please find attached the bank payment confirmation...</div>
+          </div>
+          <svg style="flex-shrink:0;color:#CBD5E1;margin-top:4px;" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+        </div>
+        <div id="od-msg-3" style="display:none;padding:0 20px 16px 66px;">
+          <div style="background:#F8FAFC;border:1px solid #E2E8F0;border-radius:8px;padding:14px 16px;font-size:12px;line-height:1.7;color:#0F172A;white-space:pre-wrap;">Klaus,
+
+Payment of 12 450.00 EUR for PRF-2026-089 has been transferred today via SWIFT.
+Please find attached the bank payment confirmation (MT103).
+
+Kindly confirm receipt of payment and provide the expected shipment date.
+
+Anton</div>
+          <div style="display:flex;align-items:center;gap:8px;margin-top:12px;padding:8px 12px;background:#EFF6FF;border:1px solid #BFDBFE;border-radius:8px;width:fit-content;">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#2563EB" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+            <span style="font-size:11px;font-weight:600;color:#2563EB;font-family:'Fira Code',monospace;">Payment_MT103_12450EUR_12.06.pdf</span>
+            <span style="font-size:10px;color:#94A3B8;">· 38 кБ</span>
+            <button style="border:none;background:none;cursor:pointer;padding:0;" title="Скачать">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#2563EB" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Msg 4: Incoming shipment notification -->
+      <div onclick="qdToggleMsg('od-msg-4')">
+        <div style="padding:14px 20px;display:flex;gap:12px;cursor:pointer;transition:background 100ms;" onmouseover="this.style.background='#FAFCFF'" onmouseout="this.style.background=''">
+          <div style="width:34px;height:34px;background:#F0FDF4;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px;">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#16A34A" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+          </div>
+          <div style="flex:1;min-width:0;">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px;">
+              <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+                <span style="font-size:12px;font-weight:700;color:#0F172A;">← Входящее</span>
+                <span class="badge badge-green" style="font-size:9px;">Получено</span>
+                <span style="font-size:11px;color:#64748B;">От: k.schmidt@midwest-parts.de</span>
+              </div>
+              <span style="font-size:10px;color:#94A3B8;font-family:'Fira Code',monospace;white-space:nowrap;">14.06.2026 · 16:30</span>
+            </div>
+            <div style="font-size:12px;font-weight:600;color:#0F172A;margin-bottom:3px;">Shipment notification — Order #000412 / AWB 123-45678901</div>
+            <div style="font-size:11px;color:#64748B;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">Dear Anton, payment received. Your order has been shipped today. Tracking AWB 123-45678901. ETA Warsaw 18.06...</div>
+          </div>
+          <svg style="flex-shrink:0;color:#CBD5E1;margin-top:4px;" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+        </div>
+        <div id="od-msg-4" style="display:none;padding:0 20px 16px 66px;">
+          <div style="background:#F0FDF4;border:1px solid #BBF7D0;border-radius:8px;padding:14px 16px;font-size:12px;line-height:1.7;color:#0F172A;white-space:pre-wrap;">Dear Anton,
+
+Payment of 12 450 EUR received. Thank you.
+
+Your order #000412 has been shipped today (14.06.2026).
+Tracking number: AWB 123-45678901 (DHL Express)
+ETA Warsaw warehouse: 18.06.2026
+
+Please find attached: packing list and commercial invoice.
+
+Best regards,
+Klaus Schmidt
+Midwest Parts GmbH</div>
+          <div style="display:flex;gap:8px;margin-top:10px;">
+            <button class="btn btn-primary" style="font-size:11px;" onclick="event.stopPropagation();document.getElementById('od-compose').style.display='block'">
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 014-4h14"/></svg>
+              Ответить
+            </button>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /od-thread -->
+  </div><!-- /order correspondence -->
 
 </div>
 </div><!-- /page-order-detail -->
