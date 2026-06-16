@@ -1,0 +1,1239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ERP — Invoice / Proforma / Packing List</title>
+<link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600&family=Fira+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Fira Sans', sans-serif; background: #F1F5F9; color: #0F172A; font-size: 13px; }
+.mono { font-family: 'Fira Code', monospace; }
+
+/* Routing */
+.page { display: none; }
+.page.active { display: block; }
+
+/* Navbar */
+.navbar { background: #fff; border-bottom: 1px solid #E2E8F0; padding: 0 20px; height: 44px; display: flex; align-items: center; gap: 0; position: sticky; top: 0; z-index: 50; }
+.nav-logo { display: flex; align-items: center; gap: 7px; margin-right: 24px; }
+.nav-logo-box { width: 28px; height: 28px; background: #2563EB; border-radius: 6px; display: flex; align-items: center; justify-content: center; }
+.nav-link { font-size: 12px; color: #64748B; padding: 0 12px; height: 44px; display: flex; align-items: center; cursor: pointer; border-bottom: 2px solid transparent; font-weight: 500; }
+.nav-link:hover { color: #0F172A; }
+.nav-link.active { color: #2563EB; border-bottom-color: #2563EB; font-weight: 600; }
+.nav-right { margin-left: auto; display: flex; align-items: center; gap: 12px; }
+
+/* Layout */
+.container { max-width: 1200px; margin: 0 auto; padding: 16px 20px 40px; }
+
+/* Cards */
+.card { background: #fff; border-radius: 10px; border: 1px solid #E2E8F0; }
+
+/* Badges */
+.badge { display: inline-flex; align-items: center; border-radius: 20px; padding: 2px 8px; font-size: 10px; font-weight: 600; }
+.badge-green  { background: #DCFCE7; color: #16A34A; border: 1px solid #BBF7D0; }
+.badge-orange { background: #FEF3C7; color: #D97706; border: 1px solid #FDE68A; }
+.badge-blue   { background: #DBEAFE; color: #2563EB; border: 1px solid #BFDBFE; }
+.badge-slate  { background: #F1F5F9; color: #475569; border: 1px solid #E2E8F0; }
+.badge-purple { background: #FAF5FF; color: #7C3AED; border: 1px solid #E9D5FF; }
+
+/* Buttons */
+.btn { display: inline-flex; align-items: center; gap: 5px; border-radius: 7px; font-size: 12px; font-weight: 600; cursor: pointer; border: none; transition: all 120ms; font-family: 'Fira Sans', sans-serif; padding: 6px 14px; }
+.btn-primary { background: #2563EB; color: #fff; }
+.btn-primary:hover { background: #1D4ED8; }
+.btn-ghost { background: #fff; color: #475569; border: 1px solid #E2E8F0; }
+.btn-ghost:hover { background: #F8FAFC; }
+.btn-success { background: #16A34A; color: #fff; }
+.btn-danger-ghost { background: #fff; color: #DC2626; border: 1px solid #FECACA; }
+
+/* Table */
+table { width: 100%; border-collapse: collapse; }
+th { font-size: 10px; font-weight: 600; color: #94A3B8; text-transform: uppercase; letter-spacing: .4px; padding: 8px 12px; border-bottom: 1px solid #F1F5F9; text-align: left; white-space: nowrap; }
+td { padding: 8px 12px; border-bottom: 1px solid #F8FAFC; font-size: 12px; vertical-align: middle; }
+tr:last-child td { border-bottom: none; }
+tr:hover td { background: #FAFCFF; }
+
+/* Breadcrumb */
+.breadcrumb { display: flex; align-items: center; gap: 5px; font-size: 11px; color: #94A3B8; margin-bottom: 14px; }
+.breadcrumb a { color: #94A3B8; cursor: pointer; }
+.breadcrumb a:hover { color: #2563EB; }
+
+/* ═══════════════════════════════════════════
+   DOCUMENT PAGE STYLES (print-ready)
+═══════════════════════════════════════════ */
+.doc-wrap { background: #F1F5F9; min-height: 100vh; padding: 24px 20px 48px; }
+.doc-toolbar { max-width: 860px; margin: 0 auto 14px; display: flex; align-items: center; justify-content: space-between; }
+.doc-toolbar-left { display: flex; align-items: center; gap: 8px; }
+.doc-type-pill { display: inline-flex; align-items: center; gap: 6px; border-radius: 6px; padding: 4px 12px; font-size: 11px; font-weight: 700; }
+.doc-type-proforma { background: #EFF6FF; color: #2563EB; border: 1px solid #BFDBFE; }
+.doc-type-invoice  { background: #F0FDF4; color: #15803D; border: 1px solid #BBF7D0; }
+.doc-type-packing  { background: #FAF5FF; color: #7C3AED; border: 1px solid #E9D5FF; }
+
+/* The white document sheet */
+.doc-sheet { max-width: 860px; margin: 0 auto; background: #fff; border-radius: 10px; border: 1px solid #E2E8F0; box-shadow: 0 4px 24px rgba(0,0,0,0.08); overflow: hidden; }
+
+/* Document header */
+.doc-header { padding: 20px 32px 18px; border-bottom: 2px solid #1B2E5B; }
+.doc-seller-name { font-size: 20px; font-weight: 700; color: #0F172A; letter-spacing: .3px; margin-bottom: 4px; }
+.doc-seller-sub { font-size: 11px; color: #64748B; line-height: 1.7; }
+
+.doc-type-banner { text-align: right; }
+.doc-type-label { font-size: 22px; font-weight: 700; color: #0F172A; letter-spacing: .5px; text-transform: uppercase; }
+.doc-number-label { font-size: 13px; color: #2563EB; font-family: 'Fira Code', monospace; font-weight: 600; }
+
+/* Parties row */
+.doc-parties { display: grid; grid-template-columns: 1fr 1fr; gap: 0; border-bottom: 1px solid #E2E8F0; }
+.doc-party { padding: 18px 32px; }
+.doc-party + .doc-party { border-left: 1px solid #E2E8F0; }
+.doc-party-label { font-size: 9px; font-weight: 700; color: #94A3B8; text-transform: uppercase; letter-spacing: .6px; margin-bottom: 6px; }
+.doc-party-name { font-size: 14px; font-weight: 700; color: #0F172A; margin-bottom: 4px; }
+.doc-party-sub { font-size: 11px; color: #475569; line-height: 1.6; }
+
+/* Meta row (date, payment terms) */
+.doc-meta { display: flex; gap: 0; border-bottom: 1px solid #E2E8F0; background: #FAFAFA; }
+.doc-meta-cell { padding: 12px 32px; flex: 1; }
+.doc-meta-cell + .doc-meta-cell { border-left: 1px solid #E2E8F0; }
+.doc-meta-label { font-size: 9px; font-weight: 700; color: #94A3B8; text-transform: uppercase; letter-spacing: .6px; margin-bottom: 3px; }
+.doc-meta-value { font-size: 13px; font-weight: 600; color: #0F172A; font-family: 'Fira Code', monospace; }
+.doc-meta-value[contenteditable="true"] { outline: none; border-bottom: 1px dashed #93C5FD; }
+.doc-meta-value[contenteditable="true"]:focus { border-bottom: 2px solid #2563EB; background: #EFF6FF; border-radius: 3px; padding: 0 3px; }
+
+/* Items table */
+.doc-items { padding: 0; }
+.doc-items table { width: 100%; border-collapse: collapse; }
+.doc-items thead th { background: #F8FAFC; padding: 10px 14px; font-size: 9px; font-weight: 700; color: #64748B; text-transform: uppercase; letter-spacing: .5px; border-bottom: 1px solid #E2E8F0; }
+.doc-items thead th:first-child { padding-left: 32px; }
+.doc-items thead th:last-child { padding-right: 32px; text-align: right; }
+.doc-items tbody td { padding: 7px 14px; border-bottom: 1px solid #F8FAFC; font-size: 12px; vertical-align: middle; }
+.doc-items tbody td:first-child { padding-left: 32px; color: #94A3B8; font-size: 11px; }
+.doc-items tbody td:last-child { padding-right: 32px; text-align: right; font-family: 'Fira Code', monospace; font-weight: 600; color: #0F172A; }
+.doc-items tbody tr:hover td { background: #F8FAFC; }
+.doc-items tbody tr.transport-row td { background: #FFFBEB; border-top: 1px solid #FDE68A; border-bottom: 1px solid #FDE68A; }
+.doc-items tbody tr.transport-row td:first-child { color: #D97706; }
+.editable-cell { outline: none; }
+.editable-cell:focus { background: #EFF6FF; border-radius: 4px; outline: none; }
+
+/* Totals */
+.doc-totals { padding: 16px 32px; border-top: 2px solid #0F172A; display: flex; justify-content: flex-end; }
+.doc-totals-box { width: 280px; }
+.doc-totals-row { display: flex; justify-content: space-between; align-items: center; padding: 5px 0; }
+.doc-totals-row + .doc-totals-row { border-top: 1px solid #F1F5F9; }
+.doc-totals-row.grand { border-top: 2px solid #0F172A; margin-top: 4px; padding-top: 8px; }
+.doc-totals-label { font-size: 11px; color: #64748B; }
+.doc-totals-value { font-family: 'Fira Code', monospace; font-size: 13px; font-weight: 600; color: #0F172A; }
+.doc-totals-row.grand .doc-totals-label { font-size: 12px; font-weight: 700; color: #0F172A; }
+.doc-totals-row.grand .doc-totals-value { font-size: 16px; color: #2563EB; }
+
+/* Bank details */
+.doc-bank { padding: 16px 32px; border-top: 1px solid #E2E8F0; background: #F8FAFC; }
+.doc-bank-title { font-size: 9px; font-weight: 700; color: #94A3B8; text-transform: uppercase; letter-spacing: .6px; margin-bottom: 8px; }
+.doc-bank-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+.doc-bank-cell-label { font-size: 9px; color: #94A3B8; font-weight: 600; text-transform: uppercase; letter-spacing: .4px; margin-bottom: 2px; }
+.doc-bank-cell-value { font-size: 11px; font-family: 'Fira Code', monospace; color: #0F172A; font-weight: 600; }
+
+/* Footer */
+.doc-footer { padding: 12px 32px; border-top: 1px solid #E2E8F0; display: flex; align-items: center; justify-content: space-between; }
+.doc-footer-note { font-size: 10px; color: #94A3B8; line-height: 1.5; }
+.doc-footer-sig { text-align: right; }
+.doc-footer-sig-line { width: 160px; border-bottom: 1px solid #0F172A; margin-bottom: 4px; margin-left: auto; }
+.doc-footer-sig-label { font-size: 9px; color: #94A3B8; text-transform: uppercase; letter-spacing: .4px; }
+
+/* Edit indicator */
+.edit-hint { display: inline-flex; align-items: center; gap: 4px; font-size: 10px; color: #2563EB; background: #EFF6FF; border-radius: 4px; padding: 2px 7px; font-weight: 600; }
+
+/* Packing list specifics */
+.doc-items thead th.wt { text-align: right; }
+.doc-items tbody td.wt { text-align: right; font-family: 'Fira Code', monospace; }
+
+/* Toast */
+.toast { position: fixed; bottom: 24px; right: 24px; background: #0F172A; color: #fff; padding: 10px 18px; border-radius: 8px; font-size: 12px; font-weight: 600; z-index: 999; display: none; align-items: center; gap: 8px; box-shadow: 0 4px 20px rgba(0,0,0,.25); }
+.toast.toast-green::before { content: ''; width: 8px; height: 8px; background: #22C55E; border-radius: 50%; display: inline-block; }
+.toast.show { display: flex; }
+
+/* Save indicator */
+.save-ts { font-size: 10px; color: #94A3B8; display: flex; align-items: center; gap: 4px; }
+
+/* Payment widget */
+.pay-widget { max-width: 860px; margin: 0 auto 12px; background: #fff; border-radius: 10px; border: 1px solid #E2E8F0; padding: 14px 20px; }
+.pay-grid { display: grid; grid-template-columns: 1fr 1fr 1fr auto; gap: 16px; align-items: center; }
+.pay-cell-label { font-size: 9px; font-weight: 700; color: #94A3B8; text-transform: uppercase; letter-spacing: .5px; margin-bottom: 3px; }
+.pay-cell-val { font-size: 16px; font-weight: 700; font-family: 'Fira Code', monospace; }
+.pay-bar-wrap { background: #F1F5F9; border-radius: 4px; height: 6px; margin-top: 8px; overflow: hidden; grid-column: 1 / -1; }
+.pay-bar { height: 100%; background: #22C55E; border-radius: 4px; transition: width .4s; }
+.pay-list { margin-top: 10px; border-top: 1px solid #F1F5F9; padding-top: 10px; display: flex; flex-direction: column; gap: 6px; }
+.pay-item { display: flex; align-items: center; gap: 10px; font-size: 11px; }
+.pay-item-date { color: #94A3B8; font-family: 'Fira Code', monospace; min-width: 80px; }
+.pay-item-amt { font-weight: 700; font-family: 'Fira Code', monospace; color: #16A34A; }
+.pay-item-note { color: #64748B; }
+
+/* Modal overlay */
+.modal-overlay { position: fixed; inset: 0; background: rgba(15,23,42,.45); z-index: 200; display: none; align-items: center; justify-content: center; }
+.modal-overlay.show { display: flex; }
+.modal-box { background: #fff; border-radius: 12px; box-shadow: 0 12px 48px rgba(0,0,0,.18); width: 480px; max-width: 96vw; overflow: hidden; }
+.modal-head { padding: 16px 20px; border-bottom: 1px solid #F1F5F9; display: flex; align-items: center; justify-content: space-between; }
+.modal-head-title { font-size: 13px; font-weight: 700; }
+.modal-close { background: none; border: none; cursor: pointer; color: #94A3B8; padding: 4px; border-radius: 4px; }
+.modal-close:hover { background: #F1F5F9; }
+.modal-body { padding: 20px; }
+.modal-foot { padding: 14px 20px; border-top: 1px solid #F1F5F9; display: flex; justify-content: flex-end; gap: 8px; }
+.fi { margin-bottom: 14px; }
+.fi label { display: block; font-size: 11px; font-weight: 600; color: #475569; text-transform: uppercase; letter-spacing: .3px; margin-bottom: 5px; }
+.fi input, .fi textarea, .fi select { width: 100%; border: 1px solid #E2E8F0; border-radius: 7px; padding: 8px 11px; font-size: 13px; font-family: 'Fira Sans', sans-serif; color: #0F172A; outline: none; }
+.fi input:focus, .fi textarea:focus { border-color: #2563EB; box-shadow: 0 0 0 3px rgba(37,99,235,.08); }
+
+/* Print styles */
+@media print {
+  .navbar, .doc-toolbar, .no-print { display: none !important; }
+  body { background: #fff; }
+  .doc-wrap { background: #fff; padding: 0; }
+  .doc-sheet { box-shadow: none; border: none; border-radius: 0; max-width: 100%; }
+  .doc-items tbody td.editable-cell, .doc-meta-value[contenteditable] { border-bottom: none; background: transparent !important; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar">
+  <div class="nav-logo">
+    <div class="nav-logo-box">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+    </div>
+    <span style="font-size:13px;font-weight:700;color:#0F172A;letter-spacing:.3px;">PARTS</span>
+  </div>
+  <span class="nav-link">Заказы</span>
+  <span class="nav-link">Реестр КП</span>
+  <span class="nav-link active">Поставщик</span>
+  <div class="nav-right">
+    <span style="font-size:11px;color:#64748B;">Антон Климов</span>
+    <div style="width:28px;height:28px;background:#E2E8F0;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#475569;">АК</div>
+  </div>
+</nav>
+
+<!-- ══════════════════════════════════════
+     PAGE 1: REGISTRY
+══════════════════════════════════════ -->
+<div id="page-registry" class="page active">
+<div class="container">
+
+  <div class="breadcrumb">
+    <a onclick="nav('registry')">Поставщик</a>
+    <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+    <span style="color:#0F172A;font-weight:600;">Инвойсы / Проформы</span>
+  </div>
+
+  <!-- Stats -->
+  <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:16px;">
+    <div class="card" style="padding:14px 16px;">
+      <div style="font-size:10px;color:#94A3B8;font-weight:600;text-transform:uppercase;letter-spacing:.4px;margin-bottom:4px;">Всего документов</div>
+      <div style="font-size:22px;font-weight:700;font-family:'Fira Code',monospace;">18</div>
+    </div>
+    <div class="card" style="padding:14px 16px;">
+      <div style="font-size:10px;color:#94A3B8;font-weight:600;text-transform:uppercase;letter-spacing:.4px;margin-bottom:4px;">Проформы (ожидают)</div>
+      <div style="font-size:22px;font-weight:700;font-family:'Fira Code',monospace;color:#D97706;">5</div>
+    </div>
+    <div class="card" style="padding:14px 16px;">
+      <div style="font-size:10px;color:#94A3B8;font-weight:600;text-transform:uppercase;letter-spacing:.4px;margin-bottom:4px;">В процессе отгрузки</div>
+      <div style="font-size:22px;font-weight:700;font-family:'Fira Code',monospace;color:#2563EB;">3</div>
+    </div>
+    <div class="card" style="padding:14px 16px;">
+      <div style="font-size:10px;color:#94A3B8;font-weight:600;text-transform:uppercase;letter-spacing:.4px;margin-bottom:4px;">Сумма (открытые)</div>
+      <div style="font-size:22px;font-weight:700;font-family:'Fira Code',monospace;color:#0F172A;">84 320 €</div>
+    </div>
+  </div>
+
+  <!-- Filters + create -->
+  <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;">
+    <div style="position:relative;flex:1;max-width:360px;">
+      <svg style="position:absolute;left:9px;top:50%;transform:translateY(-50%);color:#94A3B8;" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+      <input style="width:100%;border:1px solid #E2E8F0;border-radius:7px;padding:6px 10px 6px 32px;font-size:12px;font-family:'Fira Sans',sans-serif;outline:none;" type="text" placeholder="Поиск по номеру, контрагенту…">
+    </div>
+    <select style="border:1px solid #E2E8F0;border-radius:7px;padding:6px 10px;font-size:12px;font-family:'Fira Sans',sans-serif;color:#475569;background:#fff;cursor:pointer;outline:none;">
+      <option>Все типы</option>
+      <option>Proforma Invoice</option>
+      <option>Invoice</option>
+      <option>Packing List</option>
+    </select>
+    <select style="border:1px solid #E2E8F0;border-radius:7px;padding:6px 10px;font-size:12px;font-family:'Fira Sans',sans-serif;color:#475569;background:#fff;cursor:pointer;outline:none;">
+      <option>Все статусы</option>
+      <option>Ожидает оплаты</option>
+      <option>В процессе</option>
+      <option>Закрыт</option>
+    </select>
+    <div style="margin-left:auto;display:flex;gap:8px;">
+      <button class="btn btn-ghost" onclick="nav('new-doc')">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        Новый документ
+      </button>
+    </div>
+  </div>
+
+  <!-- Table -->
+  <div class="card" style="overflow:hidden;">
+    <div style="overflow-x:auto;">
+      <table>
+        <thead><tr>
+          <th>Номер</th><th>Тип</th><th>Дата</th>
+          <th>Контрагент</th><th>КЛ / Поставка</th>
+          <th style="text-align:center;">Позиций</th>
+          <th style="text-align:right;">Сумма EUR</th>
+          <th>Статус</th><th></th>
+        </tr></thead>
+        <tbody>
+          <tr onclick="nav('invoice-doc')" style="cursor:pointer;">
+            <td class="mono" style="font-weight:700;color:#2563EB;">INV-AGLO5726</td>
+            <td><span class="badge badge-green" style="font-size:9px;">Invoice</span></td>
+            <td class="mono" style="font-size:11px;color:#64748B;">02.06.2026</td>
+            <td style="font-weight:500;">EFSAN SP. zo.o.</td>
+            <td class="mono" style="font-size:11px;color:#64748B;">КЛ-2026-012 · П-44</td>
+            <td style="text-align:center;" class="mono">68</td>
+            <td style="text-align:right;" class="mono"><strong>8 320.44 €</strong></td>
+            <td><span style="display:flex;align-items:center;gap:5px;font-size:11px;"><span style="width:7px;height:7px;background:#2563EB;border-radius:50%;flex-shrink:0;display:inline-block;"></span>В процессе</span></td>
+            <td><button class="btn btn-ghost" onclick="event.stopPropagation();nav('invoice-doc')" style="font-size:11px;">Открыть</button></td>
+          </tr>
+          <tr onclick="nav('proforma-doc')" style="cursor:pointer;">
+            <td class="mono" style="font-weight:700;color:#2563EB;">PR-AGLO5726</td>
+            <td><span class="badge badge-orange" style="font-size:9px;">Proforma</span></td>
+            <td class="mono" style="font-size:11px;color:#64748B;">02.06.2026</td>
+            <td style="font-weight:500;">EFSAN SP. zo.o.</td>
+            <td class="mono" style="font-size:11px;color:#64748B;">КЛ-2026-012 · П-44</td>
+            <td style="text-align:center;" class="mono">68</td>
+            <td style="text-align:right;" class="mono"><strong>10 241.83 €</strong></td>
+            <td><span style="display:flex;align-items:center;gap:5px;font-size:11px;"><span style="width:7px;height:7px;background:#D97706;border-radius:50%;flex-shrink:0;display:inline-block;"></span>Ожидает оплаты</span></td>
+            <td><button class="btn btn-ghost" onclick="event.stopPropagation();nav('proforma-doc')" style="font-size:11px;">Открыть</button></td>
+          </tr>
+          <tr onclick="nav('packing-doc')" style="cursor:pointer;">
+            <td class="mono" style="font-weight:700;color:#2563EB;">PL-AGLO5726</td>
+            <td><span class="badge badge-purple" style="font-size:9px;">Packing List</span></td>
+            <td class="mono" style="font-size:11px;color:#64748B;">02.06.2026</td>
+            <td style="font-weight:500;">EFSAN SP. zo.o.</td>
+            <td class="mono" style="font-size:11px;color:#64748B;">КЛ-2026-012 · П-44</td>
+            <td style="text-align:center;" class="mono">68</td>
+            <td style="text-align:right;" class="mono">—</td>
+            <td><span style="display:flex;align-items:center;gap:5px;font-size:11px;"><span style="width:7px;height:7px;background:#16A34A;border-radius:50%;flex-shrink:0;display:inline-block;"></span>Готов</span></td>
+            <td><button class="btn btn-ghost" onclick="event.stopPropagation();nav('packing-doc')" style="font-size:11px;">Открыть</button></td>
+          </tr>
+          <tr style="opacity:.6;cursor:pointer;" onclick="nav('invoice-doc')">
+            <td class="mono" style="font-weight:700;color:#475569;">INV-AGLO5720</td>
+            <td><span class="badge badge-green" style="font-size:9px;">Invoice</span></td>
+            <td class="mono" style="font-size:11px;color:#64748B;">18.05.2026</td>
+            <td style="font-weight:500;">AGROSIEC SP Zoo</td>
+            <td class="mono" style="font-size:11px;color:#64748B;">КЛ-2026-009 · П-42</td>
+            <td style="text-align:center;" class="mono">41</td>
+            <td style="text-align:right;" class="mono">5 814.20 €</td>
+            <td><span style="display:flex;align-items:center;gap:5px;font-size:11px;"><span style="width:7px;height:7px;background:#16A34A;border-radius:50%;flex-shrink:0;display:inline-block;"></span>Закрыт</span></td>
+            <td><button class="btn btn-ghost" style="font-size:11px;">Открыть</button></td>
+          </tr>
+          <tr style="opacity:.6;cursor:pointer;">
+            <td class="mono" style="font-weight:700;color:#475569;">PR-AGLO5720</td>
+            <td><span class="badge badge-orange" style="font-size:9px;">Proforma</span></td>
+            <td class="mono" style="font-size:11px;color:#64748B;">14.05.2026</td>
+            <td style="font-weight:500;">AGROSIEC SP Zoo</td>
+            <td class="mono" style="font-size:11px;color:#64748B;">КЛ-2026-009 · П-42</td>
+            <td style="text-align:center;" class="mono">41</td>
+            <td style="text-align:right;" class="mono">7 220.00 €</td>
+            <td><span style="display:flex;align-items:center;gap:5px;font-size:11px;"><span style="width:7px;height:7px;background:#16A34A;border-radius:50%;flex-shrink:0;display:inline-block;"></span>Оплачена</span></td>
+            <td><button class="btn btn-ghost" style="font-size:11px;">Открыть</button></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div style="padding:10px 14px;border-top:1px solid #F1F5F9;background:#FAFAFA;font-size:11px;color:#94A3B8;">Показано 5 из 18 документов</div>
+  </div>
+
+</div>
+</div><!-- /registry -->
+
+<!-- ══════════════════════════════════════
+     PAGE 2: NEW DOC WIZARD
+══════════════════════════════════════ -->
+<div id="page-new-doc" class="page">
+<div class="container" style="max-width:620px;">
+  <div class="breadcrumb">
+    <a onclick="nav('registry')">Инвойсы / Проформы</a>
+    <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+    <span style="color:#0F172A;font-weight:600;">Новый документ</span>
+  </div>
+  <div class="card" style="overflow:hidden;margin-bottom:14px;">
+    <div style="padding:18px 22px;border-bottom:1px solid #F1F5F9;">
+      <div style="font-size:13px;font-weight:700;margin-bottom:4px;">Создать документ</div>
+      <div style="font-size:11px;color:#64748B;">Выберите тип, контрольный лист и поставку</div>
+    </div>
+    <div style="padding:22px;">
+      <div style="margin-bottom:18px;">
+        <label style="display:block;font-size:11px;font-weight:600;color:#475569;text-transform:uppercase;letter-spacing:.3px;margin-bottom:8px;">Тип документа</label>
+        <div style="display:flex;gap:10px;">
+          <label style="flex:1;border:2px solid #2563EB;border-radius:8px;padding:14px 16px;cursor:pointer;background:#EFF6FF;">
+            <input type="radio" name="doctype" value="proforma" checked style="display:none;">
+            <div style="font-size:12px;font-weight:700;color:#2563EB;margin-bottom:3px;">Proforma Invoice</div>
+            <div style="font-size:10px;color:#64748B;">Счёт на предоплату. На основе предварительного КЛ</div>
+          </label>
+          <label style="flex:1;border:2px solid #E2E8F0;border-radius:8px;padding:14px 16px;cursor:pointer;">
+            <input type="radio" name="doctype" value="invoice" style="display:none;">
+            <div style="font-size:12px;font-weight:700;color:#0F172A;margin-bottom:3px;">Invoice</div>
+            <div style="font-size:10px;color:#64748B;">Фактически отгруженные позиции</div>
+          </label>
+          <label style="flex:1;border:2px solid #E2E8F0;border-radius:8px;padding:14px 16px;cursor:pointer;">
+            <input type="radio" name="doctype" value="packing" style="display:none;">
+            <div style="font-size:12px;font-weight:700;color:#0F172A;margin-bottom:3px;">Packing List</div>
+            <div style="font-size:10px;color:#64748B;">Вес, кол-во, места. Сопровождает инвойс</div>
+          </label>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:18px;">
+        <div>
+          <label style="display:block;font-size:11px;font-weight:600;color:#475569;text-transform:uppercase;letter-spacing:.3px;margin-bottom:5px;">Контрольный лист</label>
+          <select style="width:100%;border:1px solid #E2E8F0;border-radius:7px;padding:8px 11px;font-size:13px;font-family:'Fira Sans',sans-serif;color:#0F172A;background:#fff;outline:none;cursor:pointer;">
+            <option>КЛ-2026-012 · П-44 (02.06.2026)</option>
+            <option>КЛ-2026-011 · П-43 (20.05.2026)</option>
+            <option>КЛ-2026-009 · П-42 (14.05.2026)</option>
+          </select>
+        </div>
+        <div>
+          <label style="display:block;font-size:11px;font-weight:600;color:#475569;text-transform:uppercase;letter-spacing:.3px;margin-bottom:5px;">Контрагент</label>
+          <select style="width:100%;border:1px solid #E2E8F0;border-radius:7px;padding:8px 11px;font-size:13px;font-family:'Fira Sans',sans-serif;color:#0F172A;background:#fff;outline:none;cursor:pointer;">
+            <option>EFSAN SP. zo.o.</option>
+            <option>AGROSIEC SP Zoo</option>
+            <option>Hans Mueller &amp; Co.</option>
+          </select>
+        </div>
+        <div>
+          <label style="display:block;font-size:11px;font-weight:600;color:#475569;text-transform:uppercase;letter-spacing:.3px;margin-bottom:5px;">Дата документа</label>
+          <input type="date" value="2026-06-02" style="width:100%;border:1px solid #E2E8F0;border-radius:7px;padding:8px 11px;font-size:13px;font-family:'Fira Sans',sans-serif;color:#0F172A;background:#fff;outline:none;">
+        </div>
+        <div>
+          <label style="display:block;font-size:11px;font-weight:600;color:#475569;text-transform:uppercase;letter-spacing:.3px;margin-bottom:5px;">Транспортные расходы (€)</label>
+          <input type="text" value="350.00" placeholder="0.00" style="width:100%;border:1px solid #E2E8F0;border-radius:7px;padding:8px 11px;font-size:13px;font-family:'Fira Code',monospace;color:#0F172A;background:#fff;outline:none;">
+        </div>
+      </div>
+      <div style="padding:12px 14px;background:#EFF6FF;border-radius:8px;border:1px solid #BFDBFE;font-size:11px;color:#1E40AF;">
+        <strong>КЛ-2026-012 · П-44:</strong> 68 позиций · EFSAN SP. zo.o. · Данные подгрузятся автоматически из контрольного листа
+      </div>
+    </div>
+    <div style="padding:14px 22px;border-top:1px solid #F1F5F9;display:flex;justify-content:flex-end;gap:10px;">
+      <button class="btn btn-ghost" onclick="nav('registry')">Отмена</button>
+      <button class="btn btn-primary" onclick="nav('proforma-doc')">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+        Сформировать
+      </button>
+    </div>
+  </div>
+</div>
+</div><!-- /new-doc -->
+
+<!-- ══════════════════════════════════════
+     PAGE 3: PROFORMA INVOICE DOCUMENT
+══════════════════════════════════════ -->
+<div id="page-proforma-doc" class="page">
+<div class="doc-wrap">
+  <div class="doc-toolbar no-print">
+    <div class="doc-toolbar-left">
+      <button class="btn btn-ghost" onclick="nav('registry')" style="font-size:11px;">
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+        Назад
+      </button>
+      <span class="doc-type-pill doc-type-proforma">
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+        Proforma Invoice
+      </span>
+      <span class="edit-hint">
+        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/></svg>
+        Поля редактируются
+      </span>
+    </div>
+    <div style="display:flex;gap:8px;">
+      <button class="btn btn-ghost" onclick="nav('invoice-doc')" style="font-size:11px;">
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 014-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 01-4 4H3"/></svg>
+        Конвертировать в Invoice
+      </button>
+      <button class="btn btn-ghost" onclick="saveDoc('proforma')" style="font-size:11px;">
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+        Save
+      </button>
+      <button class="btn btn-ghost" onclick="openHistory('proforma')" style="font-size:11px;">
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        History
+      </button>
+      <button class="btn btn-ghost" onclick="window.print()" style="font-size:11px;">
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+        Print / PDF
+      </button>
+      <button class="btn btn-primary" style="font-size:11px;">
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+        Send
+      </button>
+    </div>
+  </div>
+
+  <!-- Payment Widget: Proforma -->
+  <div class="pay-widget no-print" id="pay-widget-proforma">
+    <div class="pay-grid">
+      <div>
+        <div class="pay-cell-label">Invoice Total</div>
+        <div class="pay-cell-val" id="pay-total-proforma" data-total="10241.83">10 241.83 €</div>
+      </div>
+      <div>
+        <div class="pay-cell-label">Received</div>
+        <div class="pay-cell-val" id="pay-received-proforma" style="color:#16A34A;">9 500.00 €</div>
+      </div>
+      <div>
+        <div class="pay-cell-label">Balance Due</div>
+        <div class="pay-cell-val" id="pay-balance-proforma" style="color:#DC2626;">741.83 €</div>
+      </div>
+      <div>
+        <button class="btn btn-ghost" onclick="openPayModal('proforma','10241.83')" style="font-size:11px;white-space:nowrap;">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          Add Payment
+        </button>
+      </div>
+      <div class="pay-bar-wrap">
+        <div class="pay-bar" id="pay-bar-proforma" style="width:92.8%;"></div>
+      </div>
+    </div>
+    <div class="pay-list" id="pay-list-proforma">
+      <div class="pay-item">
+        <span class="pay-item-date">02.06.2026</span>
+        <span class="pay-item-amt">+ 9 500.00 €</span>
+        <span class="pay-item-note">Prepayment wire transfer</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="doc-sheet">
+    <!-- Header -->
+    <div class="doc-header">
+      <div style="display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:16px;">
+        <div>
+          <div class="doc-seller-name">IMTEK GROUP OÜ</div>
+          <div class="doc-seller-sub">
+            Reg. No: 12417024 &nbsp;|&nbsp; VAT: EE101614926<br>
+            RANDLA tn 13-201, 10315 TALLINN, ESTONIA<br>
+            www.agropart.eu
+          </div>
+        </div>
+        <div style="text-align:center;">
+          <img src="logo.png" alt="IMTEK GROUP AGRO" style="height:70px;width:auto;display:block;margin:0 auto;">
+        </div>
+        <div class="doc-type-banner">
+          <div class="doc-type-label">Proforma Invoice</div>
+          <div class="doc-number-label" contenteditable="true">PR-AGLO5726</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Parties -->
+    <div class="doc-parties">
+      <div class="doc-party">
+        <div class="doc-party-label">Seller / Продавец</div>
+        <div class="doc-party-name">IMTEK GROUP OÜ</div>
+        <div class="doc-party-sub" contenteditable="true">
+          RANDLA tn 13-201, 10315 TALLINN, ESTONIA<br>
+          VAT: EE101614926 | Reg: 12417024<br>
+          www.agropart.eu
+        </div>
+      </div>
+      <div class="doc-party">
+        <div class="doc-party-label">Customer / Buyer</div>
+        <div class="doc-party-name" contenteditable="true">EFSAN SP. zo.o.</div>
+        <div class="doc-party-sub" contenteditable="true">
+          VAT: PL9581749358 | REGON: 540443110<br>
+          Gorczycowa 4f, 81-591 Gdynia, Poland<br>
+          Contact: +48 788 987 716 · Uladzislau Shalkevich
+        </div>
+      </div>
+    </div>
+
+    <!-- Meta -->
+    <div class="doc-meta">
+      <div class="doc-meta-cell">
+        <div class="doc-meta-label">Date</div>
+        <div class="doc-meta-value" contenteditable="true">02.06.2026</div>
+      </div>
+      <div class="doc-meta-cell">
+        <div class="doc-meta-label">Payment Terms</div>
+        <div class="doc-meta-value" contenteditable="true">100% Prepayment</div>
+      </div>
+      <div class="doc-meta-cell">
+        <div class="doc-meta-label">Currency</div>
+        <div class="doc-meta-value">EUR</div>
+      </div>
+      <div class="doc-meta-cell">
+        <div class="doc-meta-label">Delivery</div>
+        <div class="doc-meta-value" contenteditable="true">EXW Tallinn</div>
+      </div>
+    </div>
+
+    <!-- Items -->
+    <div class="doc-items">
+      <table>
+        <thead><tr>
+          <th style="width:36px;">#</th>
+          <th>Art. Number</th>
+          <th>Description</th>
+          <th style="text-align:center;width:60px;">Qty</th>
+          <th style="text-align:right;width:100px;">Unit Price €</th>
+          <th>Total €</th>
+        </tr></thead>
+        <tbody id="proforma-rows">
+          <tr><td>1</td><td class="mono editable-cell" contenteditable="true">C33920/6</td><td class="editable-cell" contenteditable="true">Air Filter</td><td style="text-align:center;" class="mono editable-cell" contenteditable="true">2</td><td style="text-align:right;" class="mono editable-cell" contenteditable="true">78.99</td><td>157.98</td></tr>
+          <tr><td>2</td><td class="mono editable-cell" contenteditable="true">SC50164</td><td class="editable-cell" contenteditable="true">Filter</td><td style="text-align:center;" class="mono editable-cell" contenteditable="true">2</td><td style="text-align:right;" class="mono editable-cell" contenteditable="true">23.80</td><td>47.60</td></tr>
+          <tr><td>3</td><td class="mono editable-cell" contenteditable="true">AHC19323</td><td class="editable-cell" contenteditable="true">Hydraulic Cylinder Kit</td><td style="text-align:center;" class="mono editable-cell" contenteditable="true">2</td><td style="text-align:right;" class="mono editable-cell" contenteditable="true">88.40</td><td>176.80</td></tr>
+          <tr><td>4</td><td class="mono editable-cell" contenteditable="true">52645181</td><td class="editable-cell" contenteditable="true">Electronic Unit</td><td style="text-align:center;" class="mono editable-cell" contenteditable="true">1</td><td style="text-align:right;" class="mono editable-cell" contenteditable="true">447.15</td><td>447.15</td></tr>
+          <tr><td>5</td><td class="mono editable-cell" contenteditable="true">476954</td><td class="editable-cell" contenteditable="true">Oil Filter</td><td style="text-align:center;" class="mono editable-cell" contenteditable="true">127</td><td style="text-align:right;" class="mono editable-cell" contenteditable="true">6.28</td><td>797.56</td></tr>
+          <tr><td>6</td><td class="mono editable-cell" contenteditable="true">518251</td><td class="editable-cell" contenteditable="true">Oil Filter</td><td style="text-align:center;" class="mono editable-cell" contenteditable="true">1</td><td style="text-align:right;" class="mono editable-cell" contenteditable="true">33.51</td><td>33.51</td></tr>
+          <tr><td>7</td><td class="mono editable-cell" contenteditable="true">52744205</td><td class="editable-cell" contenteditable="true">Air Filter</td><td style="text-align:center;" class="mono editable-cell" contenteditable="true">3</td><td style="text-align:right;" class="mono editable-cell" contenteditable="true">43.16</td><td>129.48</td></tr>
+          <tr><td>8</td><td class="mono editable-cell" contenteditable="true">605013</td><td class="editable-cell" contenteditable="true">Fuel Filter</td><td style="text-align:center;" class="mono editable-cell" contenteditable="true">48</td><td style="text-align:right;" class="mono editable-cell" contenteditable="true">11.92</td><td>572.16</td></tr>
+          <tr><td>9</td><td class="mono editable-cell" contenteditable="true">686236</td><td class="editable-cell" contenteditable="true">Hydraulic Filter</td><td style="text-align:center;" class="mono editable-cell" contenteditable="true">1</td><td style="text-align:right;" class="mono editable-cell" contenteditable="true">51.29</td><td>51.29</td></tr>
+          <tr><td>10</td><td class="mono editable-cell" contenteditable="true">799966</td><td class="editable-cell" contenteditable="true">Oil Filter</td><td style="text-align:center;" class="mono editable-cell" contenteditable="true">20</td><td style="text-align:right;" class="mono editable-cell" contenteditable="true">9.80</td><td>196.00</td></tr>
+          <!-- Transport row -->
+          <tr class="transport-row">
+            <td>—</td>
+            <td class="mono">TRANSPORT</td>
+            <td class="editable-cell" contenteditable="true">Freight and Handling Services</td>
+            <td style="text-align:center;" class="mono">1</td>
+            <td style="text-align:right;" class="mono editable-cell" contenteditable="true">350.00</td>
+            <td>350.00</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Totals -->
+    <div class="doc-totals">
+      <div class="doc-totals-box">
+        <div class="doc-totals-row">
+          <span class="doc-totals-label">Subtotal (goods)</span>
+          <span class="doc-totals-value">9 891.83 €</span>
+        </div>
+        <div class="doc-totals-row">
+          <span class="doc-totals-label">Transport &amp; Handling</span>
+          <span class="doc-totals-value">350.00 €</span>
+        </div>
+        <div class="doc-totals-row">
+          <span class="doc-totals-label">VAT (0% — Export)</span>
+          <span class="doc-totals-value">0.00 €</span>
+        </div>
+        <div class="doc-totals-row grand">
+          <span class="doc-totals-label">TOTAL TO PAY</span>
+          <span class="doc-totals-value">10 241.83 €</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bank details -->
+    <div class="doc-bank">
+      <div class="doc-bank-title">Payment Details / Bank Requisites</div>
+      <div class="doc-bank-grid">
+        <div><div class="doc-bank-cell-label">Beneficiary</div><div class="doc-bank-cell-value">IMTEK GROUP OÜ</div></div>
+        <div><div class="doc-bank-cell-label">Bank</div><div class="doc-bank-cell-value">LHV Pank AS</div></div>
+        <div><div class="doc-bank-cell-label">IBAN</div><div class="doc-bank-cell-value" style="font-size:10px;">EE857700771003813596</div></div>
+        <div><div class="doc-bank-cell-label">SWIFT / BIC</div><div class="doc-bank-cell-value">LHVBEE22</div></div>
+        <div><div class="doc-bank-cell-label">Payment Ref</div><div class="doc-bank-cell-value">PR-AGLO5726</div></div>
+        <div><div class="doc-bank-cell-label">Currency</div><div class="doc-bank-cell-value">EUR</div></div>
+        <div style="grid-column:span 2;"><div class="doc-bank-cell-label">Bank Address</div><div class="doc-bank-cell-value" style="font-size:10px;">Tartu mnt 2, 10145 Tallinn, Estonia</div></div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="doc-footer">
+      <div class="doc-footer-note">
+        This proforma invoice is valid for 14 days.<br>
+        Goods will be reserved upon receipt of full payment.
+      </div>
+      <div class="doc-footer-sig">
+        <div class="doc-footer-sig-line"></div>
+        <div class="doc-footer-sig-label">Authorised Signature</div>
+      </div>
+    </div>
+  </div><!-- /doc-sheet -->
+</div>
+</div><!-- /proforma-doc -->
+
+<!-- ══════════════════════════════════════
+     PAGE 4: INVOICE DOCUMENT
+══════════════════════════════════════ -->
+<div id="page-invoice-doc" class="page">
+<div class="doc-wrap">
+  <div class="doc-toolbar no-print">
+    <div class="doc-toolbar-left">
+      <button class="btn btn-ghost" onclick="nav('registry')" style="font-size:11px;">
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+        Назад
+      </button>
+      <span class="doc-type-pill doc-type-invoice">Invoice</span>
+      <span class="edit-hint">
+        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/></svg>
+        Поля редактируются
+      </span>
+    </div>
+    <div style="display:flex;gap:8px;">
+      <button class="btn btn-ghost" onclick="nav('packing-doc')" style="font-size:11px;">
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/></svg>
+        Packing List
+      </button>
+      <button class="btn btn-ghost" onclick="saveDoc('invoice')" style="font-size:11px;">
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+        Save
+      </button>
+      <button class="btn btn-ghost" onclick="openHistory('invoice')" style="font-size:11px;">
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        History
+      </button>
+      <button class="btn btn-ghost" onclick="window.print()" style="font-size:11px;">
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+        Print / PDF
+      </button>
+      <button class="btn btn-primary" style="font-size:11px;">
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+        Send
+      </button>
+    </div>
+  </div>
+
+  <!-- Payment Widget: Invoice -->
+  <div class="pay-widget no-print" id="pay-widget-invoice">
+    <div class="pay-grid">
+      <div>
+        <div class="pay-cell-label">Invoice Total</div>
+        <div class="pay-cell-val" id="pay-total-invoice" data-total="8320.44">8 320.44 €</div>
+      </div>
+      <div>
+        <div class="pay-cell-label">Received</div>
+        <div class="pay-cell-val" id="pay-received-invoice" style="color:#16A34A;">0.00 €</div>
+      </div>
+      <div>
+        <div class="pay-cell-label">Balance Due</div>
+        <div class="pay-cell-val" id="pay-balance-invoice" style="color:#DC2626;">8 320.44 €</div>
+      </div>
+      <div>
+        <button class="btn btn-ghost" onclick="openPayModal('invoice','8320.44')" style="font-size:11px;white-space:nowrap;">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          Add Payment
+        </button>
+      </div>
+      <div class="pay-bar-wrap">
+        <div class="pay-bar" id="pay-bar-invoice" style="width:0%;"></div>
+      </div>
+    </div>
+    <div class="pay-list" id="pay-list-invoice"></div>
+  </div>
+
+  <div class="doc-sheet">
+    <div class="doc-header">
+      <div style="display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:16px;">
+        <div>
+          <div class="doc-seller-name">IMTEK GROUP OÜ</div>
+          <div class="doc-seller-sub">
+            Reg. No: 12417024 &nbsp;|&nbsp; VAT: EE101614926<br>
+            RANDLA tn 13-201, 10315 TALLINN, ESTONIA<br>
+            www.agropart.eu
+          </div>
+        </div>
+        <div style="text-align:center;">
+          <img src="logo.png" alt="IMTEK GROUP AGRO" style="height:70px;width:auto;display:block;margin:0 auto;">
+        </div>
+        <div class="doc-type-banner">
+          <div class="doc-type-label" style="color:#16A34A;">Invoice</div>
+          <div class="doc-number-label" contenteditable="true">INV-AGLO5726</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="doc-parties">
+      <div class="doc-party">
+        <div class="doc-party-label">Seller / Продавец</div>
+        <div class="doc-party-name">IMTEK GROUP OÜ</div>
+        <div class="doc-party-sub" contenteditable="true">
+          RANDLA tn 13-201, 10315 TALLINN, ESTONIA<br>
+          VAT: EE101614926 | Reg: 12417024<br>
+          www.agropart.eu
+        </div>
+      </div>
+      <div class="doc-party">
+        <div class="doc-party-label">Customer / Buyer</div>
+        <div class="doc-party-name" contenteditable="true">EFSAN SP. zo.o.</div>
+        <div class="doc-party-sub" contenteditable="true">
+          VAT: PL9581749358 | REGON: 540443110<br>
+          Gorczycowa 4f, 81-591 Gdynia, Poland<br>
+          Contact: Ihar Astapuk
+        </div>
+      </div>
+    </div>
+
+    <div class="doc-meta">
+      <div class="doc-meta-cell">
+        <div class="doc-meta-label">Invoice Date</div>
+        <div class="doc-meta-value" contenteditable="true">02.06.2026</div>
+      </div>
+      <div class="doc-meta-cell">
+        <div class="doc-meta-label">Proforma Ref.</div>
+        <div class="doc-meta-value" style="color:#2563EB;">PR-AGLO5726</div>
+      </div>
+      <div class="doc-meta-cell">
+        <div class="doc-meta-label">Incoterms</div>
+        <div class="doc-meta-value" contenteditable="true">EXW Tallinn</div>
+      </div>
+      <div class="doc-meta-cell">
+        <div class="doc-meta-label">Currency</div>
+        <div class="doc-meta-value">EUR</div>
+      </div>
+    </div>
+
+    <div class="doc-items">
+      <table>
+        <thead><tr>
+          <th style="width:36px;">#</th>
+          <th>Art. Number</th>
+          <th>Description</th>
+          <th style="text-align:center;width:60px;">Qty</th>
+          <th style="text-align:right;width:100px;">Unit Price €</th>
+          <th>Total €</th>
+        </tr></thead>
+        <tbody>
+          <tr><td>1</td><td class="mono editable-cell" contenteditable="true">AH139296</td><td class="editable-cell" contenteditable="true">Ball Bearing</td><td style="text-align:center;" class="mono editable-cell" contenteditable="true">4</td><td style="text-align:right;" class="mono editable-cell" contenteditable="true">49.99</td><td>199.96</td></tr>
+          <tr><td>2</td><td class="mono editable-cell" contenteditable="true">AH229175</td><td class="editable-cell" contenteditable="true">Throw-Out Bearing</td><td style="text-align:center;" class="mono editable-cell" contenteditable="true">1</td><td style="text-align:right;" class="mono editable-cell" contenteditable="true">56.97</td><td>56.97</td></tr>
+          <tr><td>3</td><td class="mono editable-cell" contenteditable="true">AH221938</td><td class="editable-cell" contenteditable="true">Pulley</td><td style="text-align:center;" class="mono editable-cell" contenteditable="true">2</td><td style="text-align:right;" class="mono editable-cell" contenteditable="true">56.38</td><td>112.76</td></tr>
+          <tr><td>4</td><td class="mono editable-cell" contenteditable="true">HXE30611</td><td class="editable-cell" contenteditable="true">Splined Coupling</td><td style="text-align:center;" class="mono editable-cell" contenteditable="true">6</td><td style="text-align:right;" class="mono editable-cell" contenteditable="true">54.94</td><td>329.64</td></tr>
+          <tr><td>5</td><td class="mono editable-cell" contenteditable="true">RE516335</td><td class="editable-cell" contenteditable="true">Pressure Relief Valve</td><td style="text-align:center;" class="mono editable-cell" contenteditable="true">2</td><td style="text-align:right;" class="mono editable-cell" contenteditable="true">308.97</td><td>617.94</td></tr>
+          <tr><td>6</td><td class="mono editable-cell" contenteditable="true">AH218994</td><td class="editable-cell" contenteditable="true">Seal Kit</td><td style="text-align:center;" class="mono editable-cell" contenteditable="true">14</td><td style="text-align:right;" class="mono editable-cell" contenteditable="true">29.45</td><td>412.30</td></tr>
+          <tr><td>7</td><td class="mono editable-cell" contenteditable="true">JD10384</td><td class="editable-cell" contenteditable="true">Bearing</td><td style="text-align:center;" class="mono editable-cell" contenteditable="true">12</td><td style="text-align:right;" class="mono editable-cell" contenteditable="true">28.34</td><td>340.08</td></tr>
+          <tr><td>8</td><td class="mono editable-cell" contenteditable="true">R504061</td><td class="editable-cell" contenteditable="true">Exhaust Valve</td><td style="text-align:center;" class="mono editable-cell" contenteditable="true">6</td><td style="text-align:right;" class="mono editable-cell" contenteditable="true">51.56</td><td>309.36</td></tr>
+          <tr class="transport-row">
+            <td>—</td>
+            <td class="mono">TRANSPORT</td>
+            <td class="editable-cell" contenteditable="true">Freight and Handling Services</td>
+            <td style="text-align:center;" class="mono">1</td>
+            <td style="text-align:right;" class="mono editable-cell" contenteditable="true">350.00</td>
+            <td>350.00</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="doc-totals">
+      <div class="doc-totals-box">
+        <div class="doc-totals-row">
+          <span class="doc-totals-label">Subtotal (goods)</span>
+          <span class="doc-totals-value">7 970.44 €</span>
+        </div>
+        <div class="doc-totals-row">
+          <span class="doc-totals-label">Transport &amp; Handling</span>
+          <span class="doc-totals-value">350.00 €</span>
+        </div>
+        <div class="doc-totals-row">
+          <span class="doc-totals-label">VAT (0% — Export)</span>
+          <span class="doc-totals-value">0.00 €</span>
+        </div>
+        <div class="doc-totals-row grand">
+          <span class="doc-totals-label">TOTAL</span>
+          <span class="doc-totals-value">8 320.44 €</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="doc-bank">
+      <div class="doc-bank-title">Bank Details</div>
+      <div class="doc-bank-grid">
+        <div><div class="doc-bank-cell-label">Beneficiary</div><div class="doc-bank-cell-value">IMTEK GROUP OÜ</div></div>
+        <div><div class="doc-bank-cell-label">Bank</div><div class="doc-bank-cell-value">LHV Pank AS</div></div>
+        <div><div class="doc-bank-cell-label">IBAN</div><div class="doc-bank-cell-value" style="font-size:10px;">EE857700771003813596</div></div>
+        <div><div class="doc-bank-cell-label">SWIFT / BIC</div><div class="doc-bank-cell-value">LHVBEE22</div></div>
+      </div>
+    </div>
+
+    <div class="doc-footer">
+      <div class="doc-footer-note">
+        Payment reference: INV-AGLO5726<br>
+        Thank you for your business.
+      </div>
+      <div class="doc-footer-sig">
+        <div class="doc-footer-sig-line"></div>
+        <div class="doc-footer-sig-label">Authorised Signature</div>
+      </div>
+    </div>
+  </div>
+</div>
+</div><!-- /invoice-doc -->
+
+<!-- ══════════════════════════════════════
+     PAGE 5: PACKING LIST
+══════════════════════════════════════ -->
+<div id="page-packing-doc" class="page">
+<div class="doc-wrap">
+  <div class="doc-toolbar no-print">
+    <div class="doc-toolbar-left">
+      <button class="btn btn-ghost" onclick="nav('registry')" style="font-size:11px;">
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+        Назад
+      </button>
+      <span class="doc-type-pill doc-type-packing">Packing List</span>
+      <span class="edit-hint"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/></svg> Поля редактируются</span>
+    </div>
+    <div style="display:flex;gap:8px;">
+      <button class="btn btn-ghost" onclick="saveDoc('packing')" style="font-size:11px;">
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+        Save
+      </button>
+      <button class="btn btn-ghost" onclick="openHistory('packing')" style="font-size:11px;">
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        History
+      </button>
+      <button class="btn btn-ghost" onclick="window.print()" style="font-size:11px;">
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+        Print / PDF
+      </button>
+    </div>
+  </div>
+
+  <div class="doc-sheet">
+    <div class="doc-header">
+      <div style="display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:16px;">
+        <div>
+          <div class="doc-seller-name">IMTEK GROUP OÜ</div>
+          <div class="doc-seller-sub">
+            RANDLA tn 13-201, 10315 TALLINN, ESTONIA<br>
+            www.agropart.eu
+          </div>
+        </div>
+        <div style="text-align:center;">
+          <img src="logo.png" alt="IMTEK GROUP AGRO" style="height:70px;width:auto;display:block;margin:0 auto;">
+        </div>
+        <div class="doc-type-banner">
+          <div class="doc-type-label" style="color:#7C3AED;">Packing List</div>
+          <div class="doc-number-label" contenteditable="true">PL-AGLO5726</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="doc-parties">
+      <div class="doc-party">
+        <div class="doc-party-label">Shipper / Отправитель</div>
+        <div class="doc-party-name">IMTEK GROUP OÜ</div>
+        <div class="doc-party-sub">RANDLA tn 13-201, 10315 TALLINN, ESTONIA</div>
+      </div>
+      <div class="doc-party">
+        <div class="doc-party-label">Consignee / Получатель</div>
+        <div class="doc-party-name" contenteditable="true">EFSAN SP. zo.o.</div>
+        <div class="doc-party-sub" contenteditable="true">
+          Gorczycowa 4f, 81-591 Gdynia, Poland<br>
+          Contact: +48 788 987 716 · Ihar Astapuk
+        </div>
+      </div>
+    </div>
+
+    <div class="doc-meta">
+      <div class="doc-meta-cell">
+        <div class="doc-meta-label">Date</div>
+        <div class="doc-meta-value" contenteditable="true">02.06.2026</div>
+      </div>
+      <div class="doc-meta-cell">
+        <div class="doc-meta-label">Invoice Ref.</div>
+        <div class="doc-meta-value" style="color:#16A34A;">INV-AGLO5726</div>
+      </div>
+      <div class="doc-meta-cell">
+        <div class="doc-meta-label">Total Packages</div>
+        <div class="doc-meta-value" contenteditable="true">4 boxes</div>
+      </div>
+      <div class="doc-meta-cell">
+        <div class="doc-meta-label">Total Gross Weight</div>
+        <div class="doc-meta-value" contenteditable="true">87.4 kg</div>
+      </div>
+    </div>
+
+    <div class="doc-items">
+      <table>
+        <thead><tr>
+          <th style="width:36px;">#</th>
+          <th>Art. Number</th>
+          <th>Description</th>
+          <th style="text-align:center;width:55px;">Qty</th>
+          <th class="wt" style="width:80px;">Net, kg</th>
+          <th class="wt" style="width:80px;">Gross, kg</th>
+          <th style="text-align:center;width:70px;">Packages</th>
+          <th style="text-align:center;width:60px;">Box #</th>
+        </tr></thead>
+        <tbody>
+          <tr><td>1</td><td class="mono editable-cell" contenteditable="true">AH139296</td><td class="editable-cell" contenteditable="true">Ball Bearing</td><td style="text-align:center;" class="mono editable-cell" contenteditable="true">4</td><td class="wt editable-cell" contenteditable="true">0.80</td><td class="wt editable-cell" contenteditable="true">0.95</td><td style="text-align:center;" class="mono editable-cell" contenteditable="true">1</td><td style="text-align:center;" class="mono editable-cell" contenteditable="true">B-01</td></tr>
+          <tr><td>2</td><td class="mono editable-cell" contenteditable="true">AH229175</td><td class="editable-cell" contenteditable="true">Throw-Out Bearing</td><td style="text-align:center;" class="mono editable-cell" contenteditable="true">1</td><td class="wt editable-cell" contenteditable="true">0.35</td><td class="wt editable-cell" contenteditable="true">0.45</td><td style="text-align:center;" class="mono editable-cell" contenteditable="true">1</td><td style="text-align:center;" class="mono editable-cell" contenteditable="true">B-01</td></tr>
+          <tr><td>3</td><td class="mono editable-cell" contenteditable="true">AH221938</td><td class="editable-cell" contenteditable="true">Pulley</td><td style="text-align:center;" class="mono editable-cell" contenteditable="true">2</td><td class="wt editable-cell" contenteditable="true">1.20</td><td class="wt editable-cell" contenteditable="true">1.40</td><td style="text-align:center;" class="mono editable-cell" contenteditable="true">1</td><td style="text-align:center;" class="mono editable-cell" contenteditable="true">B-01</td></tr>
+          <tr><td>4</td><td class="mono editable-cell" contenteditable="true">HXE30611</td><td class="editable-cell" contenteditable="true">Splined Coupling</td><td style="text-align:center;" class="mono editable-cell" contenteditable="true">6</td><td class="wt editable-cell" contenteditable="true">3.60</td><td class="wt editable-cell" contenteditable="true">4.10</td><td style="text-align:center;" class="mono editable-cell" contenteditable="true">1</td><td style="text-align:center;" class="mono editable-cell" contenteditable="true">B-02</td></tr>
+          <tr><td>5</td><td class="mono editable-cell" contenteditable="true">RE516335</td><td class="editable-cell" contenteditable="true">Pressure Relief Valve</td><td style="text-align:center;" class="mono editable-cell" contenteditable="true">2</td><td class="wt editable-cell" contenteditable="true">0.90</td><td class="wt editable-cell" contenteditable="true">1.10</td><td style="text-align:center;" class="mono editable-cell" contenteditable="true">1</td><td style="text-align:center;" class="mono editable-cell" contenteditable="true">B-02</td></tr>
+          <tr><td>6</td><td class="mono editable-cell" contenteditable="true">AH218994</td><td class="editable-cell" contenteditable="true">Seal Kit</td><td style="text-align:center;" class="mono editable-cell" contenteditable="true">14</td><td class="wt editable-cell" contenteditable="true">2.80</td><td class="wt editable-cell" contenteditable="true">3.20</td><td style="text-align:center;" class="mono editable-cell" contenteditable="true">1</td><td style="text-align:center;" class="mono editable-cell" contenteditable="true">B-02</td></tr>
+          <!-- Summary row -->
+          <tr style="background:#F0FDF4;border-top:2px solid #16A34A;font-weight:700;">
+            <td colspan="3" style="font-weight:700;color:#0F172A;padding:10px 32px;font-size:12px;">TOTAL / ИТОГО</td>
+            <td style="text-align:center;" class="mono">68</td>
+            <td class="wt mono" style="font-weight:700;">74.8</td>
+            <td class="wt mono" style="font-weight:700;">87.4</td>
+            <td style="text-align:center;" class="mono">4 ящика</td>
+            <td></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Shipping summary box -->
+    <div style="padding:16px 32px;border-top:1px solid #E2E8F0;display:grid;grid-template-columns:1fr 1fr;gap:20px;">
+      <div>
+        <div style="font-size:9px;font-weight:700;color:#94A3B8;text-transform:uppercase;letter-spacing:.6px;margin-bottom:8px;">Описание упаковки</div>
+        <div style="display:flex;flex-direction:column;gap:6px;font-size:11px;">
+          <div style="display:flex;gap:8px;"><span style="width:50px;color:#94A3B8;font-weight:600;">B-01</span><span class="editable-cell" contenteditable="true">Коробка · 45×35×30 см · ~22 кг</span></div>
+          <div style="display:flex;gap:8px;"><span style="width:50px;color:#94A3B8;font-weight:600;">B-02</span><span class="editable-cell" contenteditable="true">Коробка · 50×40×35 см · ~28 кг</span></div>
+          <div style="display:flex;gap:8px;"><span style="width:50px;color:#94A3B8;font-weight:600;">B-03</span><span class="editable-cell" contenteditable="true">Коробка · 60×45×40 см · ~24 кг</span></div>
+          <div style="display:flex;gap:8px;"><span style="width:50px;color:#94A3B8;font-weight:600;">B-04</span><span class="editable-cell" contenteditable="true">Коробка · 40×30×25 см · ~13 кг</span></div>
+        </div>
+      </div>
+      <div>
+        <div style="font-size:9px;font-weight:700;color:#94A3B8;text-transform:uppercase;letter-spacing:.6px;margin-bottom:8px;">Маршрут</div>
+        <div style="display:flex;flex-direction:column;gap:5px;font-size:11px;">
+          <div style="display:flex;gap:8px;"><span style="min-width:80px;color:#94A3B8;font-weight:600;">Отправление</span><span class="editable-cell" contenteditable="true">Tallinn, Estonia</span></div>
+          <div style="display:flex;gap:8px;"><span style="min-width:80px;color:#94A3B8;font-weight:600;">Назначение</span><span class="editable-cell" contenteditable="true">Gdynia, Poland</span></div>
+          <div style="display:flex;gap:8px;"><span style="min-width:80px;color:#94A3B8;font-weight:600;">Перевозчик</span><span class="editable-cell" contenteditable="true">DHL / DPD</span></div>
+          <div style="display:flex;gap:8px;"><span style="min-width:80px;color:#94A3B8;font-weight:600;">Track / AWB</span><span class="mono editable-cell" contenteditable="true">—</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="doc-footer">
+      <div class="doc-footer-note">
+        All items packed in accordance with IATA/IMDG regulations.<br>
+        Country of origin: EU / Various
+      </div>
+      <div class="doc-footer-sig">
+        <div class="doc-footer-sig-line"></div>
+        <div class="doc-footer-sig-label">Authorised Signature</div>
+      </div>
+    </div>
+  </div>
+</div>
+</div><!-- /packing-doc -->
+
+<div class="toast" id="toast"></div>
+
+<!-- History Modal -->
+<div class="modal-overlay" id="modal-history" onclick="if(event.target===this)closeHistory()">
+  <div class="modal-box">
+    <div class="modal-head">
+      <span class="modal-head-title">Save History</span>
+      <button class="modal-close" onclick="closeHistory()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+    </div>
+    <div class="modal-body" style="padding:0;max-height:360px;overflow-y:auto;" id="history-list"></div>
+    <div class="modal-foot">
+      <button class="btn btn-ghost" onclick="closeHistory()">Close</button>
+    </div>
+  </div>
+</div>
+
+<!-- Payment Modal -->
+<div class="modal-overlay" id="modal-payment" onclick="if(event.target===this)closePayModal()">
+  <div class="modal-box">
+    <div class="modal-head">
+      <span class="modal-head-title">Record Payment</span>
+      <button class="modal-close" onclick="closePayModal()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+    </div>
+    <div class="modal-body">
+      <input type="hidden" id="pay-doc-id">
+      <div class="fi">
+        <label>Amount received (EUR)</label>
+        <input type="number" id="pay-amount" placeholder="0.00" step="0.01" min="0">
+      </div>
+      <div class="fi">
+        <label>Date received</label>
+        <input type="date" id="pay-date">
+      </div>
+      <div class="fi">
+        <label>Reference / Note (optional)</label>
+        <input type="text" id="pay-note" placeholder="e.g. Wire transfer, SWIFT ref…">
+      </div>
+      <div style="padding:10px 12px;background:#EFF6FF;border-radius:8px;border:1px solid #BFDBFE;font-size:11px;color:#1E40AF;" id="pay-modal-summary"></div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-ghost" onclick="closePayModal()">Cancel</button>
+      <button class="btn btn-success" onclick="submitPayment()">
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+        Record Payment
+      </button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ─── Navigation ───────────────────────────────────────────────
+function nav(id) {
+  document.querySelectorAll('.page').forEach(function(p){ p.classList.remove('active'); });
+  var t = document.getElementById('page-' + id);
+  if (t) t.classList.add('active');
+  window.scrollTo(0, 0);
+}
+
+// ─── Toast ────────────────────────────────────────────────────
+var toastTimer;
+function showToast(msg, color) {
+  var el = document.getElementById('toast');
+  el.textContent = msg;
+  el.className = 'toast toast-' + (color || 'green') + ' show';
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(function(){ el.classList.remove('show'); }, 2800);
+}
+
+// ─── Save / History ───────────────────────────────────────────
+var _autoTimers = {};
+var _currentHistoryDoc = null;
+
+function getDocFields(docId) {
+  var page = document.getElementById('page-' + docId + '-doc');
+  if (!page) return {};
+  var data = {};
+  page.querySelectorAll('[contenteditable]').forEach(function(el, i) {
+    data[i] = el.innerHTML;
+  });
+  return data;
+}
+
+function restoreDocFields(docId, data) {
+  var page = document.getElementById('page-' + docId + '-doc');
+  if (!page) return;
+  page.querySelectorAll('[contenteditable]').forEach(function(el, i) {
+    if (data[i] !== undefined) el.innerHTML = data[i];
+  });
+}
+
+function saveDoc(docId, label) {
+  var key = 'inv_hist_' + docId;
+  var hist = JSON.parse(localStorage.getItem(key) || '[]');
+  hist.unshift({ ts: Date.now(), label: label || 'Manual save', data: getDocFields(docId) });
+  if (hist.length > 15) hist = hist.slice(0, 15);
+  localStorage.setItem(key, JSON.stringify(hist));
+  showToast('Saved · ' + new Date().toLocaleTimeString('en-GB', {hour:'2-digit',minute:'2-digit'}));
+}
+
+function startAutoSave(docId) {
+  clearInterval(_autoTimers[docId]);
+  _autoTimers[docId] = setInterval(function() {
+    saveDoc(docId, 'Auto-save');
+  }, 60000);
+}
+
+function openHistory(docId) {
+  _currentHistoryDoc = docId;
+  var hist = JSON.parse(localStorage.getItem('inv_hist_' + docId) || '[]');
+  var list = document.getElementById('history-list');
+  if (hist.length === 0) {
+    list.innerHTML = '<div style="padding:30px;text-align:center;color:#94A3B8;font-size:12px;">No saves yet. Click Save to create a snapshot.</div>';
+  } else {
+    list.innerHTML = hist.map(function(e, i) {
+      var d = new Date(e.ts);
+      var ts = d.toLocaleDateString('en-GB') + ' ' + d.toLocaleTimeString('en-GB', {hour:'2-digit',minute:'2-digit'});
+      return '<div style="display:flex;align-items:center;justify-content:space-between;padding:11px 20px;border-bottom:1px solid #F8FAFC;">'
+        + '<div><div style="font-size:12px;font-weight:600;color:#0F172A;">' + e.label + '</div>'
+        + '<div style="font-size:10px;color:#94A3B8;font-family:monospace;margin-top:2px;">' + ts + '</div></div>'
+        + '<button onclick="restoreSnap(' + i + ')" style="font-size:11px;padding:5px 12px;border:1px solid #E2E8F0;border-radius:6px;background:#fff;cursor:pointer;font-family:inherit;font-weight:600;">Restore</button>'
+        + '</div>';
+    }).join('');
+  }
+  document.getElementById('modal-history').classList.add('show');
+}
+
+function restoreSnap(idx) {
+  var hist = JSON.parse(localStorage.getItem('inv_hist_' + _currentHistoryDoc) || '[]');
+  if (hist[idx]) {
+    restoreDocFields(_currentHistoryDoc, hist[idx].data);
+    closeHistory();
+    showToast('Restored · ' + hist[idx].label);
+  }
+}
+
+function closeHistory() {
+  document.getElementById('modal-history').classList.remove('show');
+}
+
+// ─── Payment system ───────────────────────────────────────────
+function getPayments(docId) {
+  return JSON.parse(localStorage.getItem('inv_pay_' + docId) || '[]');
+}
+
+function savePayments(docId, list) {
+  localStorage.setItem('inv_pay_' + docId, JSON.stringify(list));
+}
+
+function fmtEur(n) {
+  return n.toLocaleString('en-IE', {minimumFractionDigits:2, maximumFractionDigits:2}) + ' €';
+}
+
+function renderPayWidget(docId) {
+  var totalEl = document.getElementById('pay-total-' + docId);
+  if (!totalEl) return;
+  var total = parseFloat(totalEl.dataset.total || 0);
+  var pays = getPayments(docId);
+  var received = pays.reduce(function(s, p){ return s + p.amount; }, 0);
+  var balance = total - received;
+  var pct = total > 0 ? Math.min(100, received / total * 100) : 0;
+
+  document.getElementById('pay-received-' + docId).textContent = fmtEur(received);
+  document.getElementById('pay-balance-' + docId).textContent = fmtEur(balance);
+  document.getElementById('pay-balance-' + docId).style.color = balance <= 0 ? '#16A34A' : '#DC2626';
+  document.getElementById('pay-bar-' + docId).style.width = pct + '%';
+
+  var listEl = document.getElementById('pay-list-' + docId);
+  if (pays.length === 0) {
+    listEl.innerHTML = '<div style="font-size:11px;color:#94A3B8;">No payments recorded yet.</div>';
+  } else {
+    listEl.innerHTML = pays.map(function(p) {
+      return '<div class="pay-item"><span class="pay-item-date">' + p.date + '</span>'
+        + '<span class="pay-item-amt">+ ' + fmtEur(p.amount) + '</span>'
+        + '<span class="pay-item-note">' + (p.note || '') + '</span></div>';
+    }).join('');
+  }
+}
+
+function openPayModal(docId, totalStr) {
+  document.getElementById('pay-doc-id').value = docId;
+  document.getElementById('pay-amount').value = '';
+  document.getElementById('pay-date').value = new Date().toISOString().slice(0,10);
+  document.getElementById('pay-note').value = '';
+  var total = parseFloat(totalStr);
+  var pays = getPayments(docId);
+  var received = pays.reduce(function(s,p){ return s+p.amount; },0);
+  var balance = total - received;
+  document.getElementById('pay-modal-summary').innerHTML =
+    '<strong>Total:</strong> ' + fmtEur(total) + ' &nbsp;·&nbsp; '
+    + '<strong>Received so far:</strong> ' + fmtEur(received) + ' &nbsp;·&nbsp; '
+    + '<strong>Outstanding:</strong> ' + fmtEur(balance);
+  document.getElementById('modal-payment').classList.add('show');
+  setTimeout(function(){ document.getElementById('pay-amount').focus(); }, 100);
+}
+
+function submitPayment() {
+  var docId = document.getElementById('pay-doc-id').value;
+  var amount = parseFloat(document.getElementById('pay-amount').value);
+  var date = document.getElementById('pay-date').value;
+  var note = document.getElementById('pay-note').value.trim();
+  if (!amount || amount <= 0) { document.getElementById('pay-amount').focus(); return; }
+  if (!date) { document.getElementById('pay-date').focus(); return; }
+  var pays = getPayments(docId);
+  pays.push({ amount: amount, date: date.split('-').reverse().join('.'), note: note, ts: Date.now() });
+  savePayments(docId, pays);
+  renderPayWidget(docId);
+  closePayModal();
+  showToast('Payment recorded · ' + fmtEur(amount));
+}
+
+function closePayModal() {
+  document.getElementById('modal-payment').classList.remove('show');
+}
+
+// ─── Init ─────────────────────────────────────────────────────
+document.addEventListener('DOMContentLoaded', function() {
+  // Seed demo payment for proforma if localStorage is empty
+  if (!localStorage.getItem('inv_pay_proforma')) {
+    savePayments('proforma', [{ amount: 9500, date: '02.06.2026', note: 'Prepayment wire transfer', ts: Date.now() }]);
+  }
+  renderPayWidget('proforma');
+  renderPayWidget('invoice');
+  startAutoSave('proforma');
+  startAutoSave('invoice');
+  startAutoSave('packing');
+});
+</script>
+</body>
+</html>
