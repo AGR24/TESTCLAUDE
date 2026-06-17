@@ -47,11 +47,16 @@ tbody td { padding: 7px 10px; vertical-align: middle; }
 .badge-blue   { background: #DBEAFE; color: #2563EB; border: 1px solid #BFDBFE; }
 .badge-slate  { background: #F1F5F9; color: #475569; border: 1px solid #E2E8F0; }
 .badge-teal   { background: #CCFBF1; color: #0F766E; border: 1px solid #99F6E4; }
+.badge-bck    { background: #C0192B; color: #fff; border: 1px solid #9B1523; font-weight:800; letter-spacing:.3px; }
+.badge-mgr-agree { background:#FFF7ED; color:#C2410C; border:1px solid #FED7AA; }
+.badge-mgr-update { background:#EFF6FF; color:#1D4ED8; border:1px solid #BFDBFE; }
+.badge-mgr-ordered { background:#F0FDF4; color:#15803D; border:1px solid #BBF7D0; }
 
 /* Type chips */
 .type-std { background:#EFF6FF; color:#3B82F6; border:1px solid #DBEAFE; padding:1px 6px; border-radius:4px; font-size:10px; font-weight:700; font-family:'Fira Code',monospace; }
 .type-so  { background:#CCFBF1; color:#0F766E; border:1px solid #99F6E4;  padding:1px 6px; border-radius:4px; font-size:10px; font-weight:700; font-family:'Fira Code',monospace; }
 .type-an  { background:#EDE9FE; color:#7C3AED; border:1px solid #DDD6FE;  padding:1px 6px; border-radius:4px; font-size:10px; font-weight:700; font-family:'Fira Code',monospace; }
+.type-bck { background:#FEF2F2; color:#C0192B; border:1px solid #FECACA;  padding:1px 6px; border-radius:4px; font-size:10px; font-weight:800; font-family:'Fira Code',monospace; }
 .type-md  { background:#E0E7FF; color:#4338CA; border:1px solid #C7D2FE;  padding:1px 6px; border-radius:4px; font-size:10px; font-weight:700; font-family:'Fira Code',monospace; }
 
 /* Dots */
@@ -2170,7 +2175,7 @@ aiclaude@agr24.ru</div>
       <div class="section-title">
         <div class="section-accent" style="background:#16A34A;"></div>
         Размещенные заказы
-        <span class="badge badge-green">6</span>
+        <span class="badge badge-green">8</span>
       </div>
     </div>
     <div style="overflow-x:auto;">
@@ -2259,6 +2264,36 @@ aiclaude@agr24.ru</div>
             <td style="color:#475569;">Поставка 42</td>
             <td><span class="badge badge-green">Доставлен</span></td>
             <td><button class="btn btn-primary" onclick="nav('placed-order')">Открыть</button></td>
+          </tr>
+          <!-- BCK-1001 -->
+          <tr style="background:#FFF5F5;">
+            <td class="mono" style="color:#94A3B8;font-size:11px;">17.06</td>
+            <td><a class="mono" style="font-size:12px;font-weight:700;color:#C0192B;" onclick="nav('backorder')">BCK-1001</a></td>
+            <td style="color:#475569;">Hans Mueller &amp; Co.</td>
+            <td style="color:#475569;">John Deere</td>
+            <td style="text-align:center;" class="mono"><strong>1</strong></td>
+            <td style="text-align:center;"><span class="type-bck">BCK</span></td>
+            <td style="text-align:right;" class="mono"><strong>480 €</strong></td>
+            <td style="text-align:right;color:#64748B;" class="mono">—</td>
+            <td style="text-align:center;"><span class="dot dot-orange"></span></td>
+            <td style="color:#475569;">Экспресс</td>
+            <td><span class="badge badge-mgr-update" style="font-size:10px;">Ожидает отгрузки</span></td>
+            <td><button class="btn btn-ghost" style="font-size:11px;" onclick="nav('backorder')">→ Backorder</button></td>
+          </tr>
+          <!-- BCK-1002 -->
+          <tr style="background:#FFF5F5;">
+            <td class="mono" style="color:#94A3B8;font-size:11px;">17.06</td>
+            <td><a class="mono" style="font-size:12px;font-weight:700;color:#C0192B;" onclick="nav('backorder')">BCK-1002</a></td>
+            <td style="color:#475569;">AgriTech Europa BV</td>
+            <td style="color:#475569;">John Deere</td>
+            <td style="text-align:center;" class="mono"><strong>1</strong></td>
+            <td style="text-align:center;"><span class="type-bck">BCK</span></td>
+            <td style="text-align:right;" class="mono"><strong>240 €</strong></td>
+            <td style="text-align:right;color:#64748B;" class="mono">—</td>
+            <td style="text-align:center;"><span class="dot dot-orange"></span></td>
+            <td style="color:#475569;">Экспресс</td>
+            <td><span class="badge badge-mgr-agree" style="font-size:10px;">На согласовании</span></td>
+            <td><button class="btn btn-ghost" style="font-size:11px;" onclick="nav('backorder')">→ Backorder</button></td>
           </tr>
         </tbody>
       </table>
@@ -2931,6 +2966,7 @@ Midwest Parts GmbH</div>
       <table>
         <thead><tr>
           <th>#</th>
+          <th>#</th>
           <th>Артикул</th>
           <th>Наименование</th>
           <th style="text-align:center;">Кол-во</th>
@@ -2941,6 +2977,7 @@ Midwest Parts GmbH</div>
           <th>Решение</th>
           <th style="text-align:center;">ETA</th>
           <th style="text-align:center;">Статус</th>
+          <th style="text-align:center;">Менеджер</th>
           <th></th>
         </tr></thead>
         <tbody id="bo-tbody">
@@ -2964,6 +3001,10 @@ Midwest Parts GmbH</div>
               <span style="font-size:11px;font-weight:600;color:#DC2626;" class="mono">25.06</span>
             </td>
             <td style="text-align:center;"><span class="badge badge-red" style="font-size:10px;">Срочно</span></td>
+            <td style="text-align:center;">
+              <span class="badge badge-mgr-ordered" style="font-size:10px;">В заказе</span><br>
+              <span class="badge badge-bck" style="font-size:9px;margin-top:3px;">BCK-1001</span>
+            </td>
             <td><button class="btn btn-ghost" style="font-size:11px;" onclick="boOpenDetail('HXE32806')">Открыть</button></td>
           </tr>
 
@@ -2986,6 +3027,9 @@ Midwest Parts GmbH</div>
               <span style="font-size:11px;font-weight:600;color:#DC2626;" class="mono">28.06</span>
             </td>
             <td style="text-align:center;"><span class="badge badge-red" style="font-size:10px;">Срочно</span></td>
+            <td style="text-align:center;">
+              <span class="badge badge-mgr-update" style="font-size:10px;">Обновление</span>
+            </td>
             <td><button class="btn btn-ghost" style="font-size:11px;" onclick="boOpenDetail('RE505743')">Открыть</button></td>
           </tr>
 
@@ -3008,6 +3052,9 @@ Midwest Parts GmbH</div>
               <span style="font-size:11px;color:#94A3B8;" class="mono">—</span>
             </td>
             <td style="text-align:center;"><span class="badge badge-orange" style="font-size:10px;">В работе</span></td>
+            <td style="text-align:center;">
+              <span class="badge badge-mgr-agree" style="font-size:10px;">Согласование</span>
+            </td>
             <td><button class="btn btn-ghost" style="font-size:11px;" onclick="boOpenDetail('AXE63131')">Открыть</button></td>
           </tr>
 
@@ -3030,6 +3077,9 @@ Midwest Parts GmbH</div>
               <span style="font-size:11px;font-weight:600;color:#D97706;" class="mono">15.07</span>
             </td>
             <td style="text-align:center;"><span class="badge badge-orange" style="font-size:10px;">В работе</span></td>
+            <td style="text-align:center;">
+              <span class="badge badge-mgr-update" style="font-size:10px;">Обновление</span>
+            </td>
             <td><button class="btn btn-ghost" style="font-size:11px;" onclick="boOpenDetail('AHC21949')">Открыть</button></td>
           </tr>
 
@@ -3052,6 +3102,10 @@ Midwest Parts GmbH</div>
               <span style="font-size:11px;font-weight:600;color:#D97706;" class="mono">10.07</span>
             </td>
             <td style="text-align:center;"><span class="badge badge-orange" style="font-size:10px;">В работе</span></td>
+            <td style="text-align:center;">
+              <span class="badge badge-mgr-ordered" style="font-size:10px;">В заказе</span><br>
+              <span class="badge badge-bck" style="font-size:9px;margin-top:3px;">BCK-1002</span>
+            </td>
             <td><button class="btn btn-ghost" style="font-size:11px;" onclick="boOpenDetail('R146680')">Открыть</button></td>
           </tr>
 
@@ -3074,6 +3128,9 @@ Midwest Parts GmbH</div>
               <span style="font-size:11px;font-weight:600;color:#D97706;" class="mono">17.07</span>
             </td>
             <td style="text-align:center;"><span class="badge badge-orange" style="font-size:10px;">В работе</span></td>
+            <td style="text-align:center;">
+              <span class="badge badge-mgr-agree" style="font-size:10px;">Согласование</span>
+            </td>
             <td><button class="btn btn-ghost" style="font-size:11px;" onclick="boOpenDetail('4283835M1')">Открыть</button></td>
           </tr>
 
@@ -3090,8 +3147,113 @@ Midwest Parts GmbH</div>
     </div>
   </div>
 
+  <!-- ── Перезаказано ──────────────────────────────────────────────── -->
+  <div id="bo-reordered-section" style="margin-top:20px;">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
+      <div style="display:flex;align-items:center;gap:10px;">
+        <span style="font-size:14px;font-weight:700;color:#0F172A;">Перезаказано</span>
+        <span class="badge badge-bck" style="font-size:10px;">BCK</span>
+        <span style="font-size:11px;color:#94A3B8;">2 заказа</span>
+      </div>
+    </div>
+    <div style="background:#fff;border:1px solid #E2E8F0;border-radius:10px;overflow:hidden;">
+      <table style="width:100%;border-collapse:collapse;font-size:12px;">
+        <thead>
+          <tr style="background:#F8FAFC;">
+            <th style="padding:9px 12px;text-align:left;font-weight:700;font-size:10px;color:#64748B;text-transform:uppercase;letter-spacing:.5px;border-bottom:1px solid #E2E8F0;">Номер заказа</th>
+            <th style="padding:9px 12px;text-align:left;font-weight:700;font-size:10px;color:#64748B;text-transform:uppercase;letter-spacing:.5px;border-bottom:1px solid #E2E8F0;">Поставщик</th>
+            <th style="padding:9px 12px;text-align:left;font-weight:700;font-size:10px;color:#64748B;text-transform:uppercase;letter-spacing:.5px;border-bottom:1px solid #E2E8F0;">Марка</th>
+            <th style="padding:9px 12px;text-align:center;font-weight:700;font-size:10px;color:#64748B;text-transform:uppercase;letter-spacing:.5px;border-bottom:1px solid #E2E8F0;">Позиций</th>
+            <th style="padding:9px 12px;text-align:right;font-weight:700;font-size:10px;color:#64748B;text-transform:uppercase;letter-spacing:.5px;border-bottom:1px solid #E2E8F0;">Сумма EUR</th>
+            <th style="padding:9px 12px;text-align:center;font-weight:700;font-size:10px;color:#64748B;text-transform:uppercase;letter-spacing:.5px;border-bottom:1px solid #E2E8F0;">Статус</th>
+            <th style="padding:9px 12px;border-bottom:1px solid #E2E8F0;"></th>
+          </tr>
+        </thead>
+        <tbody id="bck-reordered-tbody">
+          <tr style="border-bottom:1px solid #F1F5F9;">
+            <td style="padding:10px 12px;">
+              <span class="badge badge-bck mono" style="font-size:11px;">BCK-1001</span>
+            </td>
+            <td style="padding:10px 12px;font-size:11px;color:#475569;">Hans Mueller &amp; Co.</td>
+            <td style="padding:10px 12px;font-size:11px;color:#475569;">John Deere</td>
+            <td style="padding:10px 12px;text-align:center;" class="mono">1</td>
+            <td style="padding:10px 12px;text-align:right;" class="mono">
+              <span style="font-weight:700;color:#0F172A;">480 €</span>
+            </td>
+            <td style="padding:10px 12px;text-align:center;">
+              <span class="badge badge-mgr-update" style="font-size:10px;">Ожидает отгрузки</span>
+            </td>
+            <td style="padding:10px 12px;">
+              <button class="btn btn-ghost" style="font-size:11px;" onclick="nav('placed-order')">Открыть</button>
+            </td>
+          </tr>
+          <tr>
+            <td style="padding:10px 12px;">
+              <span class="badge badge-bck mono" style="font-size:11px;">BCK-1002</span>
+            </td>
+            <td style="padding:10px 12px;font-size:11px;color:#475569;">AgriTech Europa BV</td>
+            <td style="padding:10px 12px;font-size:11px;color:#475569;">John Deere</td>
+            <td style="padding:10px 12px;text-align:center;" class="mono">1</td>
+            <td style="padding:10px 12px;text-align:right;" class="mono">
+              <span style="font-weight:700;color:#0F172A;">240 €</span>
+            </td>
+            <td style="padding:10px 12px;text-align:center;">
+              <span class="badge badge-mgr-agree" style="font-size:10px;">На согласовании</span>
+            </td>
+            <td style="padding:10px 12px;">
+              <button class="btn btn-ghost" style="font-size:11px;" onclick="nav('placed-order')">Открыть</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
 </div>
 </div><!-- /page-backorder -->
+
+<!-- Modal: BCK create -->
+<div id="modal-bck-create" class="inv-modal" onclick="if(event.target===this)this.classList.remove('show')">
+  <div style="background:#fff;border-radius:14px;width:480px;box-shadow:0 20px 60px rgba(0,0,0,0.18);">
+    <div style="padding:20px 24px 16px;border-bottom:1px solid #F1F5F9;display:flex;align-items:center;justify-content:space-between;">
+      <div>
+        <div style="font-size:14px;font-weight:800;color:#0F172A;">Создать BCK-заказ</div>
+        <div style="font-size:11px;color:#64748B;margin-top:2px;">Повторный заказ позиции у поставщика</div>
+      </div>
+      <button onclick="document.getElementById('modal-bck-create').classList.remove('show')" style="border:none;background:none;cursor:pointer;font-size:18px;color:#94A3B8;line-height:1;">×</button>
+    </div>
+    <div style="padding:20px 24px;">
+      <div style="background:#FFF5F5;border:1px solid #FECACA;border-radius:8px;padding:10px 14px;margin-bottom:16px;display:flex;align-items:center;gap:10px;">
+        <span class="badge badge-bck" style="font-size:11px;">BCK</span>
+        <div>
+          <div id="bck-modal-art" style="font-size:13px;font-weight:800;color:#0F172A;" class="mono"></div>
+          <div id="bck-modal-name" style="font-size:11px;color:#64748B;margin-top:1px;"></div>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px 16px;margin-bottom:16px;">
+        <div>
+          <div class="info-label">Поставщик</div>
+          <div id="bck-modal-supplier" class="info-value" style="font-size:12px;"></div>
+        </div>
+        <div>
+          <div class="info-label">Кол-во</div>
+          <div id="bck-modal-qty" class="info-value mono" style="font-size:12px;"></div>
+        </div>
+      </div>
+      <div style="margin-bottom:14px;">
+        <div class="info-label" style="margin-bottom:6px;">Комментарий поставщику</div>
+        <textarea rows="2" style="width:100%;border:1px solid #E2E8F0;border-radius:7px;padding:8px 10px;font-size:12px;font-family:'Fira Sans',sans-serif;outline:none;resize:none;box-sizing:border-box;" placeholder="Срочный заказ, бэкордер…"></textarea>
+      </div>
+      <div style="background:#F0FDF4;border:1px solid #BBF7D0;border-radius:7px;padding:10px 14px;margin-bottom:16px;font-size:11px;color:#15803D;">
+        После подтверждения позиция перейдёт в статус <strong>В заказе</strong> и появится в разделе <strong>Перезаказано</strong>.
+      </div>
+      <div style="display:flex;justify-content:flex-end;gap:8px;">
+        <button class="btn btn-ghost" style="font-size:12px;" onclick="document.getElementById('modal-bck-create').classList.remove('show')">Отмена</button>
+        <button class="btn btn-primary" style="font-size:12px;background:#C0192B;border-color:#9B1523;" onclick="boConfirmBck()">Создать BCK-заказ</button>
+      </div>
+    </div>
+  </div>
+</div>
 
 <!-- Modal: Backorder detail -->
 <div id="modal-bo-detail" class="inv-modal" onclick="if(event.target===this)this.classList.remove('show')">
@@ -5798,12 +5960,12 @@ function invClosePayModal() { document.getElementById('inv-modal-payment').class
 
 // ── BACKORDER ─────────────────────────────────────────────────────────
 var BO_DATA = {
-  'HXE32806':  { name:'Прокладка головки цил.', qty:1, supplier:'Hans Mueller & Co.', order:'№000368', proforma:'PRF-2026-089', client:'МИРАТОРГ',       reason:'Нет на складе',          solution:'Экспресс склад',        eta:'25.06.2026', status:'urgent' },
-  'RE505743':  { name:'Фильтр трансм. масла',   qty:1, supplier:'Hans Mueller & Co.', order:'№000344', proforma:'PRF-2026-086', client:'ПРОСТОРЫ',        reason:'Нет на складе',          solution:'Экспресс склад',        eta:'28.06.2026', status:'urgent' },
-  'AXE63131':  { name:'Шестерня ведущая',        qty:1, supplier:'Midwest Parts GmbH',  order:'№000361', proforma:'PRF-2026-088', client:'АФ АНА-ЮГ',     reason:'Снято с производства',   solution:'Альтерн. поставщик',   eta:'—',          status:'work'   },
-  'AHC21949':  { name:'Форсунка топливная',      qty:2, supplier:'Hans Mueller & Co.', order:'№000368', proforma:'PRF-2026-089', client:'ЧЕРКИЗОВО',      reason:'Нет на складе',          solution:'Заказ на пр-во',        eta:'15.07.2026', status:'work'   },
-  'R146680':   { name:'Подшипник игольчатый',    qty:4, supplier:'AgriTech Europa BV',  order:'№000350', proforma:'PRF-2026-087', client:'АФ АНА-ЮГ',     reason:'Нет на складе',          solution:'Следующая поставка',   eta:'10.07.2026', status:'work'   },
-  '4283835M1': { name:'Форсунка топливная (AGCO)',qty:3, supplier:'Hans Mueller & Co.', order:'REQ-12346',proforma:'—',           client:'ООО АГРОКОМПЛЕКС',reason:'ETA 45 дней',           solution:'Ищем аналог',          eta:'17.07.2026', status:'work'   }
+  'HXE32806':  { name:'Прокладка головки цил.', qty:1, supplier:'Hans Mueller & Co.', order:'№000368', proforma:'PRF-2026-089', client:'МИРАТОРГ',       reason:'Нет на складе',          solution:'Экспресс склад',        eta:'25.06.2026', status:'urgent', mgrStatus:'ordered', bckOrder:'BCK-1001' },
+  'RE505743':  { name:'Фильтр трансм. масла',   qty:1, supplier:'Hans Mueller & Co.', order:'№000344', proforma:'PRF-2026-086', client:'ПРОСТОРЫ',        reason:'Нет на складе',          solution:'Экспресс склад',        eta:'28.06.2026', status:'urgent', mgrStatus:'update'  },
+  'AXE63131':  { name:'Шестерня ведущая',        qty:1, supplier:'Midwest Parts GmbH',  order:'№000361', proforma:'PRF-2026-088', client:'АФ АНА-ЮГ',     reason:'Снято с производства',   solution:'Альтерн. поставщик',   eta:'—',          status:'work',   mgrStatus:'agree'   },
+  'AHC21949':  { name:'Форсунка топливная',      qty:2, supplier:'Hans Mueller & Co.', order:'№000368', proforma:'PRF-2026-089', client:'ЧЕРКИЗОВО',      reason:'Нет на складе',          solution:'Заказ на пр-во',        eta:'15.07.2026', status:'work',   mgrStatus:'update'  },
+  'R146680':   { name:'Подшипник игольчатый',    qty:4, supplier:'AgriTech Europa BV',  order:'№000350', proforma:'PRF-2026-087', client:'АФ АНА-ЮГ',     reason:'Нет на складе',          solution:'Следующая поставка',   eta:'10.07.2026', status:'work',   mgrStatus:'ordered', bckOrder:'BCK-1002' },
+  '4283835M1': { name:'Форсунка топливная (AGCO)',qty:3, supplier:'Hans Mueller & Co.', order:'REQ-12346',proforma:'—',           client:'ООО АГРОКОМПЛЕКС',reason:'ETA 45 дней',           solution:'Ищем аналог',          eta:'17.07.2026', status:'work',   mgrStatus:'agree'   }
 };
 
 function boFilter() {
@@ -5832,8 +5994,37 @@ function boOpenDetail(art) {
   document.getElementById('bo-detail-art').textContent = art;
   document.getElementById('bo-detail-name').textContent = d.name;
   var statusLabel = d.status === 'urgent' ? '<span class="badge badge-red">Срочно</span>' : '<span class="badge badge-orange">В работе</span>';
+
+  var mgrLabels = { agree: 'Согласование', update: 'Обновление', ordered: 'В заказе' };
+  var mgrBadge  = { agree: 'badge-mgr-agree', update: 'badge-mgr-update', ordered: 'badge-mgr-ordered' };
+  var mgrLabel  = mgrLabels[d.mgrStatus]  || '—';
+  var mgrCls    = mgrBadge[d.mgrStatus]   || '';
+  var mgrBadgeHtml = '<span class="badge ' + mgrCls + '" style="font-size:11px;">' + mgrLabel + '</span>';
+  if (d.mgrStatus === 'ordered' && d.bckOrder) {
+    mgrBadgeHtml += ' <span class="badge badge-bck" style="font-size:10px;">' + d.bckOrder + '</span>';
+  }
+
+  // Manager section: step buttons
+  var mgrSection =
+    '<div style="border:1px solid #E2E8F0;border-radius:8px;padding:14px;margin-bottom:14px;">'
+    + '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">'
+    + '<div class="info-label" style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.4px;">Статус менеджера</div>'
+    + mgrBadgeHtml
+    + '</div>'
+    + '<div style="font-size:11px;color:#64748B;margin-bottom:10px;">'
+    + (d.mgrStatus === 'agree'   ? 'Ожидаем подтверждение от клиента <strong>' + d.client + '</strong>.' : '')
+    + (d.mgrStatus === 'update'  ? 'Клиент <strong>' + d.client + '</strong> согласовал условия. Ожидаем подтверждение закупщика.' : '')
+    + (d.mgrStatus === 'ordered' ? 'Позиция включена в заказ <strong>' + (d.bckOrder || '') + '</strong>.' : '')
+    + '</div>'
+    + '<div style="display:flex;gap:8px;flex-wrap:wrap;">'
+    + (d.mgrStatus === 'agree'  ? '<button class="btn btn-ghost" style="font-size:11px;color:#1D4ED8;border-color:#BFDBFE;" onclick="boSetMgr(\'' + art + '\',\'update\')">→ Клиент согласовал</button>' : '')
+    + (d.mgrStatus === 'update' ? '<button class="btn btn-ghost" style="font-size:11px;color:#15803D;border-color:#BBF7D0;" onclick="boOpenBckModal(\'' + art + '\')">→ Создать BCK-заказ</button>' : '')
+    + (d.mgrStatus === 'ordered'? '<button class="btn btn-ghost" style="font-size:11px;" onclick="nav(\'backorder\')">Перейти в Перезаказано ↗</button>' : '')
+    + '</div>'
+    + '</div>';
+
   document.getElementById('bo-detail-body').innerHTML =
-    '<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px 20px;margin-bottom:18px;">'
+    '<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px 20px;margin-bottom:14px;">'
     + '<div><div class="info-label">Кол-во</div><div class="info-value mono">' + d.qty + ' шт.</div></div>'
     + '<div><div class="info-label">Статус</div><div style="margin-top:2px;">' + statusLabel + '</div></div>'
     + '<div><div class="info-label">Поставщик</div><div class="info-value">' + d.supplier + '</div></div>'
@@ -5843,13 +6034,14 @@ function boOpenDetail(art) {
     + '<div><div class="info-label">Причина</div><div class="info-value">' + d.reason + '</div></div>'
     + '<div><div class="info-label">ETA</div><div class="info-value mono" style="color:#D97706;font-weight:700;">' + d.eta + '</div></div>'
     + '</div>'
-    + '<div style="padding:12px 14px;background:#FFFBEB;border:1px solid #FDE68A;border-radius:8px;margin-bottom:16px;">'
+    + '<div style="padding:10px 14px;background:#FFFBEB;border:1px solid #FDE68A;border-radius:8px;margin-bottom:14px;">'
     + '<div class="info-label" style="color:#D97706;margin-bottom:4px;">Текущее решение</div>'
     + '<div style="font-size:12px;font-weight:600;color:#92400E;">' + d.solution + '</div>'
     + '</div>'
+    + mgrSection
     + '<div style="margin-bottom:12px;">'
     + '<div class="info-label" style="margin-bottom:6px;">Заметки</div>'
-    + '<textarea rows="3" style="width:100%;border:1px solid #E2E8F0;border-radius:7px;padding:8px 10px;font-size:12px;font-family:\'Fira Sans\',sans-serif;outline:none;resize:vertical;" placeholder="Добавить заметку…"></textarea>'
+    + '<textarea rows="2" style="width:100%;border:1px solid #E2E8F0;border-radius:7px;padding:8px 10px;font-size:12px;font-family:\'Fira Sans\',sans-serif;outline:none;resize:vertical;" placeholder="Добавить заметку…"></textarea>'
     + '</div>'
     + '<div style="display:flex;justify-content:space-between;align-items:center;">'
     + '<button class="btn btn-ghost" style="font-size:11px;" onclick="document.getElementById(\'modal-bo-detail\').classList.remove(\'show\')">Закрыть</button>'
@@ -5858,6 +6050,65 @@ function boOpenDetail(art) {
     + '<button class="btn btn-primary" style="font-size:11px;">Сохранить</button>'
     + '</div></div>';
   document.getElementById('modal-bo-detail').classList.add('show');
+}
+
+function boSetMgr(art, newStatus) {
+  if (BO_DATA[art]) {
+    BO_DATA[art].mgrStatus = newStatus;
+    boOpenDetail(art);
+  }
+}
+
+function boOpenBckModal(art) {
+  document.getElementById('modal-bo-detail').classList.remove('show');
+  var d = BO_DATA[art];
+  if (!d) return;
+  document.getElementById('bck-modal-art').textContent = art;
+  document.getElementById('bck-modal-name').textContent = d.name;
+  document.getElementById('bck-modal-supplier').textContent = d.supplier;
+  document.getElementById('bck-modal-qty').textContent = d.qty + ' шт.';
+  document.getElementById('modal-bck-create').classList.add('show');
+}
+
+function boConfirmBck() {
+  var art = document.getElementById('bck-modal-art').textContent;
+  var bckNum = 'BCK-' + (1000 + Math.floor(Math.random() * 99));
+  if (BO_DATA[art]) {
+    BO_DATA[art].mgrStatus = 'ordered';
+    BO_DATA[art].bckOrder  = bckNum;
+  }
+  document.getElementById('modal-bck-create').classList.remove('show');
+  // update badge in table row
+  var rows = document.querySelectorAll('#bo-tbody tr');
+  rows.forEach(function(tr) {
+    var artCell = tr.querySelector('td:nth-child(2) a');
+    if (artCell && artCell.textContent.trim() === art) {
+      var mgrCell = tr.querySelector('td:nth-child(12)');
+      if (mgrCell) mgrCell.innerHTML = '<span class="badge badge-mgr-ordered" style="font-size:10px;">В заказе</span><br><span class="badge badge-bck" style="font-size:9px;margin-top:3px;">' + bckNum + '</span>';
+    }
+  });
+  // show confirmation
+  boShowPerezakazano(bckNum, art);
+}
+
+function boShowPerezakazano(bckNum, art) {
+  var d = art ? BO_DATA[art] : null;
+  if (d && bckNum) {
+    var tbody = document.getElementById('bck-reordered-tbody');
+    if (tbody) {
+      var tr = document.createElement('tr');
+      tr.innerHTML = '<td style="padding:10px 12px;"><span class="badge badge-bck mono" style="font-size:11px;">' + bckNum + '</span></td>'
+        + '<td style="padding:10px 12px;font-size:11px;color:#475569;">' + d.supplier + '</td>'
+        + '<td style="padding:10px 12px;font-size:11px;color:#475569;">John Deere</td>'
+        + '<td style="padding:10px 12px;text-align:center;" class="mono">' + d.qty + '</td>'
+        + '<td style="padding:10px 12px;text-align:right;" class="mono"><span style="font-weight:700;color:#0F172A;">—</span></td>'
+        + '<td style="padding:10px 12px;text-align:center;"><span class="badge badge-mgr-agree" style="font-size:10px;">На согласовании</span></td>'
+        + '<td style="padding:10px 12px;"><button class="btn btn-ghost" style="font-size:11px;" onclick="nav(\'backorder\')">Открыть</button></td>';
+      tbody.appendChild(tr);
+    }
+  }
+  var sec = document.getElementById('bo-reordered-section');
+  if (sec) sec.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
 function nrExcelSelect(label, val) {
