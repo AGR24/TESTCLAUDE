@@ -6008,12 +6008,12 @@ function invClosePayModal() { document.getElementById('inv-modal-payment').class
 var bckSeq = 1003; // BCK-1001 and BCK-1002 already exist as demo data
 
 var BO_DATA = {
-  'HXE32806':  { name:'Прокладка головки цил.', qty:1, supplier:'Hans Mueller & Co.', order:'№000368', proforma:'PRF-2026-089', client:'МИРАТОРГ',       reason:'Нет на складе',          solution:'Экспресс склад',        eta:'25.06.2026', status:'urgent', mgrStatus:'ordered', bckOrder:'BCK-1001' },
-  'RE505743':  { name:'Фильтр трансм. масла',   qty:1, supplier:'Hans Mueller & Co.', order:'№000344', proforma:'PRF-2026-086', client:'ПРОСТОРЫ',        reason:'Нет на складе',          solution:'Экспресс склад',        eta:'28.06.2026', status:'urgent', mgrStatus:'update'  },
-  'AXE63131':  { name:'Шестерня ведущая',        qty:1, supplier:'Midwest Parts GmbH',  order:'№000361', proforma:'PRF-2026-088', client:'АФ АНА-ЮГ',     reason:'Снято с производства',   solution:'Альтерн. поставщик',   eta:'—',          status:'work',   mgrStatus:'agree'   },
-  'AHC21949':  { name:'Форсунка топливная',      qty:2, supplier:'Hans Mueller & Co.', order:'№000368', proforma:'PRF-2026-089', client:'ЧЕРКИЗОВО',      reason:'Нет на складе',          solution:'Заказ на пр-во',        eta:'15.07.2026', status:'work',   mgrStatus:'update'  },
-  'R146680':   { name:'Подшипник игольчатый',    qty:4, supplier:'AgriTech Europa BV',  order:'№000350', proforma:'PRF-2026-087', client:'АФ АНА-ЮГ',     reason:'Нет на складе',          solution:'Следующая поставка',   eta:'10.07.2026', status:'work',   mgrStatus:'ordered', bckOrder:'BCK-1002' },
-  '4283835M1': { name:'Форсунка топливная (AGCO)',qty:3, supplier:'Hans Mueller & Co.', order:'REQ-12346',proforma:'—',           client:'ООО АГРОКОМПЛЕКС',reason:'ETA 45 дней',           solution:'Ищем аналог',          eta:'17.07.2026', status:'work',   mgrStatus:'agree'   }
+  'HXE32806':  { name:'Прокладка головки цил.', brand:'AGCO',       qty:1, supplier:'Hans Mueller & Co.', order:'№000368', proforma:'PRF-2026-089', client:'МИРАТОРГ',       reason:'Нет на складе',          solution:'Экспресс склад',        eta:'25.06.2026', status:'urgent', mgrStatus:'ordered', bckOrder:'BCK-1001' },
+  'RE505743':  { name:'Фильтр трансм. масла',   brand:'AGCO',       qty:1, supplier:'Hans Mueller & Co.', order:'№000344', proforma:'PRF-2026-086', client:'ПРОСТОРЫ',        reason:'Нет на складе',          solution:'Экспресс склад',        eta:'28.06.2026', status:'urgent', mgrStatus:'update'  },
+  'AXE63131':  { name:'Шестерня ведущая',        brand:'John Deere', qty:1, supplier:'Midwest Parts GmbH',  order:'№000361', proforma:'PRF-2026-088', client:'АФ АНА-ЮГ',     reason:'Снято с производства',   solution:'Альтерн. поставщик',   eta:'—',          status:'work',   mgrStatus:'agree'   },
+  'AHC21949':  { name:'Форсунка топливная',      brand:'AGCO',       qty:2, supplier:'Hans Mueller & Co.', order:'№000368', proforma:'PRF-2026-089', client:'ЧЕРКИЗОВО',      reason:'Нет на складе',          solution:'Заказ на пр-во',        eta:'15.07.2026', status:'work',   mgrStatus:'update'  },
+  'R146680':   { name:'Подшипник игольчатый',    brand:'Claas',      qty:4, supplier:'AgriTech Europa BV',  order:'№000350', proforma:'PRF-2026-087', client:'АФ АНА-ЮГ',     reason:'Нет на складе',          solution:'Следующая поставка',   eta:'10.07.2026', status:'work',   mgrStatus:'ordered', bckOrder:'BCK-1002' },
+  '4283835M1': { name:'Форсунка топливная (AGCO)',brand:'AGCO',      qty:3, supplier:'Hans Mueller & Co.', order:'REQ-12346',proforma:'—',           client:'ООО АГРОКОМПЛЕКС',reason:'ETA 45 дней',           solution:'Ищем аналог',          eta:'17.07.2026', status:'work',   mgrStatus:'agree'   }
 };
 
 function boFilter() {
@@ -6125,8 +6125,9 @@ function boReorderOpen() {
       + '<input type="checkbox" data-art="' + art + '" class="bo-reorder-chk" onchange="boReorderUpdatePreview()" style="width:15px;height:15px;flex-shrink:0;cursor:pointer;accent-color:#C0192B;"'
       + (d.mgrStatus === 'ordered' ? ' disabled title="Уже перезаказано"' : '') + '>'
       + '<div style="flex:1;min-width:0;">'
-      + '<div style="display:flex;align-items:center;gap:8px;">'
+      + '<div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">'
       + '<span class="mono" style="font-size:12px;font-weight:700;color:#0F172A;">' + art + '</span>'
+      + (d.brand ? '<span style="font-size:10px;font-weight:600;color:#6366F1;background:#EEF2FF;border:1px solid #C7D2FE;padding:1px 6px;border-radius:4px;">' + d.brand + '</span>' : '')
       + mgrBadge
       + '</div>'
       + '<div style="font-size:11px;color:#64748B;margin-top:1px;">' + d.name + '</div>'
