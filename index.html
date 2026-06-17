@@ -2330,7 +2330,7 @@ aiclaude@agr24.ru</div>
             <td style="color:#475569;">Нет на складе</td>
             <td style="color:#475569;">Экспресс склад</td>
             <td><span class="badge badge-red">Срочно</span></td>
-            <td><button class="btn btn-ghost">Открыть</button></td>
+            <td><button class="btn btn-ghost" onclick="boNavDetail('HXE32806')">Открыть</button></td>
           </tr>
           <tr>
             <td><a class="mono" style="font-size:12px;font-weight:600;">AXE63131</a></td>
@@ -2341,7 +2341,7 @@ aiclaude@agr24.ru</div>
             <td style="color:#475569;">Снято с производства</td>
             <td style="color:#475569;">Альтерн. поставщик</td>
             <td><span class="badge badge-orange">В работе</span></td>
-            <td><button class="btn btn-ghost">Открыть</button></td>
+            <td><button class="btn btn-ghost" onclick="boNavDetail('AXE63131')">Открыть</button></td>
           </tr>
           <tr>
             <td><a class="mono" style="font-size:12px;font-weight:600;">AHC21949</a></td>
@@ -2352,7 +2352,7 @@ aiclaude@agr24.ru</div>
             <td style="color:#475569;">Нет на складе</td>
             <td style="color:#475569;">Заказ на пр-во</td>
             <td><span class="badge badge-orange">В работе</span></td>
-            <td><button class="btn btn-ghost">Открыть</button></td>
+            <td><button class="btn btn-ghost" onclick="boNavDetail('AHC21949')">Открыть</button></td>
           </tr>
           <tr>
             <td><a class="mono" style="font-size:12px;font-weight:600;">R146680</a></td>
@@ -2363,7 +2363,7 @@ aiclaude@agr24.ru</div>
             <td style="color:#475569;">Нет на складе</td>
             <td style="color:#475569;">Следующая поставка</td>
             <td><span class="badge badge-orange">В работе</span></td>
-            <td><button class="btn btn-ghost">Открыть</button></td>
+            <td><button class="btn btn-ghost" onclick="boNavDetail('R146680')">Открыть</button></td>
           </tr>
           <tr style="background:#FFF5F5;">
             <td><a class="mono" style="font-size:12px;font-weight:600;color:#DC2626;">RE505743</a></td>
@@ -2374,7 +2374,7 @@ aiclaude@agr24.ru</div>
             <td style="color:#475569;">Нет на складе</td>
             <td style="color:#475569;">Экспресс склад</td>
             <td><span class="badge badge-red">Срочно</span></td>
-            <td><button class="btn btn-ghost">Открыть</button></td>
+            <td><button class="btn btn-ghost" onclick="boNavDetail('RE505743')">Открыть</button></td>
           </tr>
         </tbody>
       </table>
@@ -3007,7 +3007,7 @@ Midwest Parts GmbH</div>
               <span class="badge badge-mgr-ordered" style="font-size:10px;">В заказе</span><br>
               <span class="badge badge-bck" style="font-size:9px;margin-top:3px;">BCK-1001</span>
             </td>
-            <td><button class="btn btn-ghost" style="font-size:11px;" onclick="boOpenDetail('HXE32806')">Открыть</button></td>
+            <td><button class="btn btn-ghost" style="font-size:11px;" onclick="boNavDetail('HXE32806')">Открыть</button></td>
           </tr>
 
           <!-- 2 Срочно -->
@@ -3032,7 +3032,7 @@ Midwest Parts GmbH</div>
             <td style="text-align:center;">
               <span class="badge badge-mgr-update" style="font-size:10px;">Обновление</span>
             </td>
-            <td><button class="btn btn-ghost" style="font-size:11px;" onclick="boOpenDetail('RE505743')">Открыть</button></td>
+            <td><button class="btn btn-ghost" style="font-size:11px;" onclick="boNavDetail('RE505743')">Открыть</button></td>
           </tr>
 
           <!-- 3 В работе -->
@@ -3057,7 +3057,7 @@ Midwest Parts GmbH</div>
             <td style="text-align:center;">
               <span class="badge badge-mgr-agree" style="font-size:10px;">Согласование</span>
             </td>
-            <td><button class="btn btn-ghost" style="font-size:11px;" onclick="boOpenDetail('AXE63131')">Открыть</button></td>
+            <td><button class="btn btn-ghost" style="font-size:11px;" onclick="boNavDetail('AXE63131')">Открыть</button></td>
           </tr>
 
           <!-- 4 В работе -->
@@ -3082,7 +3082,7 @@ Midwest Parts GmbH</div>
             <td style="text-align:center;">
               <span class="badge badge-mgr-update" style="font-size:10px;">Обновление</span>
             </td>
-            <td><button class="btn btn-ghost" style="font-size:11px;" onclick="boOpenDetail('AHC21949')">Открыть</button></td>
+            <td><button class="btn btn-ghost" style="font-size:11px;" onclick="boNavDetail('AHC21949')">Открыть</button></td>
           </tr>
 
           <!-- 5 В работе -->
@@ -3108,7 +3108,7 @@ Midwest Parts GmbH</div>
               <span class="badge badge-mgr-ordered" style="font-size:10px;">В заказе</span><br>
               <span class="badge badge-bck" style="font-size:9px;margin-top:3px;">BCK-1002</span>
             </td>
-            <td><button class="btn btn-ghost" style="font-size:11px;" onclick="boOpenDetail('R146680')">Открыть</button></td>
+            <td><button class="btn btn-ghost" style="font-size:11px;" onclick="boNavDetail('R146680')">Открыть</button></td>
           </tr>
 
           <!-- 6 В работе — из запроса REQ12346 -->
@@ -3133,7 +3133,7 @@ Midwest Parts GmbH</div>
             <td style="text-align:center;">
               <span class="badge badge-mgr-agree" style="font-size:10px;">Согласование</span>
             </td>
-            <td><button class="btn btn-ghost" style="font-size:11px;" onclick="boOpenDetail('4283835M1')">Открыть</button></td>
+            <td><button class="btn btn-ghost" style="font-size:11px;" onclick="boNavDetail('4283835M1')">Открыть</button></td>
           </tr>
 
         </tbody>
@@ -3317,6 +3317,15 @@ Midwest Parts GmbH</div>
 </div>
 
 <!-- ══════════════════════════════════════════════════════════════════ -->
+<!-- ══════════════════════════════════════════════════════════════════ -->
+<!-- PAGE: BACKORDER ITEM DETAIL                                        -->
+<!-- ══════════════════════════════════════════════════════════════════ -->
+<div id="page-bo-detail" class="page">
+<div style="max-width:1440px;margin:0 auto;padding:16px 20px 28px;">
+  <div id="bod-root"><!-- rendered by boRenderDetail() --></div>
+</div>
+</div>
+
 <!-- PAGE: ACTUALIZATION                                                -->
 <!-- ══════════════════════════════════════════════════════════════════ -->
 <div id="page-actualization" class="page">
@@ -6015,6 +6024,262 @@ var BO_DATA = {
   'R146680':   { name:'Подшипник игольчатый',    brand:'Claas',      qty:4, supplier:'AgriTech Europa BV',  order:'№000350', proforma:'PRF-2026-087', client:'АФ АНА-ЮГ',     reason:'Нет на складе',          solution:'Следующая поставка',   eta:'10.07.2026', status:'work',   mgrStatus:'ordered', bckOrder:'BCK-1002' },
   '4283835M1': { name:'Форсунка топливная (AGCO)',brand:'AGCO',      qty:3, supplier:'Hans Mueller & Co.', order:'REQ-12346',proforma:'—',           client:'ООО АГРОКОМПЛЕКС',reason:'ETA 45 дней',           solution:'Ищем аналог',          eta:'17.07.2026', status:'work',   mgrStatus:'agree'   }
 };
+
+// ── Extended detail data per backorder article ────────────────────────
+var boDetailArt = null;
+
+var BO_EXTRA = {
+  'HXE32806': {
+    date:'09.06.2026', price:480, type:'STD', mgrInternal:'Алексей К.', mgrSupplier:'Hans Mueller',
+    bckHistory:[{ num:'BCK-1001', date:'17.06.2026', qty:1, status:'Ожидает отгрузки' }],
+    timeline:[
+      { date:'09.06', icon:'order', text:'Включена в заказ №000368', sub:'PRF-2026-089 · Hans Mueller & Co.' },
+      { date:'12.06', icon:'warn',  text:'BACKORDER: нет на складе', sub:'Поставщик уточнил сроки' },
+      { date:'14.06', icon:'msg',   text:'Менеджер МИРАТОРГ уведомлён', sub:'Статус переведён: Согласование' },
+      { date:'15.06', icon:'ok',    text:'Клиент согласовал экспресс-доставку', sub:'ETA 25.06.2026 подтверждён' },
+      { date:'17.06', icon:'bck',   text:'Создан перезаказ BCK-1001', sub:'Hans Mueller & Co. · 1 шт.' },
+    ]
+  },
+  'RE505743': {
+    date:'02.06.2026', price:120, type:'STD', mgrInternal:'Виктор Р.', mgrSupplier:'Hans Mueller',
+    bckHistory:[],
+    timeline:[
+      { date:'02.06', icon:'order', text:'Включена в заказ №000344', sub:'PRF-2026-086 · Hans Mueller & Co.' },
+      { date:'10.06', icon:'warn',  text:'BACKORDER: нет на складе', sub:'ETA 28.06.2026' },
+      { date:'12.06', icon:'msg',   text:'Менеджер ПРОСТОРЫ уведомлён', sub:'Статус переведён: Согласование' },
+      { date:'14.06', icon:'ok',    text:'Клиент согласовал альтернативный срок', sub:'Статус: Обновление' },
+    ]
+  },
+  'AXE63131': {
+    date:'07.06.2026', price:null, type:'STD', mgrInternal:'Алексей К.', mgrSupplier:'John Smith (Midwest)',
+    bckHistory:[],
+    timeline:[
+      { date:'07.06', icon:'order', text:'Включена в заказ №000361', sub:'PRF-2026-088 · Midwest Parts GmbH' },
+      { date:'11.06', icon:'warn',  text:'Деталь снята с производства поставщиком', sub:'Ищем альтернативного поставщика' },
+      { date:'13.06', icon:'msg',   text:'Менеджер АФ АНА-ЮГ уведомлён', sub:'Статус переведён: Согласование' },
+    ]
+  },
+  'AHC21949': {
+    date:'09.06.2026', price:215, type:'STD', mgrInternal:'Виктор Р.', mgrSupplier:'Hans Mueller',
+    bckHistory:[],
+    timeline:[
+      { date:'09.06', icon:'order', text:'Включена в заказ №000368', sub:'PRF-2026-089 · Hans Mueller & Co.' },
+      { date:'12.06', icon:'warn',  text:'BACKORDER: заказ на производство', sub:'ETA 15.07.2026' },
+      { date:'13.06', icon:'msg',   text:'Менеджер ЧЕРКИЗОВО уведомлён', sub:'Статус переведён: Согласование' },
+      { date:'14.06', icon:'ok',    text:'Клиент согласовал производство', sub:'ETA 15.07.2026 подтверждён' },
+    ]
+  },
+  'R146680': {
+    date:'05.06.2026', price:60, type:'STD', mgrInternal:'Алексей К.', mgrSupplier:'AgriTech Support',
+    bckHistory:[{ num:'BCK-1002', date:'17.06.2026', qty:4, status:'На согласовании' }],
+    timeline:[
+      { date:'05.06', icon:'order', text:'Включена в заказ №000350', sub:'PRF-2026-087 · AgriTech Europa BV' },
+      { date:'09.06', icon:'warn',  text:'BACKORDER: следующая поставка', sub:'ETA 10.07.2026' },
+      { date:'11.06', icon:'msg',   text:'Менеджер АФ АНА-ЮГ уведомлён', sub:'Статус переведён: Согласование' },
+      { date:'13.06', icon:'ok',    text:'Клиент согласовал следующую поставку', sub:'ETA 10.07.2026 подтверждён' },
+      { date:'17.06', icon:'bck',   text:'Создан перезаказ BCK-1002', sub:'AgriTech Europa BV · 4 шт.' },
+    ]
+  },
+  '4283835M1': {
+    date:'01.06.2026', price:null, type:'SO', mgrInternal:'Виктор Р.', mgrSupplier:'Hans Mueller',
+    bckHistory:[],
+    timeline:[
+      { date:'01.06', icon:'order', text:'Запрос REQ-12346 отправлен поставщику', sub:'Hans Mueller & Co. · AGCO' },
+      { date:'04.06', icon:'warn',  text:'Ответ: BACKORDER — ETA 45 дней', sub:'Ищем аналог' },
+      { date:'06.06', icon:'msg',   text:'Менеджер ООО АГРОКОМПЛЕКС уведомлён', sub:'Статус: Согласование' },
+    ]
+  }
+};
+
+function boNavDetail(art) {
+  boDetailArt = art;
+  boRenderDetail();
+  nav('bo-detail');
+}
+
+function boRenderDetail() {
+  var art = boDetailArt;
+  var d   = BO_DATA[art];
+  var x   = BO_EXTRA[art];
+  if (!d || !x) return;
+
+  var mgrLabels = { agree:'Согласование', update:'Обновление', ordered:'В заказе' };
+  var mgrCls    = { agree:'badge-mgr-agree', update:'badge-mgr-update', ordered:'badge-mgr-ordered' };
+  var statusBadge = d.status === 'urgent'
+    ? '<span class="badge badge-red">Срочно</span>'
+    : '<span class="badge badge-orange">В работе</span>';
+  var mgrBadge = d.mgrStatus
+    ? '<span class="badge ' + (mgrCls[d.mgrStatus]||'') + '" style="font-size:11px;">' + (mgrLabels[d.mgrStatus]||'') + '</span>'
+    : '';
+  if (d.mgrStatus === 'ordered' && d.bckOrder) {
+    mgrBadge += ' <span class="badge badge-bck" style="font-size:11px;">' + d.bckOrder + '</span>';
+  }
+  var brandBadge = d.brand
+    ? '<span style="font-size:11px;font-weight:600;color:#6366F1;background:#EEF2FF;border:1px solid #C7D2FE;padding:2px 8px;border-radius:4px;">' + d.brand + '</span>'
+    : '';
+
+  // ── Timeline icon HTML ────────────────────────────────────────────
+  function tlIcon(icon) {
+    if (icon === 'order') return '<div style="width:30px;height:30px;border-radius:50%;background:#EFF6FF;border:2px solid #BFDBFE;display:flex;align-items:center;justify-content:center;flex-shrink:0;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#3B82F6" stroke-width="2.5"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg></div>';
+    if (icon === 'warn')  return '<div style="width:30px;height:30px;border-radius:50%;background:#FFFBEB;border:2px solid #FDE68A;display:flex;align-items:center;justify-content:center;flex-shrink:0;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#D97706" stroke-width="2.5"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></div>';
+    if (icon === 'msg')   return '<div style="width:30px;height:30px;border-radius:50%;background:#F8FAFC;border:2px solid #E2E8F0;display:flex;align-items:center;justify-content:center;flex-shrink:0;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#64748B" stroke-width="2.5"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div>';
+    if (icon === 'ok')    return '<div style="width:30px;height:30px;border-radius:50%;background:#F0FDF4;border:2px solid #BBF7D0;display:flex;align-items:center;justify-content:center;flex-shrink:0;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#16A34A" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg></div>';
+    if (icon === 'bck')   return '<div style="width:30px;height:30px;border-radius:50%;background:#FEF2F2;border:2px solid #FECACA;display:flex;align-items:center;justify-content:center;flex-shrink:0;"><span style="font-size:8px;font-weight:800;color:#C0192B;font-family:\'Fira Code\',monospace;">BCK</span></div>';
+    return '<div style="width:30px;height:30px;border-radius:50%;background:#F1F5F9;flex-shrink:0;"></div>';
+  }
+
+  // ── History rows ──────────────────────────────────────────────────
+  var histHtml = '';
+  if (x.bckHistory && x.bckHistory.length > 0) {
+    x.bckHistory.forEach(function(h) {
+      histHtml += '<tr>'
+        + '<td style="padding:10px 14px;"><span class="badge badge-bck mono" style="font-size:11px;">' + h.num + '</span></td>'
+        + '<td style="padding:10px 14px;" class="mono" style="font-size:11px;color:#64748B;">' + h.date + '</td>'
+        + '<td style="padding:10px 14px;font-size:11px;color:#475569;">' + d.supplier + '</td>'
+        + '<td style="padding:10px 14px;text-align:center;" class="mono">' + h.qty + ' шт.</td>'
+        + '<td style="padding:10px 14px;"><span class="badge badge-mgr-update" style="font-size:10px;">' + h.status + '</span></td>'
+        + '<td style="padding:10px 14px;"><button class="btn btn-ghost" style="font-size:11px;" onclick="nav(\'backorder\')">→ Backorder</button></td>'
+        + '</tr>';
+    });
+  } else {
+    histHtml = '<tr><td colspan="6" style="padding:14px;text-align:center;font-size:12px;color:#94A3B8;">Перезаказов не было</td></tr>';
+  }
+
+  // ── Timeline rows ─────────────────────────────────────────────────
+  var tlHtml = '';
+  x.timeline.forEach(function(t, i) {
+    var isLast = (i === x.timeline.length - 1);
+    tlHtml += '<div style="display:flex;gap:14px;' + (isLast ? '' : 'margin-bottom:16px;') + '">'
+      + '<div style="display:flex;flex-direction:column;align-items:center;">'
+      + tlIcon(t.icon)
+      + (isLast ? '' : '<div style="width:2px;flex:1;background:#F1F5F9;margin-top:4px;min-height:20px;"></div>')
+      + '</div>'
+      + '<div style="padding-top:4px;padding-bottom:' + (isLast ? '0' : '4px') + ';">'
+      + '<div style="display:flex;align-items:center;gap:8px;margin-bottom:2px;">'
+      + '<span class="mono" style="font-size:10px;color:#94A3B8;">' + t.date + '</span>'
+      + '<span style="font-size:12px;font-weight:600;color:#0F172A;">' + t.text + '</span>'
+      + '</div>'
+      + '<div style="font-size:11px;color:#64748B;">' + t.sub + '</div>'
+      + '</div>'
+      + '</div>';
+  });
+
+  var priceHtml = x.price
+    ? '<div><div class="info-label">Цена EUR</div><div class="info-value mono" style="color:#0F172A;font-weight:700;">' + x.price + ' €/шт.</div></div>'
+      + '<div><div class="info-label">Сумма EUR</div><div class="info-value mono" style="color:#0F172A;font-weight:700;">' + (x.price * d.qty) + ' €</div></div>'
+    : '<div><div class="info-label">Цена EUR</div><div class="info-value" style="color:#94A3B8;">—</div></div>';
+
+  var html =
+    // ── Breadcrumb ────────────────────────────────────────────────────
+    '<div style="display:flex;align-items:center;gap:5px;font-size:11px;color:#94A3B8;margin-bottom:16px;">'
+    + '<a onclick="nav(\'supplier\')" style="color:#94A3B8;cursor:pointer;">Поставщик</a>'
+    + '<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>'
+    + '<a onclick="nav(\'backorder\')" style="color:#94A3B8;cursor:pointer;">Backorder</a>'
+    + '<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>'
+    + '<span style="color:#0F172A;font-weight:600;" class="mono">' + art + '</span>'
+    + '</div>'
+
+    // ── Hero header ───────────────────────────────────────────────────
+    + '<div class="card" style="padding:20px 24px;margin-bottom:14px;">'
+    + '<div style="display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:10px;">'
+    + '<div>'
+    + '<div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:6px;">'
+    + '<span class="mono" style="font-size:20px;font-weight:800;color:#0F172A;">' + art + '</span>'
+    + brandBadge + statusBadge
+    + '</div>'
+    + '<div style="font-size:15px;font-weight:600;color:#334155;margin-bottom:8px;">' + d.name + '</div>'
+    + '<div style="display:flex;align-items:center;gap:12px;font-size:12px;color:#64748B;flex-wrap:wrap;">'
+    + '<span>' + d.supplier + '</span>'
+    + '<span style="color:#E2E8F0;">·</span>'
+    + '<span class="mono">' + d.order + '</span>'
+    + '<span style="color:#E2E8F0;">·</span>'
+    + '<span>' + x.date + '</span>'
+    + '</div>'
+    + '</div>'
+    + '<div style="text-align:right;">'
+    + '<div class="info-label" style="margin-bottom:4px;">Статус менеджера</div>'
+    + '<div>' + mgrBadge + '</div>'
+    + '</div>'
+    + '</div>'
+    + '</div>'
+
+    // ── 2-column grid ─────────────────────────────────────────────────
+    + '<div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px;">'
+
+    // Card: Заказ и поставка
+    + '<div class="card" style="padding:18px 20px;">'
+    + '<div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:#94A3B8;margin-bottom:12px;display:flex;align-items:center;gap:6px;"><div style="width:3px;height:12px;background:#3B82F6;border-radius:2px;"></div>Заказ и поставка</div>'
+    + '<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px 16px;">'
+    + '<div><div class="info-label">Поставщик</div><div class="info-value" style="font-size:12px;">' + d.supplier + '</div></div>'
+    + '<div><div class="info-label">Дата заказа</div><div class="info-value mono">' + x.date + '</div></div>'
+    + '<div><div class="info-label">Наш заказ</div><div class="info-value"><a class="mono" style="color:#2563EB;cursor:pointer;" onclick="nav(\'order-detail\')">' + d.order + '</a></div></div>'
+    + '<div><div class="info-label">Проформа</div><div class="info-value"><a class="mono" style="color:#7C3AED;cursor:pointer;" onclick="nav(\'placed-order\')">' + d.proforma + '</a></div></div>'
+    + '<div><div class="info-label">Тип заказа</div><div style="margin-top:2px;"><span class="type-' + x.type.toLowerCase() + '">' + x.type + '</span></div></div>'
+    + '<div><div class="info-label">Кол-во</div><div class="info-value mono">' + d.qty + ' шт.</div></div>'
+    + priceHtml
+    + '</div>'
+    + '</div>'
+
+    // Card: Клиент и ответственные
+    + '<div class="card" style="padding:18px 20px;">'
+    + '<div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:#94A3B8;margin-bottom:12px;display:flex;align-items:center;gap:6px;"><div style="width:3px;height:12px;background:#8B5CF6;border-radius:2px;"></div>Клиент и ответственные</div>'
+    + '<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px 16px;">'
+    + '<div><div class="info-label">Клиент</div><div class="info-value" style="font-weight:600;color:#0F172A;">' + d.client + '</div></div>'
+    + '<div><div class="info-label">Статус у клиента</div><div style="margin-top:2px;">' + mgrBadge + '</div></div>'
+    + '<div><div class="info-label">Менеджер (наш)</div><div class="info-value" style="display:flex;align-items:center;gap:6px;"><div style="width:22px;height:22px;border-radius:50%;background:#EFF6FF;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;color:#3B82F6;">' + x.mgrInternal.split(' ').map(function(w){return w[0];}).join('') + '</div>' + x.mgrInternal + '</div></div>'
+    + '<div><div class="info-label">Контакт поставщика</div><div class="info-value" style="display:flex;align-items:center;gap:6px;"><div style="width:22px;height:22px;border-radius:50%;background:#FEF3C7;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;color:#D97706;">' + x.mgrSupplier.charAt(0) + '</div>' + x.mgrSupplier + '</div></div>'
+    + '</div>'
+    + '</div>'
+
+    + '</div>' // /grid
+
+    // ── Backorder статус ──────────────────────────────────────────────
+    + '<div class="card" style="padding:18px 20px;margin-bottom:14px;">'
+    + '<div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:#94A3B8;margin-bottom:12px;display:flex;align-items:center;gap:6px;"><div style="width:3px;height:12px;background:#DC2626;border-radius:2px;"></div>Backorder статус</div>'
+    + '<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:14px;">'
+    + '<div><div class="info-label">Причина</div><div class="info-value">' + d.reason + '</div></div>'
+    + '<div><div class="info-label">Текущее решение</div><div class="info-value" style="font-weight:600;color:#92400E;">' + d.solution + '</div></div>'
+    + '<div><div class="info-label">ETA</div><div class="info-value mono" style="font-weight:700;color:#D97706;">' + d.eta + '</div></div>'
+    + '<div><div class="info-label">Статус менеджера</div><div style="margin-top:4px;">' + mgrBadge + '</div></div>'
+    + '</div>'
+    + '</div>'
+
+    // ── История перезаказов ───────────────────────────────────────────
+    + '<div class="card" style="margin-bottom:14px;overflow:hidden;">'
+    + '<div style="padding:14px 20px 10px;border-bottom:1px solid #F1F5F9;">'
+    + '<div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:#94A3B8;display:flex;align-items:center;gap:6px;"><div style="width:3px;height:12px;background:#C0192B;border-radius:2px;"></div>История перезаказов</div>'
+    + '</div>'
+    + '<table style="width:100%;border-collapse:collapse;font-size:12px;">'
+    + '<thead><tr style="background:#F8FAFC;">'
+    + '<th style="padding:8px 14px;text-align:left;font-size:10px;color:#64748B;font-weight:700;text-transform:uppercase;letter-spacing:.4px;border-bottom:1px solid #E2E8F0;">Номер</th>'
+    + '<th style="padding:8px 14px;text-align:left;font-size:10px;color:#64748B;font-weight:700;text-transform:uppercase;letter-spacing:.4px;border-bottom:1px solid #E2E8F0;">Дата</th>'
+    + '<th style="padding:8px 14px;text-align:left;font-size:10px;color:#64748B;font-weight:700;text-transform:uppercase;letter-spacing:.4px;border-bottom:1px solid #E2E8F0;">Поставщик</th>'
+    + '<th style="padding:8px 14px;text-align:center;font-size:10px;color:#64748B;font-weight:700;text-transform:uppercase;letter-spacing:.4px;border-bottom:1px solid #E2E8F0;">Кол-во</th>'
+    + '<th style="padding:8px 14px;text-align:left;font-size:10px;color:#64748B;font-weight:700;text-transform:uppercase;letter-spacing:.4px;border-bottom:1px solid #E2E8F0;">Статус</th>'
+    + '<th style="border-bottom:1px solid #E2E8F0;"></th>'
+    + '</tr></thead>'
+    + '<tbody>' + histHtml + '</tbody>'
+    + '</table>'
+    + '</div>'
+
+    // ── Хронология ───────────────────────────────────────────────────
+    + '<div class="card" style="padding:18px 20px;margin-bottom:14px;">'
+    + '<div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:#94A3B8;margin-bottom:14px;display:flex;align-items:center;gap:6px;"><div style="width:3px;height:12px;background:#64748B;border-radius:2px;"></div>Хронология событий</div>'
+    + tlHtml
+    + '</div>'
+
+    // ── Заметки ──────────────────────────────────────────────────────
+    + '<div class="card" style="padding:18px 20px;">'
+    + '<div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:#94A3B8;margin-bottom:10px;display:flex;align-items:center;gap:6px;"><div style="width:3px;height:12px;background:#94A3B8;border-radius:2px;"></div>Заметки</div>'
+    + '<textarea rows="3" style="width:100%;border:1px solid #E2E8F0;border-radius:8px;padding:10px 12px;font-size:12px;font-family:\'Fira Sans\',sans-serif;outline:none;resize:vertical;color:#0F172A;box-sizing:border-box;" placeholder="Добавить заметку по позиции…"></textarea>'
+    + '<div style="display:flex;justify-content:flex-end;margin-top:8px;gap:8px;">'
+    + '<button class="btn btn-ghost" style="font-size:11px;" onclick="nav(\'backorder\')">← Назад в Backorder</button>'
+    + '<button class="btn btn-primary" style="font-size:11px;">Сохранить</button>'
+    + '</div>'
+    + '</div>';
+
+  document.getElementById('bod-root').innerHTML = html;
+}
 
 function boFilter() {
   var q    = (document.getElementById('bo-search')   ? document.getElementById('bo-search').value.trim().toLowerCase()   : '');
