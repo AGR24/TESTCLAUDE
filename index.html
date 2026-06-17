@@ -1057,7 +1057,7 @@ textarea.form-input { resize:vertical; min-height:68px; line-height:1.5; }
       <div class="sup-tile-label">Инвойсы /<br>Проформы</div>
     </div>
 
-    <div class="sup-tile">
+    <div class="sup-tile" onclick="nav('backorder')">
       <div class="sup-tile-icon" style="position:relative;">
         <svg width="38" height="38" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
           <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
@@ -2860,6 +2860,253 @@ Midwest Parts GmbH</div>
 </div>
 </div><!-- /page-order-detail -->
 
+
+<!-- ══════════════════════════════════════════════════════════════════ -->
+<!-- PAGE: BACKORDER                                                     -->
+<!-- ══════════════════════════════════════════════════════════════════ -->
+<div id="page-backorder" class="page">
+<div style="max-width:1440px;margin:0 auto;padding:16px 20px 28px;">
+
+  <!-- Breadcrumb -->
+  <div style="display:flex;align-items:center;gap:5px;font-size:11px;color:#94A3B8;margin-bottom:14px;">
+    <a onclick="nav('supplier')" style="color:#94A3B8;cursor:pointer;">Поставщик</a>
+    <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+    <span style="color:#0F172A;font-weight:600;">Backorder</span>
+    <div style="margin-left:auto;display:flex;align-items:center;gap:6px;">
+      <button class="btn btn-ghost" style="font-size:11px;">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        Экспорт
+      </button>
+    </div>
+  </div>
+
+  <!-- Stats row -->
+  <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:16px;">
+    <div class="card" style="padding:14px 16px;">
+      <div class="info-label">Всего позиций</div>
+      <div style="font-size:22px;font-weight:800;color:#0F172A;" class="mono">6</div>
+      <div style="font-size:11px;color:#64748B;margin-top:2px;">в ожидании поставки</div>
+    </div>
+    <div class="card" style="padding:14px 16px;border-left:3px solid #DC2626;">
+      <div class="info-label" style="color:#DC2626;">Срочно</div>
+      <div style="font-size:22px;font-weight:800;color:#DC2626;" class="mono">2</div>
+      <div style="font-size:11px;color:#64748B;margin-top:2px;">требуют немедленного решения</div>
+    </div>
+    <div class="card" style="padding:14px 16px;border-left:3px solid #D97706;">
+      <div class="info-label" style="color:#D97706;">В работе</div>
+      <div style="font-size:22px;font-weight:800;color:#D97706;" class="mono">4</div>
+      <div style="font-size:11px;color:#64748B;margin-top:2px;">решение найдено / ищем</div>
+    </div>
+    <div class="card" style="padding:14px 16px;">
+      <div class="info-label">Сумма EUR</div>
+      <div style="font-size:22px;font-weight:800;color:#0F172A;" class="mono">4 820 €</div>
+      <div style="font-size:11px;color:#64748B;margin-top:2px;">заморожено в backorder</div>
+    </div>
+  </div>
+
+  <!-- Filter row -->
+  <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;flex-wrap:wrap;">
+    <div style="position:relative;flex:1;min-width:200px;max-width:320px;">
+      <svg style="position:absolute;left:9px;top:50%;transform:translateY(-50%);color:#94A3B8;" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+      <input id="bo-search" type="text" placeholder="Поиск по артикулу или наименованию…" oninput="boFilter()" style="width:100%;border:1px solid #E2E8F0;border-radius:8px;padding:7px 10px 7px 30px;font-size:12px;font-family:'Fira Sans',sans-serif;outline:none;color:#0F172A;">
+    </div>
+    <select id="bo-supplier" onchange="boFilter()" style="border:1px solid #E2E8F0;border-radius:8px;padding:6px 10px;font-size:12px;font-family:'Fira Sans',sans-serif;color:#475569;outline:none;background:#fff;cursor:pointer;">
+      <option value="">Все поставщики</option>
+      <option>Hans Mueller &amp; Co.</option>
+      <option>Midwest Parts GmbH</option>
+      <option>AgriTech Europa BV</option>
+    </select>
+    <select id="bo-status" onchange="boFilter()" style="border:1px solid #E2E8F0;border-radius:8px;padding:6px 10px;font-size:12px;font-family:'Fira Sans',sans-serif;color:#475569;outline:none;background:#fff;cursor:pointer;">
+      <option value="">Все статусы</option>
+      <option value="urgent">Срочно</option>
+      <option value="work">В работе</option>
+      <option value="done">Решено</option>
+    </select>
+    <div id="bo-count" style="font-size:11px;color:#94A3B8;margin-left:auto;">Показано 6 из 6</div>
+  </div>
+
+  <!-- Table -->
+  <div class="card" style="overflow:hidden;">
+    <div style="overflow-x:auto;">
+      <table>
+        <thead><tr>
+          <th>#</th>
+          <th>Артикул</th>
+          <th>Наименование</th>
+          <th style="text-align:center;">Кол-во</th>
+          <th>Поставщик</th>
+          <th>Заказ / Проформа</th>
+          <th>Клиент</th>
+          <th>Причина</th>
+          <th>Решение</th>
+          <th style="text-align:center;">ETA</th>
+          <th style="text-align:center;">Статус</th>
+          <th></th>
+        </tr></thead>
+        <tbody id="bo-tbody">
+
+          <!-- 1 Срочно -->
+          <tr data-status="urgent" data-supplier="Hans Mueller &amp; Co." style="background:#FFF5F5;">
+            <td class="mono" style="color:#CBD5E1;font-size:10px;">1</td>
+            <td><a class="mono" style="font-size:12px;font-weight:700;color:#DC2626;">HXE32806</a></td>
+            <td style="font-weight:500;color:#DC2626;">Прокладка головки цил.</td>
+            <td style="text-align:center;" class="mono">1</td>
+            <td style="font-size:11px;color:#475569;">Hans Mueller &amp; Co.</td>
+            <td>
+              <a class="mono" style="font-size:11px;color:#2563EB;cursor:pointer;" onclick="nav('order-detail')">№000368</a>
+              <span style="color:#CBD5E1;margin:0 3px;">·</span>
+              <a class="mono" style="font-size:11px;color:#7C3AED;cursor:pointer;" onclick="nav('placed-order')">PRF-089</a>
+            </td>
+            <td style="font-size:11px;color:#475569;">МИРАТОРГ</td>
+            <td style="font-size:11px;color:#64748B;">Нет на складе</td>
+            <td style="font-size:11px;color:#64748B;">Экспресс склад</td>
+            <td style="text-align:center;">
+              <span style="font-size:11px;font-weight:600;color:#DC2626;" class="mono">25.06</span>
+            </td>
+            <td style="text-align:center;"><span class="badge badge-red" style="font-size:10px;">Срочно</span></td>
+            <td><button class="btn btn-ghost" style="font-size:11px;" onclick="boOpenDetail('HXE32806')">Открыть</button></td>
+          </tr>
+
+          <!-- 2 Срочно -->
+          <tr data-status="urgent" data-supplier="Hans Mueller &amp; Co." style="background:#FFF5F5;">
+            <td class="mono" style="color:#CBD5E1;font-size:10px;">2</td>
+            <td><a class="mono" style="font-size:12px;font-weight:700;color:#DC2626;">RE505743</a></td>
+            <td style="font-weight:500;color:#DC2626;">Фильтр трансм. масла</td>
+            <td style="text-align:center;" class="mono">1</td>
+            <td style="font-size:11px;color:#475569;">Hans Mueller &amp; Co.</td>
+            <td>
+              <a class="mono" style="font-size:11px;color:#2563EB;cursor:pointer;" onclick="nav('order-detail')">№000344</a>
+              <span style="color:#CBD5E1;margin:0 3px;">·</span>
+              <a class="mono" style="font-size:11px;color:#7C3AED;cursor:pointer;" onclick="nav('placed-order')">PRF-086</a>
+            </td>
+            <td style="font-size:11px;color:#475569;">ПРОСТОРЫ</td>
+            <td style="font-size:11px;color:#64748B;">Нет на складе</td>
+            <td style="font-size:11px;color:#64748B;">Экспресс склад</td>
+            <td style="text-align:center;">
+              <span style="font-size:11px;font-weight:600;color:#DC2626;" class="mono">28.06</span>
+            </td>
+            <td style="text-align:center;"><span class="badge badge-red" style="font-size:10px;">Срочно</span></td>
+            <td><button class="btn btn-ghost" style="font-size:11px;" onclick="boOpenDetail('RE505743')">Открыть</button></td>
+          </tr>
+
+          <!-- 3 В работе -->
+          <tr data-status="work" data-supplier="Midwest Parts GmbH">
+            <td class="mono" style="color:#CBD5E1;font-size:10px;">3</td>
+            <td><a class="mono" style="font-size:12px;font-weight:700;">AXE63131</a></td>
+            <td style="font-weight:500;">Шестерня ведущая</td>
+            <td style="text-align:center;" class="mono">1</td>
+            <td style="font-size:11px;color:#475569;">Midwest Parts GmbH</td>
+            <td>
+              <a class="mono" style="font-size:11px;color:#2563EB;cursor:pointer;" onclick="nav('order-detail')">№000361</a>
+              <span style="color:#CBD5E1;margin:0 3px;">·</span>
+              <a class="mono" style="font-size:11px;color:#7C3AED;cursor:pointer;" onclick="nav('placed-order')">PRF-088</a>
+            </td>
+            <td style="font-size:11px;color:#475569;">АФ АНА-ЮГ</td>
+            <td style="font-size:11px;color:#64748B;">Снято с производства</td>
+            <td style="font-size:11px;color:#D97706;font-weight:500;">Альтерн. поставщик</td>
+            <td style="text-align:center;">
+              <span style="font-size:11px;color:#94A3B8;" class="mono">—</span>
+            </td>
+            <td style="text-align:center;"><span class="badge badge-orange" style="font-size:10px;">В работе</span></td>
+            <td><button class="btn btn-ghost" style="font-size:11px;" onclick="boOpenDetail('AXE63131')">Открыть</button></td>
+          </tr>
+
+          <!-- 4 В работе -->
+          <tr data-status="work" data-supplier="Hans Mueller &amp; Co.">
+            <td class="mono" style="color:#CBD5E1;font-size:10px;">4</td>
+            <td><a class="mono" style="font-size:12px;font-weight:700;">AHC21949</a></td>
+            <td style="font-weight:500;">Форсунка топливная</td>
+            <td style="text-align:center;" class="mono">2</td>
+            <td style="font-size:11px;color:#475569;">Hans Mueller &amp; Co.</td>
+            <td>
+              <a class="mono" style="font-size:11px;color:#2563EB;cursor:pointer;" onclick="nav('order-detail')">№000368</a>
+              <span style="color:#CBD5E1;margin:0 3px;">·</span>
+              <a class="mono" style="font-size:11px;color:#7C3AED;cursor:pointer;" onclick="nav('placed-order')">PRF-089</a>
+            </td>
+            <td style="font-size:11px;color:#475569;">ЧЕРКИЗОВО</td>
+            <td style="font-size:11px;color:#64748B;">Нет на складе</td>
+            <td style="font-size:11px;color:#64748B;">Заказ на пр-во</td>
+            <td style="text-align:center;">
+              <span style="font-size:11px;font-weight:600;color:#D97706;" class="mono">15.07</span>
+            </td>
+            <td style="text-align:center;"><span class="badge badge-orange" style="font-size:10px;">В работе</span></td>
+            <td><button class="btn btn-ghost" style="font-size:11px;" onclick="boOpenDetail('AHC21949')">Открыть</button></td>
+          </tr>
+
+          <!-- 5 В работе -->
+          <tr data-status="work" data-supplier="AgriTech Europa BV">
+            <td class="mono" style="color:#CBD5E1;font-size:10px;">5</td>
+            <td><a class="mono" style="font-size:12px;font-weight:700;">R146680</a></td>
+            <td style="font-weight:500;">Подшипник игольчатый</td>
+            <td style="text-align:center;" class="mono">4</td>
+            <td style="font-size:11px;color:#475569;">AgriTech Europa BV</td>
+            <td>
+              <a class="mono" style="font-size:11px;color:#2563EB;cursor:pointer;" onclick="nav('order-detail')">№000350</a>
+              <span style="color:#CBD5E1;margin:0 3px;">·</span>
+              <a class="mono" style="font-size:11px;color:#7C3AED;cursor:pointer;" onclick="nav('placed-order')">PRF-087</a>
+            </td>
+            <td style="font-size:11px;color:#475569;">АФ АНА-ЮГ</td>
+            <td style="font-size:11px;color:#64748B;">Нет на складе</td>
+            <td style="font-size:11px;color:#64748B;">Следующая поставка</td>
+            <td style="text-align:center;">
+              <span style="font-size:11px;font-weight:600;color:#D97706;" class="mono">10.07</span>
+            </td>
+            <td style="text-align:center;"><span class="badge badge-orange" style="font-size:10px;">В работе</span></td>
+            <td><button class="btn btn-ghost" style="font-size:11px;" onclick="boOpenDetail('R146680')">Открыть</button></td>
+          </tr>
+
+          <!-- 6 В работе — из запроса REQ12346 -->
+          <tr data-status="work" data-supplier="Hans Mueller &amp; Co.">
+            <td class="mono" style="color:#CBD5E1;font-size:10px;">6</td>
+            <td><a class="mono" style="font-size:12px;font-weight:700;color:#2563EB;">4283835M1</a></td>
+            <td style="font-weight:500;">Форсунка топливная (AGCO)</td>
+            <td style="text-align:center;" class="mono">3</td>
+            <td style="font-size:11px;color:#475569;">Hans Mueller &amp; Co.</td>
+            <td>
+              <a class="mono" style="font-size:11px;color:#2563EB;cursor:pointer;" onclick="nav('quotation-detail')">REQ-12346</a>
+              <span style="color:#CBD5E1;margin:0 3px;">·</span>
+              <span class="mono" style="font-size:10px;color:#94A3B8;">—</span>
+            </td>
+            <td style="font-size:11px;color:#475569;">ООО АГРОКОМПЛЕКС</td>
+            <td style="font-size:11px;color:#64748B;">ETA 45 дней</td>
+            <td style="font-size:11px;color:#D97706;font-weight:500;">Ищем аналог</td>
+            <td style="text-align:center;">
+              <span style="font-size:11px;font-weight:600;color:#D97706;" class="mono">17.07</span>
+            </td>
+            <td style="text-align:center;"><span class="badge badge-orange" style="font-size:10px;">В работе</span></td>
+            <td><button class="btn btn-ghost" style="font-size:11px;" onclick="boOpenDetail('4283835M1')">Открыть</button></td>
+          </tr>
+
+        </tbody>
+      </table>
+    </div>
+    <div style="padding:10px 14px;border-top:1px solid #F8FAFC;display:flex;justify-content:space-between;align-items:center;background:#FAFAFA;">
+      <span class="footer-stat">Всего: <strong>6 позиций</strong></span>
+      <div style="display:flex;gap:16px;align-items:center;">
+        <span style="font-size:11px;color:#DC2626;font-weight:600;">● 2 срочных</span>
+        <span style="font-size:11px;color:#D97706;font-weight:600;">● 4 в работе</span>
+        <span style="font-size:11px;color:#64748B;">Заморожено: <span class="mono" style="font-weight:700;color:#0F172A;">4 820 €</span></span>
+      </div>
+    </div>
+  </div>
+
+</div>
+</div><!-- /page-backorder -->
+
+<!-- Modal: Backorder detail -->
+<div id="modal-bo-detail" class="inv-modal" onclick="if(event.target===this)this.classList.remove('show')">
+  <div style="background:#fff;border-radius:14px;width:520px;max-height:85vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,0.18);">
+    <div style="padding:20px 24px 16px;border-bottom:1px solid #F1F5F9;display:flex;align-items:center;justify-content:space-between;">
+      <div>
+        <div id="bo-detail-art" style="font-size:14px;font-weight:800;color:#0F172A;" class="mono"></div>
+        <div id="bo-detail-name" style="font-size:11px;color:#64748B;margin-top:2px;"></div>
+      </div>
+      <button onclick="document.getElementById('modal-bo-detail').classList.remove('show')" style="border:none;background:none;cursor:pointer;font-size:18px;color:#94A3B8;line-height:1;">×</button>
+    </div>
+    <div id="bo-detail-body" style="padding:20px 24px;">
+    </div>
+  </div>
+</div>
 
 <!-- ══════════════════════════════════════════════════════════════════ -->
 <!-- PAGE: ACTUALIZATION                                                -->
@@ -5548,6 +5795,70 @@ function invSubmitPayment() {
   invToast('Payment recorded · ' + invFmt(amount));
 }
 function invClosePayModal() { document.getElementById('inv-modal-payment').classList.remove('show'); }
+
+// ── BACKORDER ─────────────────────────────────────────────────────────
+var BO_DATA = {
+  'HXE32806':  { name:'Прокладка головки цил.', qty:1, supplier:'Hans Mueller & Co.', order:'№000368', proforma:'PRF-2026-089', client:'МИРАТОРГ',       reason:'Нет на складе',          solution:'Экспресс склад',        eta:'25.06.2026', status:'urgent' },
+  'RE505743':  { name:'Фильтр трансм. масла',   qty:1, supplier:'Hans Mueller & Co.', order:'№000344', proforma:'PRF-2026-086', client:'ПРОСТОРЫ',        reason:'Нет на складе',          solution:'Экспресс склад',        eta:'28.06.2026', status:'urgent' },
+  'AXE63131':  { name:'Шестерня ведущая',        qty:1, supplier:'Midwest Parts GmbH',  order:'№000361', proforma:'PRF-2026-088', client:'АФ АНА-ЮГ',     reason:'Снято с производства',   solution:'Альтерн. поставщик',   eta:'—',          status:'work'   },
+  'AHC21949':  { name:'Форсунка топливная',      qty:2, supplier:'Hans Mueller & Co.', order:'№000368', proforma:'PRF-2026-089', client:'ЧЕРКИЗОВО',      reason:'Нет на складе',          solution:'Заказ на пр-во',        eta:'15.07.2026', status:'work'   },
+  'R146680':   { name:'Подшипник игольчатый',    qty:4, supplier:'AgriTech Europa BV',  order:'№000350', proforma:'PRF-2026-087', client:'АФ АНА-ЮГ',     reason:'Нет на складе',          solution:'Следующая поставка',   eta:'10.07.2026', status:'work'   },
+  '4283835M1': { name:'Форсунка топливная (AGCO)',qty:3, supplier:'Hans Mueller & Co.', order:'REQ-12346',proforma:'—',           client:'ООО АГРОКОМПЛЕКС',reason:'ETA 45 дней',           solution:'Ищем аналог',          eta:'17.07.2026', status:'work'   }
+};
+
+function boFilter() {
+  var q    = (document.getElementById('bo-search')   ? document.getElementById('bo-search').value.trim().toLowerCase()   : '');
+  var sup  = (document.getElementById('bo-supplier') ? document.getElementById('bo-supplier').value : '');
+  var stat = (document.getElementById('bo-status')   ? document.getElementById('bo-status').value   : '');
+  var rows = document.querySelectorAll('#bo-tbody tr');
+  var shown = 0;
+  rows.forEach(function(row) {
+    var rowSup  = row.getAttribute('data-supplier') || '';
+    var rowStat = row.getAttribute('data-status')   || '';
+    var txt = row.textContent.toLowerCase();
+    var ok = (!q    || txt.indexOf(q) !== -1)
+          && (!sup  || rowSup === sup)
+          && (!stat || rowStat === stat);
+    row.style.display = ok ? '' : 'none';
+    if (ok) shown++;
+  });
+  var cnt = document.getElementById('bo-count');
+  if (cnt) cnt.textContent = 'Показано ' + shown + ' из ' + rows.length;
+}
+
+function boOpenDetail(art) {
+  var d = BO_DATA[art];
+  if (!d) return;
+  document.getElementById('bo-detail-art').textContent = art;
+  document.getElementById('bo-detail-name').textContent = d.name;
+  var statusLabel = d.status === 'urgent' ? '<span class="badge badge-red">Срочно</span>' : '<span class="badge badge-orange">В работе</span>';
+  document.getElementById('bo-detail-body').innerHTML =
+    '<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px 20px;margin-bottom:18px;">'
+    + '<div><div class="info-label">Кол-во</div><div class="info-value mono">' + d.qty + ' шт.</div></div>'
+    + '<div><div class="info-label">Статус</div><div style="margin-top:2px;">' + statusLabel + '</div></div>'
+    + '<div><div class="info-label">Поставщик</div><div class="info-value">' + d.supplier + '</div></div>'
+    + '<div><div class="info-label">Клиент</div><div class="info-value">' + d.client + '</div></div>'
+    + '<div><div class="info-label">Наш заказ</div><div class="info-value mono">' + d.order + '</div></div>'
+    + '<div><div class="info-label">Проформа</div><div class="info-value mono">' + d.proforma + '</div></div>'
+    + '<div><div class="info-label">Причина</div><div class="info-value">' + d.reason + '</div></div>'
+    + '<div><div class="info-label">ETA</div><div class="info-value mono" style="color:#D97706;font-weight:700;">' + d.eta + '</div></div>'
+    + '</div>'
+    + '<div style="padding:12px 14px;background:#FFFBEB;border:1px solid #FDE68A;border-radius:8px;margin-bottom:16px;">'
+    + '<div class="info-label" style="color:#D97706;margin-bottom:4px;">Текущее решение</div>'
+    + '<div style="font-size:12px;font-weight:600;color:#92400E;">' + d.solution + '</div>'
+    + '</div>'
+    + '<div style="margin-bottom:12px;">'
+    + '<div class="info-label" style="margin-bottom:6px;">Заметки</div>'
+    + '<textarea rows="3" style="width:100%;border:1px solid #E2E8F0;border-radius:7px;padding:8px 10px;font-size:12px;font-family:\'Fira Sans\',sans-serif;outline:none;resize:vertical;" placeholder="Добавить заметку…"></textarea>'
+    + '</div>'
+    + '<div style="display:flex;justify-content:space-between;align-items:center;">'
+    + '<button class="btn btn-ghost" style="font-size:11px;" onclick="document.getElementById(\'modal-bo-detail\').classList.remove(\'show\')">Закрыть</button>'
+    + '<div style="display:flex;gap:8px;">'
+    + '<button class="btn btn-ghost" style="font-size:11px;color:#16A34A;border-color:#BBF7D0;">Отметить решённым</button>'
+    + '<button class="btn btn-primary" style="font-size:11px;">Сохранить</button>'
+    + '</div></div>';
+  document.getElementById('modal-bo-detail').classList.add('show');
+}
 
 function nrExcelSelect(label, val) {
   ['download','attach'].forEach(function(k) {
