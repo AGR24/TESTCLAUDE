@@ -2957,7 +2957,10 @@ Midwest Parts GmbH</div>
       <option value="work">В работе</option>
       <option value="done">Решено</option>
     </select>
-    <div id="bo-count" style="font-size:11px;color:#94A3B8;margin-left:auto;">Показано 6 из 6</div>
+    <button class="btn btn-primary" style="font-size:12px;background:#C0192B;border-color:#9B1523;margin-left:auto;" onclick="boReorderOpen()">
+      Перезаказать
+    </button>
+    <div id="bo-count" style="font-size:11px;color:#94A3B8;">Показано 6 из 6</div>
   </div>
 
   <!-- Table -->
@@ -2965,7 +2968,6 @@ Midwest Parts GmbH</div>
     <div style="overflow-x:auto;">
       <table>
         <thead><tr>
-          <th>#</th>
           <th>#</th>
           <th>Артикул</th>
           <th>Наименование</th>
@@ -3211,6 +3213,50 @@ Midwest Parts GmbH</div>
 
 </div>
 </div><!-- /page-backorder -->
+
+<!-- Modal: Reorder (select positions → create BCK) -->
+<div id="modal-reorder" class="inv-modal" onclick="if(event.target===this)this.classList.remove('show')">
+  <div style="background:#fff;border-radius:14px;width:680px;max-height:86vh;display:flex;flex-direction:column;box-shadow:0 20px 60px rgba(0,0,0,0.18);">
+    <!-- Header -->
+    <div style="padding:20px 24px 14px;border-bottom:1px solid #F1F5F9;display:flex;align-items:flex-start;justify-content:space-between;flex-shrink:0;">
+      <div>
+        <div style="font-size:15px;font-weight:800;color:#0F172A;">Перезаказать позиции</div>
+        <div style="font-size:11px;color:#64748B;margin-top:3px;">Выберите позиции. Позиции одного поставщика объединяются в один BCK-заказ.</div>
+      </div>
+      <button onclick="document.getElementById('modal-reorder').classList.remove('show')" style="border:none;background:none;cursor:pointer;font-size:18px;color:#94A3B8;line-height:1;margin-left:12px;">×</button>
+    </div>
+
+    <!-- Body: scrollable -->
+    <div style="overflow-y:auto;flex:1;padding:16px 24px 0;">
+
+      <!-- Select all -->
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;">
+        <input type="checkbox" id="reorder-all" onchange="boReorderToggleAll(this.checked)" style="width:15px;height:15px;cursor:pointer;accent-color:#C0192B;">
+        <label for="reorder-all" style="font-size:12px;font-weight:600;color:#475569;cursor:pointer;">Выбрать все</label>
+        <span id="reorder-sel-count" style="font-size:11px;color:#94A3B8;margin-left:4px;">0 выбрано</span>
+      </div>
+
+      <!-- Position list -->
+      <div id="reorder-list" style="border:1px solid #E2E8F0;border-radius:8px;overflow:hidden;margin-bottom:16px;">
+        <!-- filled by JS -->
+      </div>
+
+      <!-- Preview section -->
+      <div id="reorder-preview" style="margin-bottom:4px;">
+        <!-- filled by JS -->
+      </div>
+
+    </div>
+
+    <!-- Footer -->
+    <div style="padding:14px 24px 18px;border-top:1px solid #F1F5F9;display:flex;justify-content:space-between;align-items:center;flex-shrink:0;margin-top:12px;">
+      <button class="btn btn-ghost" style="font-size:12px;" onclick="document.getElementById('modal-reorder').classList.remove('show')">Отмена</button>
+      <button id="reorder-confirm-btn" class="btn btn-primary" style="font-size:12px;background:#C0192B;border-color:#9B1523;opacity:.45;cursor:not-allowed;" onclick="boReorderConfirm()" disabled>
+        Создать BCK-заказы
+      </button>
+    </div>
+  </div>
+</div>
 
 <!-- Modal: BCK create -->
 <div id="modal-bck-create" class="inv-modal" onclick="if(event.target===this)this.classList.remove('show')">
@@ -5959,6 +6005,8 @@ function invSubmitPayment() {
 function invClosePayModal() { document.getElementById('inv-modal-payment').classList.remove('show'); }
 
 // ── BACKORDER ─────────────────────────────────────────────────────────
+var bckSeq = 1003; // BCK-1001 and BCK-1002 already exist as demo data
+
 var BO_DATA = {
   'HXE32806':  { name:'Прокладка головки цил.', qty:1, supplier:'Hans Mueller & Co.', order:'№000368', proforma:'PRF-2026-089', client:'МИРАТОРГ',       reason:'Нет на складе',          solution:'Экспресс склад',        eta:'25.06.2026', status:'urgent', mgrStatus:'ordered', bckOrder:'BCK-1001' },
   'RE505743':  { name:'Фильтр трансм. масла',   qty:1, supplier:'Hans Mueller & Co.', order:'№000344', proforma:'PRF-2026-086', client:'ПРОСТОРЫ',        reason:'Нет на складе',          solution:'Экспресс склад',        eta:'28.06.2026', status:'urgent', mgrStatus:'update'  },
@@ -6051,6 +6099,191 @@ function boOpenDetail(art) {
     + '</div></div>';
   document.getElementById('modal-bo-detail').classList.add('show');
 }
+
+// ── Reorder modal ────────────────────────────────────────────────────
+function boReorderOpen() {
+  var list = document.getElementById('reorder-list');
+  if (!list) return;
+
+  var mgrNames = { agree: 'Согласование', update: 'Обновление', ordered: 'В заказе' };
+  var mgrCls   = { agree: 'badge-mgr-agree', update: 'badge-mgr-update', ordered: 'badge-mgr-ordered' };
+
+  var html = '';
+  var arts = Object.keys(BO_DATA);
+  arts.forEach(function(art, i) {
+    var d = BO_DATA[art];
+    var isLast = (i === arts.length - 1);
+    var mgrBadge = d.mgrStatus
+      ? '<span class="badge ' + (mgrCls[d.mgrStatus] || '') + '" style="font-size:10px;">' + (mgrNames[d.mgrStatus] || '') + '</span>'
+      : '';
+    if (d.mgrStatus === 'ordered' && d.bckOrder) {
+      mgrBadge += ' <span class="badge badge-bck" style="font-size:9px;">' + d.bckOrder + '</span>';
+    }
+    html += '<label style="display:flex;align-items:center;gap:12px;padding:10px 14px;cursor:pointer;'
+      + (isLast ? '' : 'border-bottom:1px solid #F1F5F9;')
+      + 'transition:background .1s;" onmouseover="this.style.background=\'#F8FAFC\'" onmouseout="this.style.background=\'\'">'
+      + '<input type="checkbox" data-art="' + art + '" class="bo-reorder-chk" onchange="boReorderUpdatePreview()" style="width:15px;height:15px;flex-shrink:0;cursor:pointer;accent-color:#C0192B;"'
+      + (d.mgrStatus === 'ordered' ? ' disabled title="Уже перезаказано"' : '') + '>'
+      + '<div style="flex:1;min-width:0;">'
+      + '<div style="display:flex;align-items:center;gap:8px;">'
+      + '<span class="mono" style="font-size:12px;font-weight:700;color:#0F172A;">' + art + '</span>'
+      + mgrBadge
+      + '</div>'
+      + '<div style="font-size:11px;color:#64748B;margin-top:1px;">' + d.name + '</div>'
+      + '</div>'
+      + '<div style="text-align:right;flex-shrink:0;">'
+      + '<div style="font-size:11px;color:#475569;">' + d.supplier + '</div>'
+      + '<div class="mono" style="font-size:11px;color:#94A3B8;">' + d.qty + ' шт.</div>'
+      + '</div>'
+      + '</label>';
+  });
+  list.innerHTML = html;
+
+  document.getElementById('reorder-preview').innerHTML = '';
+  document.getElementById('reorder-sel-count').textContent = '0 выбрано';
+  var allChk = document.getElementById('reorder-all');
+  if (allChk) { allChk.checked = false; allChk.indeterminate = false; }
+  var btn = document.getElementById('reorder-confirm-btn');
+  if (btn) { btn.disabled = true; btn.style.opacity = '.45'; btn.style.cursor = 'not-allowed'; }
+
+  document.getElementById('modal-reorder').classList.add('show');
+}
+
+function boReorderToggleAll(checked) {
+  var chks = document.querySelectorAll('.bo-reorder-chk:not(:disabled)');
+  chks.forEach(function(c) { c.checked = checked; });
+  boReorderUpdatePreview();
+}
+
+function boReorderUpdatePreview() {
+  var chks = document.querySelectorAll('.bo-reorder-chk:checked');
+  var total = document.querySelectorAll('.bo-reorder-chk:not(:disabled)').length;
+  var selected = chks.length;
+
+  // update count label
+  document.getElementById('reorder-sel-count').textContent = selected + ' выбрано';
+
+  // update select-all state
+  var allChk = document.getElementById('reorder-all');
+  if (allChk) {
+    allChk.checked = (selected > 0 && selected === total);
+    allChk.indeterminate = (selected > 0 && selected < total);
+  }
+
+  // enable/disable confirm btn
+  var btn = document.getElementById('reorder-confirm-btn');
+  if (btn) {
+    btn.disabled = (selected === 0);
+    btn.style.opacity = selected > 0 ? '1' : '.45';
+    btn.style.cursor  = selected > 0 ? 'pointer' : 'not-allowed';
+  }
+
+  // build preview: group by supplier
+  var groups = {};
+  chks.forEach(function(c) {
+    var art = c.getAttribute('data-art');
+    var d = BO_DATA[art];
+    if (!d) return;
+    if (!groups[d.supplier]) groups[d.supplier] = [];
+    groups[d.supplier].push({ art: art, d: d });
+  });
+
+  var preview = document.getElementById('reorder-preview');
+  if (selected === 0) { preview.innerHTML = ''; return; }
+
+  var supKeys = Object.keys(groups);
+  var html = '<div style="margin-bottom:12px;">'
+    + '<div style="font-size:11px;font-weight:700;color:#64748B;text-transform:uppercase;letter-spacing:.4px;margin-bottom:8px;">Будет создано ' + supKeys.length + ' BCK-заказ' + (supKeys.length > 1 ? 'а' : '') + ':</div>'
+    + '<div style="display:flex;flex-direction:column;gap:6px;">';
+
+  var previewSeq = bckSeq;
+  supKeys.forEach(function(sup) {
+    var items = groups[sup];
+    var bckPrev = 'BCK-' + previewSeq++;
+    html += '<div style="display:flex;align-items:center;justify-content:space-between;background:#F8FAFC;border:1px solid #E2E8F0;border-radius:7px;padding:8px 12px;">'
+      + '<div>'
+      + '<div style="font-size:12px;font-weight:600;color:#0F172A;">' + sup + '</div>'
+      + '<div style="font-size:11px;color:#64748B;margin-top:2px;">'
+      + items.map(function(i){ return '<span class="mono">' + i.art + '</span> ×' + i.d.qty; }).join(' · ')
+      + '</div>'
+      + '</div>'
+      + '<div style="text-align:right;">'
+      + '<span class="badge badge-bck" style="font-size:10px;">' + bckPrev + '</span>'
+      + '<div style="font-size:10px;color:#94A3B8;margin-top:3px;">' + items.length + ' поз.</div>'
+      + '</div>'
+      + '</div>';
+  });
+
+  html += '</div></div>';
+  preview.innerHTML = html;
+}
+
+function boReorderConfirm() {
+  var chks = document.querySelectorAll('.bo-reorder-chk:checked');
+  if (!chks.length) return;
+
+  // group by supplier
+  var groups = {};
+  chks.forEach(function(c) {
+    var art = c.getAttribute('data-art');
+    var d = BO_DATA[art];
+    if (!d) return;
+    if (!groups[d.supplier]) groups[d.supplier] = [];
+    groups[d.supplier].push(art);
+  });
+
+  var supKeys = Object.keys(groups);
+  var created = [];
+
+  supKeys.forEach(function(sup) {
+    var bckNum = 'BCK-' + bckSeq++;
+    created.push({ bckNum: bckNum, supplier: sup, arts: groups[sup] });
+
+    groups[sup].forEach(function(art) {
+      if (BO_DATA[art]) {
+        BO_DATA[art].mgrStatus = 'ordered';
+        BO_DATA[art].bckOrder  = bckNum;
+      }
+      // update Менеджер cell in table
+      var rows = document.querySelectorAll('#bo-tbody tr');
+      rows.forEach(function(tr) {
+        var artCell = tr.querySelector('td:nth-child(2) a');
+        if (artCell && artCell.textContent.trim() === art) {
+          var mgrCell = tr.querySelector('td:nth-child(12)');
+          if (mgrCell) mgrCell.innerHTML =
+            '<span class="badge badge-mgr-ordered" style="font-size:10px;">В заказе</span><br>'
+            + '<span class="badge badge-bck" style="font-size:9px;margin-top:3px;">' + bckNum + '</span>';
+        }
+      });
+    });
+
+    // add to Перезаказано table
+    var tbody = document.getElementById('bck-reordered-tbody');
+    if (tbody) {
+      var firstArt = groups[sup][0];
+      var d0 = BO_DATA[firstArt] || {};
+      var tr = document.createElement('tr');
+      tr.innerHTML =
+        '<td style="padding:10px 12px;"><span class="badge badge-bck mono" style="font-size:11px;">' + bckNum + '</span></td>'
+        + '<td style="padding:10px 12px;font-size:11px;color:#475569;">' + sup + '</td>'
+        + '<td style="padding:10px 12px;font-size:11px;color:#475569;">—</td>'
+        + '<td style="padding:10px 12px;text-align:center;" class="mono">' + groups[sup].length + '</td>'
+        + '<td style="padding:10px 12px;text-align:right;" class="mono"><span style="font-weight:700;color:#0F172A;">—</span></td>'
+        + '<td style="padding:10px 12px;text-align:center;"><span class="badge badge-mgr-agree" style="font-size:10px;">На согласовании</span></td>'
+        + '<td style="padding:10px 12px;"><button class="btn btn-ghost" style="font-size:11px;" onclick="nav(\'backorder\')">Открыть</button></td>';
+      tbody.appendChild(tr);
+    }
+  });
+
+  document.getElementById('modal-reorder').classList.remove('show');
+
+  // scroll to Перезаказано
+  setTimeout(function() {
+    var sec = document.getElementById('bo-reordered-section');
+    if (sec) sec.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }, 200);
+}
+// ─────────────────────────────────────────────────────────────────────
 
 function boSetMgr(art, newStatus) {
   if (BO_DATA[art]) {
