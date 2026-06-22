@@ -1463,6 +1463,15 @@ textarea.form-input { resize:vertical; min-height:68px; line-height:1.5; }
             <svg style="position:absolute;left:8px;top:50%;transform:translateY(-50%);color:#94A3B8;" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
             <input id="qd-search" oninput="qdSearch(this.value)" type="text" placeholder="Поиск по артикулу…" style="width:100%;border:1px solid #E2E8F0;border-radius:7px;padding:5px 8px 5px 28px;font-size:11px;font-family:'Fira Sans',sans-serif;outline:none;color:#0F172A;">
           </div>
+          <button id="qd-edit-btn" onclick="qdToggleEdit()" class="btn btn-ghost" style="font-size:11px;">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+            Редактировать
+          </button>
+          <button id="qd-save-btn" onclick="qdSaveEdit()" class="btn btn-primary" style="font-size:11px;display:none;">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+            Сохранить
+          </button>
+          <button id="qd-cancel-btn" onclick="qdCancelEdit()" class="btn btn-ghost" style="font-size:11px;display:none;">Отмена</button>
           <button class="btn btn-ghost" style="font-size:11px;">
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
             Экспорт
@@ -1488,7 +1497,7 @@ textarea.form-input { resize:vertical; min-height:68px; line-height:1.5; }
                 <td style="text-align:center;" class="mono">2</td>
                 <td style="text-align:right;" class="mono">138.00</td>
                 <td style="text-align:right;" class="mono" style="font-weight:600;">276.00</td>
-                <td style="text-align:center;"><span class="type-so">SO</span></td>
+                <td style="text-align:center;"><span class="type-so qd-type-chip" onclick="qdTypeClick(this,event)">SO</span></td>
                 <td style="text-align:center;"><span class="qst qst-ok">✓</span></td>
               </tr>
               <tr data-art="700719827">
@@ -1498,7 +1507,7 @@ textarea.form-input { resize:vertical; min-height:68px; line-height:1.5; }
                 <td style="text-align:center;" class="mono">4</td>
                 <td style="text-align:right;" class="mono">42.00</td>
                 <td style="text-align:right;" class="mono" style="font-weight:600;">168.00</td>
-                <td style="text-align:center;"><span class="type-std">STD</span></td>
+                <td style="text-align:center;"><span class="type-std qd-type-chip" onclick="qdTypeClick(this,event)">STD</span></td>
                 <td style="text-align:center;"><span class="qst qst-ok">✓</span></td>
               </tr>
               <tr data-art="700726219">
@@ -1508,7 +1517,7 @@ textarea.form-input { resize:vertical; min-height:68px; line-height:1.5; }
                 <td style="text-align:center;" class="mono">1</td>
                 <td style="text-align:right;" class="mono">99.00</td>
                 <td style="text-align:right;" class="mono" style="font-weight:600;">99.00</td>
-                <td style="text-align:center;"><span class="type-so">SO</span></td>
+                <td style="text-align:center;"><span class="type-so qd-type-chip" onclick="qdTypeClick(this,event)">SO</span></td>
                 <td style="text-align:center;"><span class="qst qst-up">↑</span></td>
               </tr>
               <tr data-art="836853897">
@@ -1518,7 +1527,7 @@ textarea.form-input { resize:vertical; min-height:68px; line-height:1.5; }
                 <td style="text-align:center;" class="mono">2</td>
                 <td style="text-align:right;" class="mono">60.00</td>
                 <td style="text-align:right;" class="mono" style="font-weight:600;">120.00</td>
-                <td style="text-align:center;"><span class="type-so">SO</span></td>
+                <td style="text-align:center;"><span class="type-so qd-type-chip" onclick="qdTypeClick(this,event)">SO</span></td>
                 <td style="text-align:center;"><span class="qst qst-ok">✓</span></td>
               </tr>
               <tr data-art="4283835M1" style="background:#FEF3C7;">
@@ -1528,7 +1537,7 @@ textarea.form-input { resize:vertical; min-height:68px; line-height:1.5; }
                 <td style="text-align:center;" class="mono">3</td>
                 <td style="text-align:right;color:#94A3B8;" class="mono">—</td>
                 <td style="text-align:right;color:#94A3B8;" class="mono">—</td>
-                <td style="text-align:center;"><span class="type-an">AN</span></td>
+                <td style="text-align:center;"><span class="type-an qd-type-chip" onclick="qdTypeClick(this,event)">AN</span></td>
                 <td style="text-align:center;"><span class="qst qst-no">✗</span></td>
               </tr>
               <tr data-art="700715621">
@@ -1538,7 +1547,7 @@ textarea.form-input { resize:vertical; min-height:68px; line-height:1.5; }
                 <td style="text-align:center;" class="mono">6</td>
                 <td style="text-align:right;" class="mono">24.00</td>
                 <td style="text-align:right;" class="mono" style="font-weight:600;">144.00</td>
-                <td style="text-align:center;"><span class="type-std">STD</span></td>
+                <td style="text-align:center;"><span class="type-std qd-type-chip" onclick="qdTypeClick(this,event)">STD</span></td>
                 <td style="text-align:center;"><span class="qst qst-ok">✓</span></td>
               </tr>
               <tr data-art="836866294" class="qst-row-new">
@@ -1548,7 +1557,7 @@ textarea.form-input { resize:vertical; min-height:68px; line-height:1.5; }
                 <td style="text-align:center;" class="mono">1</td>
                 <td style="text-align:right;" class="mono">215.00</td>
                 <td style="text-align:right;" class="mono" style="font-weight:600;">215.00</td>
-                <td style="text-align:center;"><span class="type-so">SO</span></td>
+                <td style="text-align:center;"><span class="type-so qd-type-chip" onclick="qdTypeClick(this,event)">SO</span></td>
                 <td style="text-align:center;"><span class="qst qst-new">★</span></td>
               </tr>
               <tr data-art="GCA4712">
@@ -1558,7 +1567,7 @@ textarea.form-input { resize:vertical; min-height:68px; line-height:1.5; }
                 <td style="text-align:center;" class="mono">4</td>
                 <td style="text-align:right;" class="mono">53.00</td>
                 <td style="text-align:right;" class="mono" style="font-weight:600;">212.00</td>
-                <td style="text-align:center;"><span class="type-an">AN</span></td>
+                <td style="text-align:center;"><span class="type-an qd-type-chip" onclick="qdTypeClick(this,event)">AN</span></td>
                 <td style="text-align:center;"><span class="qst qst-ok">✓</span></td>
               </tr>
             </tbody>
@@ -1779,6 +1788,89 @@ Anton</div>
 
 </div><!-- /max-width -->
 </div><!-- /page-quotation-detail -->
+
+<!-- Type picker dropdown (shared) -->
+<div id="qd-type-picker" onclick="event.stopPropagation()" style="display:none;position:fixed;background:#fff;border:1px solid #E2E8F0;border-radius:9px;box-shadow:0 6px 20px rgba(0,0,0,.13);padding:6px;z-index:9999;min-width:130px;">
+  <div style="font-size:9px;font-weight:700;color:#94A3B8;text-transform:uppercase;letter-spacing:.5px;padding:3px 8px 5px;">Тип заказа</div>
+  <div onclick="qdTypeSet('type-so','SO')"   style="display:flex;align-items:center;gap:8px;padding:5px 8px;border-radius:6px;cursor:pointer;" onmouseover="this.style.background='#F8FAFC'" onmouseout="this.style.background=''"><span class="type-so" style="pointer-events:none;">SO</span><span style="font-size:11px;color:#475569;">Стандарт John Deere</span></div>
+  <div onclick="qdTypeSet('type-std','STD')" style="display:flex;align-items:center;gap:8px;padding:5px 8px;border-radius:6px;cursor:pointer;" onmouseover="this.style.background='#F8FAFC'" onmouseout="this.style.background=''"><span class="type-std" style="pointer-events:none;">STD</span><span style="font-size:11px;color:#475569;">Стандартный</span></div>
+  <div onclick="qdTypeSet('type-an','AN')"   style="display:flex;align-items:center;gap:8px;padding:5px 8px;border-radius:6px;cursor:pointer;" onmouseover="this.style.background='#F8FAFC'" onmouseout="this.style.background=''"><span class="type-an" style="pointer-events:none;">AN</span><span style="font-size:11px;color:#475569;">JD 4 недели</span></div>
+  <div onclick="qdTypeSet('type-bck','BCK')" style="display:flex;align-items:center;gap:8px;padding:5px 8px;border-radius:6px;cursor:pointer;" onmouseover="this.style.background='#F8FAFC'" onmouseout="this.style.background=''"><span class="type-bck" style="pointer-events:none;">BCK</span><span style="font-size:11px;color:#475569;">Backorder</span></div>
+  <div onclick="qdTypeSet('type-md','MD')"   style="display:flex;align-items:center;gap:8px;padding:5px 8px;border-radius:6px;cursor:pointer;" onmouseover="this.style.background='#F8FAFC'" onmouseout="this.style.background=''"><span class="type-md" style="pointer-events:none;">MD</span><span style="font-size:11px;color:#475569;">Express Machine Down</span></div>
+  <div onclick="qdTypeSet('type-expr','EXPR')" style="display:flex;align-items:center;gap:8px;padding:5px 8px;border-radius:6px;cursor:pointer;" onmouseover="this.style.background='#F8FAFC'" onmouseout="this.style.background=''"><span class="type-expr" style="pointer-events:none;">EXPR</span><span style="font-size:11px;color:#475569;">Express Manitou/AGCO</span></div>
+</div>
+
+<script>
+var _qdTypeTarget = null;
+var _qdEditMode = false;
+
+function qdTypeClick(el, e) {
+  e.stopPropagation();
+  _qdTypeTarget = el;
+  var picker = document.getElementById('qd-type-picker');
+  var rect = el.getBoundingClientRect();
+  // позиционируем под чипом
+  var left = rect.left;
+  if (left + 200 > window.innerWidth) left = window.innerWidth - 210;
+  picker.style.top = (rect.bottom + window.scrollY + 4) + 'px';
+  picker.style.left = left + 'px';
+  picker.style.display = 'block';
+}
+
+function qdTypeSet(cls, label) {
+  if (!_qdTypeTarget) return;
+  _qdTypeTarget.className = cls + ' qd-type-chip';
+  _qdTypeTarget.textContent = label;
+  document.getElementById('qd-type-picker').style.display = 'none';
+  _qdTypeTarget = null;
+}
+
+document.addEventListener('click', function() {
+  var p = document.getElementById('qd-type-picker');
+  if (p) p.style.display = 'none';
+});
+
+function qdToggleEdit() {
+  _qdEditMode = true;
+  document.getElementById('qd-edit-btn').style.display = 'none';
+  document.getElementById('qd-save-btn').style.display = '';
+  document.getElementById('qd-cancel-btn').style.display = '';
+  // Делаем чипы ТИП явно кликабельными (курсор + обводка)
+  document.querySelectorAll('.qd-type-chip').forEach(function(c) {
+    c.style.cursor = 'pointer';
+    c.style.outline = '1.5px dashed #CBD5E1';
+    c.title = 'Нажмите для изменения';
+  });
+}
+
+function qdSaveEdit() {
+  _qdEditMode = false;
+  document.getElementById('qd-edit-btn').style.display = '';
+  document.getElementById('qd-save-btn').style.display = 'none';
+  document.getElementById('qd-cancel-btn').style.display = 'none';
+  document.querySelectorAll('.qd-type-chip').forEach(function(c) {
+    c.style.outline = '';
+    c.title = '';
+  });
+  // Toast
+  var t = document.createElement('div');
+  t.style.cssText = 'position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#0F172A;color:#fff;padding:9px 18px;border-radius:8px;font-size:12px;font-weight:500;z-index:9999;';
+  t.textContent = 'Изменения сохранены';
+  document.body.appendChild(t);
+  setTimeout(function(){ t.style.transition='opacity .3s'; t.style.opacity='0'; setTimeout(function(){t.remove();},300); }, 2500);
+}
+
+function qdCancelEdit() {
+  _qdEditMode = false;
+  document.getElementById('qd-edit-btn').style.display = '';
+  document.getElementById('qd-save-btn').style.display = 'none';
+  document.getElementById('qd-cancel-btn').style.display = 'none';
+  document.querySelectorAll('.qd-type-chip').forEach(function(c) {
+    c.style.outline = '';
+    c.title = '';
+  });
+}
+</script>
 
 <!-- Modal: Перевести запрос в Обработанные -->
 <div id="modal-req-done" class="modal-overlay" style="display:none;" onclick="if(event.target===this)closeModal('modal-req-done')">
