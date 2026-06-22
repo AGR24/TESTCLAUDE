@@ -1215,13 +1215,7 @@ textarea.form-input { resize:vertical; min-height:68px; line-height:1.5; }
                 <td style="text-align:right;" class="mono"><strong>8 320</strong></td>
                 <td><span style="display:flex;align-items:center;gap:5px;"><span class="qdot qdot-orange"></span><span style="color:#475569;">Ожидание</span></span></td>
                 <td style="color:#475569;">Петров И.М.</td>
-                <td style="display:flex;align-items:center;gap:6px;">
-                  <button class="btn btn-primary" onclick="event.stopPropagation();nav('quotation-detail')">Открыть</button>
-                  <button onclick="event.stopPropagation();reqOpenDoneModal('12346','AGCO','Петров И.М.')" title="Перевести в Обработанные" style="display:inline-flex;align-items:center;gap:4px;padding:5px 10px;border:1.5px solid #16A34A;border-radius:7px;background:#fff;color:#16A34A;font-size:11px;font-weight:600;cursor:pointer;font-family:'Fira Sans',sans-serif;white-space:nowrap;">
-                    <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
-                    Завершить
-                  </button>
-                </td>
+                <td><button class="btn btn-primary" onclick="event.stopPropagation();nav('quotation-detail')">Открыть</button></td>
               </tr>
               <tr id="req-row-12345" onclick="nav('quotation-detail')" style="cursor:pointer;">
                 <td class="mono" style="font-weight:700;color:#2563EB;font-size:13px;">№12345</td>
@@ -1236,13 +1230,7 @@ textarea.form-input { resize:vertical; min-height:68px; line-height:1.5; }
                 <td style="text-align:right;" class="mono"><strong>3 100</strong></td>
                 <td><span style="display:flex;align-items:center;gap:5px;"><span class="qdot qdot-orange"></span><span style="color:#475569;">Ожидание</span></span></td>
                 <td style="color:#475569;">Миронов С.К.</td>
-                <td style="display:flex;align-items:center;gap:6px;">
-                  <button class="btn btn-primary" onclick="event.stopPropagation();nav('quotation-detail')">Открыть</button>
-                  <button onclick="event.stopPropagation();reqOpenDoneModal('12345','Claas','Миронов С.К.')" title="Перевести в Обработанные" style="display:inline-flex;align-items:center;gap:4px;padding:5px 10px;border:1.5px solid #16A34A;border-radius:7px;background:#fff;color:#16A34A;font-size:11px;font-weight:600;cursor:pointer;font-family:'Fira Sans',sans-serif;white-space:nowrap;">
-                    <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
-                    Завершить
-                  </button>
-                </td>
+                <td><button class="btn btn-primary" onclick="event.stopPropagation();nav('quotation-detail')">Открыть</button></td>
               </tr>
             </tbody>
           </table>
@@ -1415,9 +1403,9 @@ textarea.form-input { resize:vertical; min-height:68px; line-height:1.5; }
       </div>
       <span class="badge badge-orange" style="font-size:11px;">Ожидаю ответа</span>
       <div style="flex:1;"></div>
-      <button onclick="reqOpenDoneModal('12346','AGCO','Петров И.М.')" style="display:inline-flex;align-items:center;gap:6px;padding:6px 14px;border:1.5px solid #16A34A;border-radius:7px;background:#fff;color:#16A34A;font-size:12px;font-weight:600;cursor:pointer;font-family:'Fira Sans',sans-serif;">
+      <button onclick="reqOpenDoneModal('12346','AGCO','Петров И.М.')" style="display:inline-flex;align-items:center;gap:6px;padding:7px 16px;background:#16A34A;color:#fff;border:none;border-radius:7px;font-size:12px;font-weight:600;cursor:pointer;font-family:'Fira Sans',sans-serif;">
         <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
-        Обработанный
+        Завершить
       </button>
     </div>
     <div style="display:flex;align-items:center;gap:20px;padding-top:10px;border-top:1px solid #F1F5F9;margin-bottom:10px;">
