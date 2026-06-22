@@ -1202,7 +1202,7 @@ textarea.form-input { resize:vertical; min-height:68px; line-height:1.5; }
               <th>Статус</th><th>Ответственный</th><th></th>
             </tr></thead>
             <tbody>
-              <tr onclick="nav('quotation-detail')" style="cursor:pointer;">
+              <tr id="req-row-12346" onclick="nav('quotation-detail')" style="cursor:pointer;">
                 <td class="mono" style="font-weight:700;color:#2563EB;font-size:13px;">№12346</td>
                 <td style="color:#0F172A;font-weight:500;">Hans Mueller &amp; Co.</td>
                 <td style="color:#475569;">AGCO</td>
@@ -1215,9 +1215,15 @@ textarea.form-input { resize:vertical; min-height:68px; line-height:1.5; }
                 <td style="text-align:right;" class="mono"><strong>8 320</strong></td>
                 <td><span style="display:flex;align-items:center;gap:5px;"><span class="qdot qdot-orange"></span><span style="color:#475569;">Ожидание</span></span></td>
                 <td style="color:#475569;">Петров И.М.</td>
-                <td><button class="btn btn-primary" onclick="event.stopPropagation();nav('quotation-detail')">Открыть</button></td>
+                <td style="display:flex;align-items:center;gap:6px;">
+                  <button class="btn btn-primary" onclick="event.stopPropagation();nav('quotation-detail')">Открыть</button>
+                  <button onclick="event.stopPropagation();reqOpenDoneModal('12346','AGCO','Петров И.М.')" title="Перевести в Обработанные" style="display:inline-flex;align-items:center;gap:4px;padding:5px 10px;border:1.5px solid #16A34A;border-radius:7px;background:#fff;color:#16A34A;font-size:11px;font-weight:600;cursor:pointer;font-family:'Fira Sans',sans-serif;white-space:nowrap;">
+                    <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                    Завершить
+                  </button>
+                </td>
               </tr>
-              <tr onclick="nav('quotation-detail')" style="cursor:pointer;">
+              <tr id="req-row-12345" onclick="nav('quotation-detail')" style="cursor:pointer;">
                 <td class="mono" style="font-weight:700;color:#2563EB;font-size:13px;">№12345</td>
                 <td style="color:#0F172A;font-weight:500;">Fritz Wagner GmbH</td>
                 <td style="color:#475569;">Claas</td>
@@ -1230,7 +1236,13 @@ textarea.form-input { resize:vertical; min-height:68px; line-height:1.5; }
                 <td style="text-align:right;" class="mono"><strong>3 100</strong></td>
                 <td><span style="display:flex;align-items:center;gap:5px;"><span class="qdot qdot-orange"></span><span style="color:#475569;">Ожидание</span></span></td>
                 <td style="color:#475569;">Миронов С.К.</td>
-                <td><button class="btn btn-primary" onclick="event.stopPropagation();nav('quotation-detail')">Открыть</button></td>
+                <td style="display:flex;align-items:center;gap:6px;">
+                  <button class="btn btn-primary" onclick="event.stopPropagation();nav('quotation-detail')">Открыть</button>
+                  <button onclick="event.stopPropagation();reqOpenDoneModal('12345','Claas','Миронов С.К.')" title="Перевести в Обработанные" style="display:inline-flex;align-items:center;gap:4px;padding:5px 10px;border:1.5px solid #16A34A;border-radius:7px;background:#fff;color:#16A34A;font-size:11px;font-weight:600;cursor:pointer;font-family:'Fira Sans',sans-serif;white-space:nowrap;">
+                    <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                    Завершить
+                  </button>
+                </td>
               </tr>
             </tbody>
           </table>
@@ -1403,7 +1415,7 @@ textarea.form-input { resize:vertical; min-height:68px; line-height:1.5; }
       </div>
       <span class="badge badge-orange" style="font-size:11px;">Ожидаю ответа</span>
       <div style="flex:1;"></div>
-      <button onclick="openModal('modal-req-done')" style="display:inline-flex;align-items:center;gap:6px;padding:6px 14px;border:1.5px solid #16A34A;border-radius:7px;background:#fff;color:#16A34A;font-size:12px;font-weight:600;cursor:pointer;font-family:'Fira Sans',sans-serif;">
+      <button onclick="reqOpenDoneModal('12346','AGCO','Петров И.М.')" style="display:inline-flex;align-items:center;gap:6px;padding:6px 14px;border:1.5px solid #16A34A;border-radius:7px;background:#fff;color:#16A34A;font-size:12px;font-weight:600;cursor:pointer;font-family:'Fira Sans',sans-serif;">
         <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
         Обработанный
       </button>
@@ -1780,53 +1792,38 @@ Anton</div>
 </div><!-- /max-width -->
 </div><!-- /page-quotation-detail -->
 
-<!-- Modal: Закрыть запрос / Обработанный -->
+<!-- Modal: Перевести запрос в Обработанные -->
 <div id="modal-req-done" class="modal-overlay" style="display:none;" onclick="if(event.target===this)closeModal('modal-req-done')">
-  <div class="modal-box" style="width:520px;max-width:95vw;">
+  <div class="modal-box" style="width:500px;max-width:95vw;">
     <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">
-      <div style="display:flex;align-items:center;gap:8px;">
-        <div style="width:32px;height:32px;border-radius:50%;background:#F0FDF4;display:flex;align-items:center;justify-content:center;">
+      <div style="display:flex;align-items:center;gap:10px;">
+        <div style="width:34px;height:34px;border-radius:50%;background:#F0FDF4;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#16A34A" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
         </div>
         <div>
-          <div style="font-size:14px;font-weight:700;color:#0F172A;">Перевести запрос в Обработанные</div>
-          <div style="font-size:11px;color:#94A3B8;" class="mono">REQ 12346 · John Deere · ООО АГРОКОМПЛЕКС</div>
+          <div style="font-size:14px;font-weight:700;color:#0F172A;">Перевести в Обработанные</div>
+          <div id="rd-subtitle" style="font-size:11px;color:#94A3B8;" class="mono"></div>
         </div>
       </div>
-      <button onclick="closeModal('modal-req-done')" style="border:none;background:none;cursor:pointer;color:#94A3B8;font-size:18px;line-height:1;">×</button>
+      <button onclick="closeModal('modal-req-done')" style="border:none;background:none;cursor:pointer;color:#94A3B8;font-size:20px;line-height:1;padding:0 4px;">×</button>
     </div>
 
-    <!-- Summary итогов -->
-    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px;padding:10px 12px;background:#F8FAFC;border-radius:8px;border:1px solid #F1F5F9;">
-      <span style="display:inline-flex;align-items:center;gap:4px;font-size:11px;color:#16A34A;font-weight:600;"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>22 подтверждено</span>
-      <span style="color:#E2E8F0;">·</span>
-      <span style="display:inline-flex;align-items:center;gap:4px;font-size:11px;color:#D97706;font-weight:600;"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="23 18 13.5 8.5 8.5 13.5 1 6"/><polyline points="17 18 23 18 23 12"/></svg>4 цена выросла</span>
-      <span style="color:#E2E8F0;">·</span>
-      <span style="display:inline-flex;align-items:center;gap:4px;font-size:11px;color:#DC2626;font-weight:600;"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>1 backorder</span>
-      <span style="color:#E2E8F0;">·</span>
-      <span style="display:inline-flex;align-items:center;gap:4px;font-size:11px;color:#7C3AED;font-weight:600;"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>1 новых цен</span>
+    <!-- Статус изменится -->
+    <div style="display:flex;align-items:center;gap:10px;padding:10px 12px;background:#F8FAFC;border-radius:8px;border:1px solid #F1F5F9;margin-bottom:14px;">
+      <span style="display:flex;align-items:center;gap:5px;font-size:11px;color:#D97706;font-weight:600;"><span class="qdot qdot-orange"></span>В работе</span>
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#94A3B8" stroke-width="2"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
+      <span style="display:flex;align-items:center;gap:5px;font-size:11px;color:#16A34A;font-weight:600;"><span class="qdot qdot-green"></span>Обработанные</span>
     </div>
 
     <!-- Уведомление менеджеру -->
-    <div style="margin-bottom:14px;">
-      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;">
-        <label style="font-size:11px;font-weight:600;color:#475569;display:flex;align-items:center;gap:6px;">
-          <input type="checkbox" id="req-done-notify" checked style="accent-color:#16A34A;">
-          Уведомить менеджера Петров И.М.
-        </label>
-        <span style="font-size:10px;color:#94A3B8;">petrov@agr24.ru</span>
-      </div>
-      <div id="req-done-msg-block" style="border:1px solid #E2E8F0;border-radius:8px;background:#FAFAFA;padding:10px 12px;font-size:11px;line-height:1.7;color:#334155;font-family:'Fira Code',monospace;">
-        <div style="color:#94A3B8;margin-bottom:6px;font-family:'Fira Sans',sans-serif;font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.4px;">Сообщение менеджеру</div>
-        Иван Михайлович, запрос <strong>REQ 12346</strong> (ООО АГРОКОМПЛЕКС) обработан.<br>
-        <br>
-        Итого позиций: <strong>28</strong>. Из них:<br>
-        ✓ Подтверждено: <strong>22</strong> (сумма <strong>8 320 EUR</strong>)<br>
-        ↑ Цена выросла: <strong>4</strong> (836866294, 700726219, GCA5301, GCA4712) — требует согласования<br>
-        ✗ Backorder: <strong>1</strong> (4283835M1 — Форсунка топливная)<br>
-        ★ Новые позиции от поставщика: <strong>1</strong><br>
-        <br>
-        Файл ответа прикреплён: REQ12346_Hans-Mueller_02.06.xlsx
+    <div style="margin-bottom:16px;">
+      <label style="font-size:11px;font-weight:600;color:#475569;display:flex;align-items:center;gap:6px;margin-bottom:8px;cursor:pointer;">
+        <input type="checkbox" id="rd-notify-cb" checked style="accent-color:#16A34A;" onchange="document.getElementById('rd-msg-block').style.display=this.checked?'':'none'">
+        Уведомить менеджера — <span id="rd-manager" style="color:#0F172A;"></span>
+      </label>
+      <div id="rd-msg-block" style="border:1px solid #E2E8F0;border-radius:8px;background:#FAFAFA;padding:10px 12px;font-size:11px;line-height:1.75;color:#334155;">
+        <div style="font-size:10px;font-weight:600;color:#94A3B8;text-transform:uppercase;letter-spacing:.4px;margin-bottom:6px;">Сообщение менеджеру</div>
+        <div id="rd-msg-text"></div>
       </div>
     </div>
 
@@ -1834,24 +1831,48 @@ Anton</div>
       <button onclick="closeModal('modal-req-done')" class="btn btn-ghost">Отмена</button>
       <button onclick="reqDoneConfirm()" style="display:inline-flex;align-items:center;gap:6px;padding:7px 16px;background:#16A34A;color:#fff;border:none;border-radius:7px;font-size:12px;font-weight:600;cursor:pointer;font-family:'Fira Sans',sans-serif;">
         <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
-        Подтвердить и отправить
+        Подтвердить
       </button>
     </div>
   </div>
 </div>
 
 <script>
+var _rdReqNum = '';
+function reqOpenDoneModal(num, brand, manager) {
+  _rdReqNum = num;
+  document.getElementById('rd-subtitle').textContent = 'REQ ' + num + ' · ' + brand;
+  document.getElementById('rd-manager').textContent = manager;
+  document.getElementById('rd-notify-cb').checked = true;
+  document.getElementById('rd-msg-block').style.display = '';
+  document.getElementById('rd-msg-text').innerHTML =
+    'Запрос <strong>REQ&nbsp;' + num + '</strong> обработан поставщиком.<br>' +
+    'Ответ получен, позиции актуализированы.<br><br>' +
+    'Пожалуйста, проверьте итоговые цены и подтвердите коммерческое предложение клиенту.';
+  openModal('modal-req-done');
+}
 function reqDoneConfirm() {
+  var num = _rdReqNum;
+  var notify = document.getElementById('rd-notify-cb').checked;
+  var mgr = document.getElementById('rd-manager').textContent;
   closeModal('modal-req-done');
-  // Переход в Обработанные и показ toast
-  nav('quotation');
+  // Скрываем строку из "В работе"
+  var row = document.getElementById('req-row-' + num);
+  if (row) {
+    row.style.transition = 'opacity .3s';
+    row.style.opacity = '0';
+    setTimeout(function(){ row.style.display = 'none'; }, 300);
+  }
+  // Toast
   setTimeout(function() {
+    var msg = 'REQ ' + num + ' → Обработанные.';
+    if (notify) msg += ' ' + mgr + ' уведомлён.';
     var toast = document.createElement('div');
     toast.style.cssText = 'position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#16A34A;color:#fff;padding:10px 20px;border-radius:8px;font-size:12px;font-weight:600;z-index:9999;box-shadow:0 4px 16px rgba(22,163,74,.3);display:flex;align-items:center;gap:8px;';
-    toast.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>REQ 12346 переведён в Обработанные. Петров И.М. уведомлён.';
+    toast.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>' + msg;
     document.body.appendChild(toast);
     setTimeout(function(){ toast.remove(); }, 4000);
-  }, 300);
+  }, 350);
 }
 </script>
 
