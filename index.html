@@ -2002,7 +2002,7 @@ function qdCancelEdit() {
 </script>
 
 <!-- Modal: Завершить запрос -->
-<div id="modal-req-done" class="modal-overlay" style="display:none;" onclick="if(event.target===this)closeModal('modal-req-done')">
+<div id="modal-req-done" class="modal-overlay" style="display:none;" onclick="if(event.target===this)rdClose()">
   <div class="modal-box" style="width:360px;max-width:95vw;">
 
     <!-- Шаг 1: подтверждение -->
@@ -2010,7 +2010,7 @@ function qdCancelEdit() {
       <div style="font-size:15px;font-weight:700;color:#0F172A;margin-bottom:8px;">Запрос обработан.</div>
       <div style="font-size:13px;color:#475569;margin-bottom:24px;">Перевести в Обработанные?</div>
       <div style="display:flex;gap:10px;justify-content:flex-end;">
-        <button onclick="closeModal('modal-req-done')" style="padding:8px 24px;border:1.5px solid #E2E8F0;border-radius:7px;background:#fff;color:#475569;font-size:13px;font-weight:600;cursor:pointer;font-family:'Fira Sans',sans-serif;">Нет</button>
+        <button onclick="rdClose()" style="padding:8px 24px;border:1.5px solid #E2E8F0;border-radius:7px;background:#fff;color:#475569;font-size:13px;font-weight:600;cursor:pointer;font-family:'Fira Sans',sans-serif;">Нет</button>
         <button onclick="rdConfirm()" style="padding:8px 24px;background:#16A34A;color:#fff;border:none;border-radius:7px;font-size:13px;font-weight:600;cursor:pointer;font-family:'Fira Sans',sans-serif;">Да</button>
       </div>
     </div>
@@ -2022,17 +2022,24 @@ function qdCancelEdit() {
       </div>
       <div style="font-size:14px;font-weight:700;color:#0F172A;margin-bottom:6px;">Запрос переведён в Обработанные.</div>
       <div style="font-size:13px;color:#16A34A;font-weight:600;margin-bottom:22px;">Менеджер оповещён.</div>
-      <button onclick="closeModal('modal-req-done');nav('quotation')" style="padding:8px 22px;background:#16A34A;color:#fff;border:none;border-radius:7px;font-size:12px;font-weight:600;cursor:pointer;font-family:'Fira Sans',sans-serif;">Закрыть</button>
+      <button onclick="rdClose();nav('quotation')" style="padding:8px 22px;background:#16A34A;color:#fff;border:none;border-radius:7px;font-size:12px;font-weight:600;cursor:pointer;font-family:'Fira Sans',sans-serif;">Закрыть</button>
     </div>
 
   </div>
 </div>
 
 <script>
+function rdClose() {
+  var el = document.getElementById('modal-req-done');
+  el.style.display = 'none';
+  document.body.style.overflow = '';
+}
 function reqOpenDoneModal(num, brand, manager) {
   document.getElementById('rd-step1').style.display = '';
   document.getElementById('rd-step2').style.display = 'none';
-  openModal('modal-req-done');
+  var el = document.getElementById('modal-req-done');
+  el.style.display = 'flex';
+  document.body.style.overflow = 'hidden';
 }
 function rdConfirm() {
   document.getElementById('rd-step1').style.display = 'none';
