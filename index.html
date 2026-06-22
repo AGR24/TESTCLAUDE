@@ -1844,22 +1844,23 @@ function reqDoneConfirm() {
   var notify = document.getElementById('rd-notify-cb').checked;
   var mgr = document.getElementById('rd-manager').textContent;
   closeModal('modal-req-done');
-  // Скрываем строку из "В работе"
+  // Скрываем строку из "В работе" (если мы на списке)
   var row = document.getElementById('req-row-' + num);
   if (row) {
     row.style.transition = 'opacity .3s';
     row.style.opacity = '0';
     setTimeout(function(){ row.style.display = 'none'; }, 300);
   }
-  // Toast
+  // Переходим в раздел Запросы → прокручиваем к Обработанным
+  nav('quotation');
+  // Toast после перехода
   setTimeout(function() {
-    var msg = 'REQ ' + num + ' → Обработанные.';
-    if (notify) msg += ' ' + mgr + ' уведомлён.';
+    var mgr_text = notify ? (' ' + mgr + ' уведомлён.') : '';
     var toast = document.createElement('div');
-    toast.style.cssText = 'position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#16A34A;color:#fff;padding:10px 20px;border-radius:8px;font-size:12px;font-weight:600;z-index:9999;box-shadow:0 4px 16px rgba(22,163,74,.3);display:flex;align-items:center;gap:8px;';
-    toast.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>' + msg;
+    toast.style.cssText = 'position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#16A34A;color:#fff;padding:11px 22px;border-radius:8px;font-size:12px;font-weight:600;z-index:9999;box-shadow:0 4px 20px rgba(22,163,74,.35);display:flex;align-items:center;gap:9px;white-space:nowrap;';
+    toast.innerHTML = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>REQ ' + num + ' переведён в Обработанные.' + mgr_text;
     document.body.appendChild(toast);
-    setTimeout(function(){ toast.remove(); }, 4000);
+    setTimeout(function(){ toast.style.transition='opacity .4s'; toast.style.opacity='0'; setTimeout(function(){toast.remove();},400); }, 4000);
   }, 350);
 }
 </script>
