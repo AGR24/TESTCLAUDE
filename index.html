@@ -2117,6 +2117,12 @@ function poComposeSend() {
   setTimeout(function() { toast.style.opacity='0'; toast.style.transition='opacity 400ms'; setTimeout(function(){ toast.remove(); }, 400); }, 3000);
 }
 
+/* ── completed-order: toggle cycle summary ── */
+function coToggleCycle(id) {
+  var el = document.getElementById(id + '-cycle');
+  el.style.display = el.style.display === 'none' ? '' : 'none';
+}
+
 /* ── placed-order: checklist status → unlock "В завершённые" ── */
 function poSimulateClDone() {
   var badge = document.getElementById('po-cl-status');
@@ -3676,6 +3682,118 @@ aiclaude@agr24.ru</div>
     </div>
   </div>
 
+  <!-- Документы -->
+  <div class="card" style="overflow:hidden;margin-top:12px;">
+    <div class="section-header">
+      <div class="section-title">
+        <div class="section-accent" style="background:#7C3AED;"></div>
+        Документы
+        <span style="font-size:11px;color:#94A3B8;font-weight:400;margin-left:4px;">6 файлов</span>
+      </div>
+      <button onclick="coToggleCycle('co1')" class="btn btn-ghost" style="font-size:11px;">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+        Полный цикл заказа
+      </button>
+    </div>
+
+    <!-- Полный цикл заказа — сводка -->
+    <div id="co1-cycle" style="display:none;margin:0 16px 14px;padding:14px 16px;background:#F8FAFC;border:1px solid #E2E8F0;border-radius:10px;">
+      <div style="font-size:12px;font-weight:700;color:#0F172A;margin-bottom:12px;display:flex;align-items:center;gap:6px;">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#7C3AED" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+        Полный цикл заказа PRF-2026-085
+      </div>
+      <div style="display:flex;flex-direction:column;gap:8px;font-size:12px;line-height:1.7;color:#334155;">
+        <div><span style="font-weight:600;color:#0F172A;">Размещение:</span> 19.05.2026 — заказ отправлен Midwest Parts GmbH (Fendt, 143 позиции, 33 600 EUR, Поставка 42)</div>
+        <div><span style="font-weight:600;color:#0F172A;">Предварительная сверка (26.05.2026):</span> 142 позиции подтверждены, 1 отменена — <span class="mono" style="font-size:11px;">V836858451</span> (Насос гидравлический) — нет в наличии в сезоне. Поставщик скорректировал проформу.</div>
+        <div><span style="font-weight:600;color:#0F172A;">Финальная сверка (03.06.2026):</span> инвойс на 33 600 EUR подтверждён. Упаковочный лист — 31 коробка, 142 позиции. <span style="color:#16A34A;font-weight:600;">Выполнение 99%.</span></div>
+        <div><span style="font-weight:600;color:#0F172A;">Контрольный лист КЛ-085:</span> 141 позиция принята на складе EU. 1 позиция — <span class="mono" style="font-size:11px;">F411200180010</span> (Ремень поликлиновый, 3 шт) — статус «Отгружено», подтверждения трекинга DHL нет на момент приёмки.</div>
+        <div><span style="font-weight:600;color:#0F172A;">Перезаказано:</span> 0 позиций.</div>
+        <div style="padding:8px 12px;background:#F0FDF4;border:1px solid #BBF7D0;border-radius:8px;display:flex;justify-content:space-between;align-items:center;">
+          <div><span style="font-weight:700;color:#15803D;">Общая оценка: 100%</span> <span style="color:#475569;">(141 из 141 подтверждённых позиций получены)</span></div>
+          <div style="font-size:11px;color:#64748B;text-align:right;">Срок от размещения до получения:<br><strong style="color:#0F172A;">20 дней</strong> (19.05 → 08.06)</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Список документов -->
+    <div style="border-top:1px solid #F1F5F9;">
+      <div style="display:flex;flex-direction:column;gap:0;">
+        <!-- PO -->
+        <div style="display:flex;align-items:center;gap:12px;padding:10px 16px;border-bottom:1px solid #F8FAFC;" onmouseover="this.style.background='#F8FAFC'" onmouseout="this.style.background=''">
+          <div style="width:32px;height:32px;border-radius:8px;background:#EFF6FF;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#2563EB" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          </div>
+          <div style="flex:1;min-width:0;">
+            <div style="font-size:12px;font-weight:600;color:#0F172A;">PO_Fendt_Midwest_Parts_000368.xlsx</div>
+            <div style="font-size:11px;color:#94A3B8;">Purchase Order · 19.05.2026</div>
+          </div>
+          <span style="font-size:10px;font-weight:600;padding:2px 7px;border-radius:4px;background:#EFF6FF;color:#2563EB;border:1px solid #DBEAFE;white-space:nowrap;">PO</span>
+          <button class="btn btn-ghost" style="font-size:11px;padding:4px 10px;">Скачать</button>
+        </div>
+        <!-- Проформа -->
+        <div style="display:flex;align-items:center;gap:12px;padding:10px 16px;border-bottom:1px solid #F8FAFC;" onmouseover="this.style.background='#F8FAFC'" onmouseout="this.style.background=''">
+          <div style="width:32px;height:32px;border-radius:8px;background:#FEF3C7;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#D97706" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          </div>
+          <div style="flex:1;min-width:0;">
+            <div style="font-size:12px;font-weight:600;color:#0F172A;">PRF-2026-085.pdf</div>
+            <div style="font-size:11px;color:#94A3B8;">Проформа · 21.05.2026 · 33 600 EUR</div>
+          </div>
+          <span style="font-size:10px;font-weight:600;padding:2px 7px;border-radius:4px;background:#FEF3C7;color:#D97706;border:1px solid #FDE68A;white-space:nowrap;">Проформа</span>
+          <button class="btn btn-ghost" style="font-size:11px;padding:4px 10px;">Скачать</button>
+        </div>
+        <!-- MT103 -->
+        <div style="display:flex;align-items:center;gap:12px;padding:10px 16px;border-bottom:1px solid #F8FAFC;" onmouseover="this.style.background='#F8FAFC'" onmouseout="this.style.background=''">
+          <div style="width:32px;height:32px;border-radius:8px;background:#F0FDF4;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#16A34A" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+          </div>
+          <div style="flex:1;min-width:0;">
+            <div style="font-size:12px;font-weight:600;color:#0F172A;">MT103_PRF085_payment.pdf</div>
+            <div style="font-size:11px;color:#94A3B8;">SWIFT-перевод · 23.05.2026 · 33 600 EUR</div>
+          </div>
+          <span style="font-size:10px;font-weight:600;padding:2px 7px;border-radius:4px;background:#F0FDF4;color:#16A34A;border:1px solid #BBF7D0;white-space:nowrap;">Оплата</span>
+          <button class="btn btn-ghost" style="font-size:11px;padding:4px 10px;">Скачать</button>
+        </div>
+        <!-- AWB -->
+        <div style="display:flex;align-items:center;gap:12px;padding:10px 16px;border-bottom:1px solid #F8FAFC;" onmouseover="this.style.background='#F8FAFC'" onmouseout="this.style.background=''">
+          <div style="width:32px;height:32px;border-radius:8px;background:#EFF6FF;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#2563EB" stroke-width="2"><path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/></svg>
+          </div>
+          <div style="flex:1;min-width:0;">
+            <div style="font-size:12px;font-weight:600;color:#0F172A;">AWB_235-18762340_DHL.pdf</div>
+            <div style="font-size:11px;color:#94A3B8;">Авианакладная · 03.06.2026 · DHL Express</div>
+          </div>
+          <span style="font-size:10px;font-weight:600;padding:2px 7px;border-radius:4px;background:#EFF6FF;color:#2563EB;border:1px solid #DBEAFE;white-space:nowrap;">AWB</span>
+          <button class="btn btn-ghost" style="font-size:11px;padding:4px 10px;">Скачать</button>
+        </div>
+        <!-- Финальный инвойс -->
+        <div style="display:flex;align-items:center;gap:12px;padding:10px 16px;border-bottom:1px solid #F8FAFC;" onmouseover="this.style.background='#F8FAFC'" onmouseout="this.style.background=''">
+          <div style="width:32px;height:32px;border-radius:8px;background:#FEF3C7;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#D97706" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+          </div>
+          <div style="flex:1;min-width:0;">
+            <div style="font-size:12px;font-weight:600;color:#0F172A;">Invoice_Midwest_Parts_Final_PRF085.pdf</div>
+            <div style="font-size:11px;color:#94A3B8;">Финальный инвойс · 03.06.2026 · 33 600 EUR · <span style="color:#7C3AED;font-weight:600;">покрывает PRF-2026-085</span></div>
+          </div>
+          <span style="font-size:10px;font-weight:600;padding:2px 7px;border-radius:4px;background:#FDF4FF;color:#7C3AED;border:1px solid #E9D5FF;white-space:nowrap;">Инвойс</span>
+          <button class="btn btn-ghost" style="font-size:11px;padding:4px 10px;">Скачать</button>
+        </div>
+        <!-- КЛ -->
+        <div style="display:flex;align-items:center;gap:12px;padding:10px 16px;" onmouseover="this.style.background='#F8FAFC'" onmouseout="this.style.background=''">
+          <div style="width:32px;height:32px;border-radius:8px;background:#F0FDF4;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#16A34A" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
+          </div>
+          <div style="flex:1;min-width:0;">
+            <div style="font-size:12px;font-weight:600;color:#0F172A;">КЛ-085_Контрольный_лист.pdf</div>
+            <div style="font-size:11px;color:#94A3B8;">Контрольный лист · 08.06.2026 · Статус: Завершён</div>
+          </div>
+          <span style="font-size:10px;font-weight:600;padding:2px 7px;border-radius:4px;background:#DCFCE7;color:#15803D;border:1px solid #BBF7D0;white-space:nowrap;">КЛ</span>
+          <button class="btn btn-ghost" style="font-size:11px;padding:4px 10px;">Скачать</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
 </div>
 </div><!-- /page-completed-order -->
 
@@ -3958,6 +4076,89 @@ aiclaude@agr24.ru</div>
             <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/></svg>
             ShipDocs_PRF084.pdf
           </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Документы -->
+  <div class="card" style="overflow:hidden;margin-top:12px;">
+    <div class="section-header">
+      <div class="section-title">
+        <div class="section-accent" style="background:#7C3AED;"></div>
+        Документы
+        <span style="font-size:11px;color:#94A3B8;font-weight:400;margin-left:4px;">6 файлов</span>
+      </div>
+      <button onclick="coToggleCycle('co2')" class="btn btn-ghost" style="font-size:11px;">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+        Полный цикл заказа
+      </button>
+    </div>
+
+    <!-- Полный цикл заказа — сводка -->
+    <div id="co2-cycle" style="display:none;margin:0 16px 14px;padding:14px 16px;background:#F8FAFC;border:1px solid #E2E8F0;border-radius:10px;">
+      <div style="font-size:12px;font-weight:700;color:#0F172A;margin-bottom:12px;display:flex;align-items:center;gap:6px;">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#7C3AED" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+        Полный цикл заказа PRF-2026-084
+      </div>
+      <div style="display:flex;flex-direction:column;gap:8px;font-size:12px;line-height:1.7;color:#334155;">
+        <div><span style="font-weight:600;color:#0F172A;">Размещение:</span> 16.05.2026 — заказ отправлен AgriTech Europa BV (John Deere, 88 позиций, 22 300 EUR, Поставка 42)</div>
+        <div><span style="font-weight:600;color:#0F172A;">Предварительная сверка (17.05.2026):</span> 85 позиций подтверждены, 1 отменена — <span class="mono" style="font-size:11px;">TCA19887</span> (Ремень вариатора, 3 шт, нет в наличии), 1 перенесена — <span class="mono" style="font-size:11px;">AXE21234</span> (Фильтр воздушный, 5 шт → следующая поставка, ETA 10.07.2026).</div>
+        <div><span style="font-weight:600;color:#0F172A;">Финальная сверка (19.05.2026):</span> инвойс на 22 300 EUR подтверждён. <span style="color:#D97706;font-weight:600;">Инвойс многозаказный — покрывает PRF-2026-084 и PRF-2026-083.</span> Распределение по артикулам выполнено автоматически. Позиции с дублями (<span class="mono" style="font-size:11px;">RE522878</span> — присутствует в двух заказах) разбиты по количеству: 20 шт → PRF-2026-084, 15 шт → PRF-2026-083.</div>
+        <div><span style="font-weight:600;color:#0F172A;">Контрольный лист КЛ-084:</span> 26 позиций принято. 2 позиции статус «Отгружено» без подтверждения трекинга — <span class="mono" style="font-size:11px;">AXE85862</span> (Вал шнека, 1 шт) и <span class="mono" style="font-size:11px;">R130137</span> (Подшипник, 10 шт). 1 позиция перенесена — <span class="mono" style="font-size:11px;">AXE21234</span> ожидается 10.07.2026.</div>
+        <div><span style="font-weight:600;color:#0F172A;">Перезаказано:</span> 0 позиций. AXE21234 перенесена в следующую поставку (не перезаказ).</div>
+        <div style="padding:8px 12px;background:#FEF9EC;border:1px solid #FDE68A;border-radius:8px;display:flex;justify-content:space-between;align-items:center;">
+          <div><span style="font-weight:700;color:#D97706;">Общая оценка: 95%</span> <span style="color:#475569;">(83 из 88 позиций, 5 шт AXE21234 перенесены на 10.07)</span></div>
+          <div style="font-size:11px;color:#64748B;text-align:right;">Срок от размещения до получения:<br><strong style="color:#0F172A;">9 дней</strong> (16.05 → 25.05)</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Список документов -->
+    <div style="border-top:1px solid #F1F5F9;">
+      <div style="display:flex;flex-direction:column;gap:0;">
+        <div style="display:flex;align-items:center;gap:12px;padding:10px 16px;border-bottom:1px solid #F8FAFC;" onmouseover="this.style.background='#F8FAFC'" onmouseout="this.style.background=''">
+          <div style="width:32px;height:32px;border-radius:8px;background:#EFF6FF;display:flex;align-items:center;justify-content:center;flex-shrink:0;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#2563EB" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
+          <div style="flex:1;min-width:0;"><div style="font-size:12px;font-weight:600;color:#0F172A;">PO_JD_AgriTech_Europa_000341.xlsx</div><div style="font-size:11px;color:#94A3B8;">Purchase Order · 16.05.2026</div></div>
+          <span style="font-size:10px;font-weight:600;padding:2px 7px;border-radius:4px;background:#EFF6FF;color:#2563EB;border:1px solid #DBEAFE;">PO</span>
+          <button class="btn btn-ghost" style="font-size:11px;padding:4px 10px;">Скачать</button>
+        </div>
+        <div style="display:flex;align-items:center;gap:12px;padding:10px 16px;border-bottom:1px solid #F8FAFC;" onmouseover="this.style.background='#F8FAFC'" onmouseout="this.style.background=''">
+          <div style="width:32px;height:32px;border-radius:8px;background:#FEF3C7;display:flex;align-items:center;justify-content:center;flex-shrink:0;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#D97706" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
+          <div style="flex:1;min-width:0;"><div style="font-size:12px;font-weight:600;color:#0F172A;">PRF-2026-084.pdf</div><div style="font-size:11px;color:#94A3B8;">Проформа · 17.05.2026 · 22 300 EUR</div></div>
+          <span style="font-size:10px;font-weight:600;padding:2px 7px;border-radius:4px;background:#FEF3C7;color:#D97706;border:1px solid #FDE68A;">Проформа</span>
+          <button class="btn btn-ghost" style="font-size:11px;padding:4px 10px;">Скачать</button>
+        </div>
+        <div style="display:flex;align-items:center;gap:12px;padding:10px 16px;border-bottom:1px solid #F8FAFC;" onmouseover="this.style.background='#F8FAFC'" onmouseout="this.style.background=''">
+          <div style="width:32px;height:32px;border-radius:8px;background:#F0FDF4;display:flex;align-items:center;justify-content:center;flex-shrink:0;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#16A34A" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg></div>
+          <div style="flex:1;min-width:0;"><div style="font-size:12px;font-weight:600;color:#0F172A;">MT103_PRF084_payment.pdf</div><div style="font-size:11px;color:#94A3B8;">SWIFT-перевод · 18.05.2026 · 22 300 EUR</div></div>
+          <span style="font-size:10px;font-weight:600;padding:2px 7px;border-radius:4px;background:#F0FDF4;color:#16A34A;border:1px solid #BBF7D0;">Оплата</span>
+          <button class="btn btn-ghost" style="font-size:11px;padding:4px 10px;">Скачать</button>
+        </div>
+        <div style="display:flex;align-items:center;gap:12px;padding:10px 16px;border-bottom:1px solid #F8FAFC;" onmouseover="this.style.background='#F8FAFC'" onmouseout="this.style.background=''">
+          <div style="width:32px;height:32px;border-radius:8px;background:#EFF6FF;display:flex;align-items:center;justify-content:center;flex-shrink:0;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#2563EB" stroke-width="2"><path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/></svg></div>
+          <div style="flex:1;min-width:0;"><div style="font-size:12px;font-weight:600;color:#0F172A;">AWB_172-56301288_DHL.pdf</div><div style="font-size:11px;color:#94A3B8;">Авианакладная · 19.05.2026 · DHL Express</div></div>
+          <span style="font-size:10px;font-weight:600;padding:2px 7px;border-radius:4px;background:#EFF6FF;color:#2563EB;border:1px solid #DBEAFE;">AWB</span>
+          <button class="btn btn-ghost" style="font-size:11px;padding:4px 10px;">Скачать</button>
+        </div>
+        <!-- Многозаказный инвойс — выделен особо -->
+        <div style="display:flex;align-items:center;gap:12px;padding:10px 16px;border-bottom:1px solid #F8FAFC;background:#FDFAFF;" onmouseover="this.style.background='#F5F0FF'" onmouseout="this.style.background='#FDFAFF'">
+          <div style="width:32px;height:32px;border-radius:8px;background:#FDF4FF;display:flex;align-items:center;justify-content:center;flex-shrink:0;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#7C3AED" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg></div>
+          <div style="flex:1;min-width:0;">
+            <div style="font-size:12px;font-weight:600;color:#0F172A;">Invoice_AgriTech_Final_PRF083-084.pdf</div>
+            <div style="font-size:11px;color:#94A3B8;">Финальный инвойс · 19.05.2026 · <span style="color:#7C3AED;font-weight:600;">покрывает PRF-2026-084 + PRF-2026-083</span></div>
+          </div>
+          <div style="display:flex;align-items:center;gap:4px;">
+            <span style="font-size:10px;font-weight:600;padding:2px 7px;border-radius:4px;background:#FDF4FF;color:#7C3AED;border:1px solid #E9D5FF;">Инвойс</span>
+            <span style="font-size:9px;font-weight:700;padding:2px 6px;border-radius:4px;background:#FEF3C7;color:#D97706;border:1px solid #FDE68A;">2 заказа</span>
+          </div>
+          <button class="btn btn-ghost" style="font-size:11px;padding:4px 10px;">Скачать</button>
+        </div>
+        <div style="display:flex;align-items:center;gap:12px;padding:10px 16px;" onmouseover="this.style.background='#F8FAFC'" onmouseout="this.style.background=''">
+          <div style="width:32px;height:32px;border-radius:8px;background:#F0FDF4;display:flex;align-items:center;justify-content:center;flex-shrink:0;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#16A34A" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg></div>
+          <div style="flex:1;min-width:0;"><div style="font-size:12px;font-weight:600;color:#0F172A;">КЛ-084_Контрольный_лист.pdf</div><div style="font-size:11px;color:#94A3B8;">Контрольный лист · 25.05.2026 · Статус: Завершён</div></div>
+          <span style="font-size:10px;font-weight:600;padding:2px 7px;border-radius:4px;background:#DCFCE7;color:#15803D;border:1px solid #BBF7D0;">КЛ</span>
+          <button class="btn btn-ghost" style="font-size:11px;padding:4px 10px;">Скачать</button>
         </div>
       </div>
     </div>
@@ -6363,9 +6564,28 @@ AGR PARTS Procurement</textarea>
         <span style="font-size:12px;color:#15803D;font-weight:500;">Итоговая разница по ценам:</span>
         <span style="font-size:16px;font-weight:700;font-family:'Fira Code',monospace;color:#16A34A;">−€3.80</span>
       </div>
-      <div style="font-size:11px;color:#94A3B8;margin-bottom:16px;">
+      <div style="font-size:11px;color:#94A3B8;margin-bottom:12px;">
         Сумма подтверждена: <strong style="color:#0F172A;">68 396.20 €</strong> из заказных <strong style="color:#0F172A;">68 400.00 €</strong>
       </div>
+
+      <!-- Многозаказный инвойс -->
+      <div style="padding:12px 14px;background:#FFFBEB;border:1px solid #FDE68A;border-radius:8px;margin-bottom:14px;">
+        <div style="display:flex;align-items:flex-start;gap:8px;">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#D97706" stroke-width="2" style="flex-shrink:0;margin-top:1px;"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+          <div>
+            <div style="font-size:11px;font-weight:700;color:#92400E;margin-bottom:4px;">Инвойс покрывает 2 заказа</div>
+            <div style="font-size:11px;color:#78350F;line-height:1.6;">
+              Документ Hans Mueller &amp; Co. распознан как многозаказный — позиции разделены между <strong>PRF-2026-089</strong> и <strong>PRF-2026-088</strong> по артикулу и количеству.<br>
+              <span style="color:#D97706;">⚠ Дубль RE522878:</span> 505 шт. разбиты автоматически → 295 шт. в PRF-089 / 210 шт. в PRF-088.
+            </div>
+            <div style="display:flex;gap:8px;margin-top:8px;">
+              <span style="font-size:10px;font-weight:600;padding:2px 8px;background:#FEF3C7;border:1px solid #FDE68A;border-radius:12px;color:#92400E;">PRF-2026-089 · 100 позиций</span>
+              <span style="font-size:10px;font-weight:600;padding:2px 8px;background:#FEF3C7;border:1px solid #FDE68A;border-radius:12px;color:#92400E;">PRF-2026-088 · 47 позиций</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <div style="display:flex;justify-content:space-between;align-items:center;">
         <button class="btn btn-ghost" style="font-size:11px;color:#94A3B8;" onclick="reconcileReset()">← Загрузить другой файл</button>
         <div style="display:flex;gap:8px;">
@@ -6657,11 +6877,23 @@ function poConfirm() {
 function reconcileConfirm() {
   closeModal('reconcile');
   reconcileReset();
-  var toast = document.createElement('div');
-  toast.style.cssText = 'position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#0F172A;color:#fff;padding:10px 20px;border-radius:10px;font-size:13px;font-weight:500;z-index:9999;display:flex;align-items:center;gap:8px;box-shadow:0 4px 16px rgba(0,0,0,0.25);';
-  toast.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#22C55E" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Сверка подтверждена — PRF-2026-089';
-  document.body.appendChild(toast);
-  setTimeout(function() { toast.style.opacity = '0'; toast.style.transition = 'opacity 400ms'; setTimeout(function() { toast.remove(); }, 400); }, 3000);
+  /* Уведомление: многозаказный инвойс */
+  var note = document.createElement('div');
+  note.style.cssText = 'position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#0F172A;color:#fff;padding:14px 20px;border-radius:12px;font-size:12px;font-weight:500;z-index:9999;box-shadow:0 4px 24px rgba(0,0,0,0.28);max-width:460px;width:90vw;';
+  note.innerHTML = ''
+    + '<div style="display:flex;align-items:flex-start;gap:10px;">'
+    + '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#22C55E" stroke-width="2.5" style="flex-shrink:0;margin-top:1px;"><polyline points="20 6 9 17 4 12"/></svg>'
+    + '<div>'
+    + '<div style="font-weight:700;margin-bottom:4px;">Сверка подтверждена — PRF-2026-089</div>'
+    + '<div style="color:#94A3B8;font-size:11px;line-height:1.6;">Инвойс Hans Mueller &amp; Co. распознан как <strong style="color:#FCD34D;">многозаказный</strong> — покрывает PRF-2026-089 и PRF-2026-088.<br>'
+    + 'Позиции распределены автоматически по количеству. Дубли артикулов разбиты: RE522878 (295 шт → PRF-089, 210 шт → PRF-088).<br>'
+    + '<span style="color:#86EFAC;">PRF-2026-088 обновлён — результаты сверки перенесены.</span>'
+    + '</div>'
+    + '</div>'
+    + '<button onclick="this.parentElement.parentElement.remove()" style="background:none;border:none;color:#64748B;cursor:pointer;font-size:16px;flex-shrink:0;padding:0 0 0 8px;line-height:1;">×</button>'
+    + '</div>';
+  document.body.appendChild(note);
+  setTimeout(function() { note.style.opacity = '0'; note.style.transition = 'opacity 500ms'; setTimeout(function() { note.remove(); }, 500); }, 6000);
 }
 
 function reconcileReset() {
