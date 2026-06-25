@@ -6119,7 +6119,7 @@ AGR PARTS Procurement</textarea>
         <button class="btn btn-ghost" style="font-size:11px;color:#94A3B8;" onclick="reconcileReset()">← Загрузить другой файл</button>
         <div style="display:flex;gap:8px;">
           <button class="btn btn-ghost" onclick="closeModal('reconcile');reconcileReset()">Закрыть</button>
-          <button class="btn btn-primary">Подтвердить сверку</button>
+          <button class="btn btn-primary" onclick="reconcileConfirm()">Подтвердить сверку</button>
         </div>
       </div>
     </div>
@@ -6403,6 +6403,16 @@ function poConfirm() {
 }
 
 /* ── Reconcile: 3-state flow ── */
+function reconcileConfirm() {
+  closeModal('reconcile');
+  reconcileReset();
+  var toast = document.createElement('div');
+  toast.style.cssText = 'position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#0F172A;color:#fff;padding:10px 20px;border-radius:10px;font-size:13px;font-weight:500;z-index:9999;display:flex;align-items:center;gap:8px;box-shadow:0 4px 16px rgba(0,0,0,0.25);';
+  toast.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#22C55E" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Сверка подтверждена — PRF-2026-089';
+  document.body.appendChild(toast);
+  setTimeout(function() { toast.style.opacity = '0'; toast.style.transition = 'opacity 400ms'; setTimeout(function() { toast.remove(); }, 400); }, 3000);
+}
+
 function reconcileReset() {
   document.getElementById('reconcile-upload').style.display = '';
   document.getElementById('reconcile-processing').style.display = 'none';
