@@ -2052,6 +2052,14 @@ function rdConfirm() {
   document.getElementById('rd-step2').style.display = '';
 }
 
+/* ── placed-order: save ── */
+function poSave(btn) {
+  var orig = btn.innerHTML;
+  btn.disabled = true;
+  btn.innerHTML = '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg> Сохранено';
+  setTimeout(function() { btn.disabled = false; btn.innerHTML = orig; }, 2000);
+}
+
 /* ── placed-order: update-status modal ── */
 function usOpen() {
   document.getElementById('us-text-input').value = '';
@@ -5033,6 +5041,10 @@ Midwest Parts GmbH</div>
         <button class="btn btn-ghost" onclick="usOpen()">
           <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"/></svg>
           Обновить статусы
+        </button>
+        <button class="btn btn-primary" onclick="poSave(this)">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+          Сохранить
         </button>
         <button class="btn btn-danger" onclick="openModal('reconcile')">
           <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
