@@ -2052,6 +2052,43 @@ function rdConfirm() {
   document.getElementById('rd-step2').style.display = '';
 }
 
+/* ── placed-order: export to Excel (CSV with BOM) ── */
+function poExport() {
+  var rows = [
+    ['#','Артикул','Наименование','Заказано','Подтверждено','Получено','Статус','Ожид. дата','ЗЦ EUR','ПЦ EUR','Δ EUR','Тип'],
+    [1,'RE522878','Масляный фильтр',10,10,10,'Прибыло','15.06.2026',45.00,44.50,-5.00,'STD'],
+    [2,'AXE21234','Фильтр воздушный двигателя',2,2,'—','Подтверждено','25.06.2026',45.00,45.00,'—','SO'],
+    [3,'AH212497','Решётка сепаратора зернового',3,3,'—','Подтверждено','25.06.2026',320.00,319.00,-3.00,'SO'],
+    [4,'R130137','Подшипник конусный',8,8,'—','Отгружено','20.06.2026',22.80,22.80,'—','SO'],
+    [5,'RE19452','Клапан гидравлический',1,1,'—','Подтверждено','30.06.2026',215.00,216.20,1.20,'SO'],
+    [6,'AXE63142','Ремень приводной',3,3,'—','Перенесена','15.07.2026',32.00,32.00,'—','STD'],
+    [7,'GCA5301','Вал карданный',1,'—','—','Размещено','30.06.2026',138.00,'—','—','SO'],
+    [8,'AW25043','Уплотнение вала трансмиссии',2,0,'—','Отменен','—',65.50,'—','—','AN'],
+    [],
+    ['','','','','','','','','','Итоговая разница:','-3.80',''],
+    [],
+    ['Проформа','PRF-2026-089','','Поставщик','Hans Mueller & Co.','','Марка','AGCO','','Сумма','68 400 EUR',''],
+    ['Поставка','Поставка 44','','Ожид. дата','25.06.2026','','Позиций','295','','','',''],
+  ];
+  var csv = '﻿'; // BOM для Excel
+  rows.forEach(function(row) {
+    csv += row.map(function(cell) {
+      var s = String(cell === null || cell === undefined ? '' : cell);
+      if (s.indexOf(';') !== -1 || s.indexOf('"') !== -1 || s.indexOf('\n') !== -1) {
+        s = '"' + s.replace(/"/g, '""') + '"';
+      }
+      return s;
+    }).join(';') + '\r\n';
+  });
+  var blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+  var url = URL.createObjectURL(blob);
+  var a = document.createElement('a');
+  a.href = url;
+  a.download = 'PRF-2026-089_positions.csv';
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
 /* ── placed-order: compose ── */
 function poComposeOpen() {
   document.getElementById('po-compose-body').value = '';
@@ -5089,7 +5126,7 @@ Midwest Parts GmbH</div>
         <div><div class="info-label">Позиций</div><div class="info-value mono"><strong>295</strong></div></div>
       </div>
       <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;">
-        <button class="btn btn-ghost">
+        <button class="btn btn-ghost" onclick="poExport()">
           <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
           Экспорт
         </button>
